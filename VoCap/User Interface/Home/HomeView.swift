@@ -8,14 +8,35 @@
 import SwiftUI
 
 struct HomeView: View {
+    @ObservedObject var entry = LexicalaFetchData(entryID: "PW00003877")
+    @ObservedObject var entries = LexicalaFetchData(source: "global", language: "en", text: "chair", morph: false, analyzed: true)
+    
     var body: some View {
         VStack {
             Text("Home View")
-            Button(action: { LexicalaAPI.getJSON(userName: "Taeminator1", password: "Gksmf6890!", url: "https://dictapi.lexicala.com/entries/PW00003877")}) {
-                Text("Lexicala API Test")
+            Button(action: { test1() }) {
+                Text("get entries")
+            }
+            Button(action: { test2() }) {
+                Text("get an entry")
             }
         }
     }
+    
+    func test1() -> Void {
+        for i in entries.lexicalaEntries!.results {
+            print(i.id)
+        }
+    }
+    
+    func test2() -> Void {
+        for i in entry.lexicalaEntry!.senses {
+            print(i.id)
+            print(i.translations["ko"]!.text)
+        }
+    }
+    
+    
 }
 
 struct HomeView_Previews: PreviewProvider {

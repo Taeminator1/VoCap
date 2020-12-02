@@ -12,6 +12,9 @@
 		340491ED25779D3600CD1BD7 /* LabatoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 340491EC25779D3600CD1BD7 /* LabatoryView.swift */; };
 		340491F225779D4300CD1BD7 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 340491F125779D4300CD1BD7 /* SettingsView.swift */; };
 		340491FC25779E8000CD1BD7 /* LexicalaAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 340491FB25779E8000CD1BD7 /* LexicalaAPI.swift */; };
+		3404920A25779F9D00CD1BD7 /* LexicalaEntries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3404920925779F9D00CD1BD7 /* LexicalaEntries.swift */; };
+		3404921225779FAD00CD1BD7 /* LexicalaEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3404921125779FAD00CD1BD7 /* LexicalaEntry.swift */; };
+		3404921725779FC800CD1BD7 /* LexicalaFetchData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3404921625779FC800CD1BD7 /* LexicalaFetchData.swift */; };
 		34D88F3E256D2A65009B10AF /* VoCapApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D88F3D256D2A65009B10AF /* VoCapApp.swift */; };
 		34D88F40256D2A65009B10AF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D88F3F256D2A65009B10AF /* ContentView.swift */; };
 		34D88F42256D2A68009B10AF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 34D88F41256D2A68009B10AF /* Assets.xcassets */; };
@@ -45,6 +48,9 @@
 		340491EC25779D3600CD1BD7 /* LabatoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabatoryView.swift; sourceTree = "<group>"; };
 		340491F125779D4300CD1BD7 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		340491FB25779E8000CD1BD7 /* LexicalaAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LexicalaAPI.swift; sourceTree = "<group>"; };
+		3404920925779F9D00CD1BD7 /* LexicalaEntries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LexicalaEntries.swift; path = ../../../../Documents/LexicalaEntries.swift; sourceTree = "<group>"; };
+		3404921125779FAD00CD1BD7 /* LexicalaEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LexicalaEntry.swift; sourceTree = "<group>"; };
+		3404921625779FC800CD1BD7 /* LexicalaFetchData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LexicalaFetchData.swift; sourceTree = "<group>"; };
 		34D88F3A256D2A65009B10AF /* VoCap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VoCap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		34D88F3D256D2A65009B10AF /* VoCapApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoCapApp.swift; sourceTree = "<group>"; };
 		34D88F3F256D2A65009B10AF /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -125,8 +131,19 @@
 			isa = PBXGroup;
 			children = (
 				340491FB25779E8000CD1BD7 /* LexicalaAPI.swift */,
+				3404921625779FC800CD1BD7 /* LexicalaFetchData.swift */,
+				3404920425779F4300CD1BD7 /* Data */,
 			);
 			path = "Lexicala API";
+			sourceTree = "<group>";
+		};
+		3404920425779F4300CD1BD7 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				3404920925779F9D00CD1BD7 /* LexicalaEntries.swift */,
+				3404921125779FAD00CD1BD7 /* LexicalaEntry.swift */,
+			);
+			path = Data;
 			sourceTree = "<group>";
 		};
 		34D88F31256D2A65009B10AF = {
@@ -321,6 +338,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				34D88F47256D2A68009B10AF /* Persistence.swift in Sources */,
+				3404921225779FAD00CD1BD7 /* LexicalaEntry.swift in Sources */,
+				3404920A25779F9D00CD1BD7 /* LexicalaEntries.swift in Sources */,
 				340491F225779D4300CD1BD7 /* SettingsView.swift in Sources */,
 				340491ED25779D3600CD1BD7 /* LabatoryView.swift in Sources */,
 				340491FC25779E8000CD1BD7 /* LexicalaAPI.swift in Sources */,
@@ -328,6 +347,7 @@
 				34D88F3E256D2A65009B10AF /* VoCapApp.swift in Sources */,
 				340491E525779D2C00CD1BD7 /* HomeView.swift in Sources */,
 				34D88F4A256D2A68009B10AF /* VoCap.xcdatamodeld in Sources */,
+				3404921725779FC800CD1BD7 /* LexicalaFetchData.swift in Sources */,
 				340491D825779CDB00CD1BD7 /* MainTabView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
