@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		340491D825779CDB00CD1BD7 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 340491D725779CDB00CD1BD7 /* MainTabView.swift */; };
+		340491E525779D2C00CD1BD7 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 340491E425779D2C00CD1BD7 /* HomeView.swift */; };
+		340491ED25779D3600CD1BD7 /* LabatoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 340491EC25779D3600CD1BD7 /* LabatoryView.swift */; };
+		340491F225779D4300CD1BD7 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 340491F125779D4300CD1BD7 /* SettingsView.swift */; };
 		34D88F3E256D2A65009B10AF /* VoCapApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D88F3D256D2A65009B10AF /* VoCapApp.swift */; };
 		34D88F40256D2A65009B10AF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D88F3F256D2A65009B10AF /* ContentView.swift */; };
 		34D88F42256D2A68009B10AF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 34D88F41256D2A68009B10AF /* Assets.xcassets */; };
@@ -35,6 +39,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		340491D725779CDB00CD1BD7 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
+		340491E425779D2C00CD1BD7 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		340491EC25779D3600CD1BD7 /* LabatoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabatoryView.swift; sourceTree = "<group>"; };
+		340491F125779D4300CD1BD7 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		34D88F3A256D2A65009B10AF /* VoCap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VoCap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		34D88F3D256D2A65009B10AF /* VoCapApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoCapApp.swift; sourceTree = "<group>"; };
 		34D88F3F256D2A65009B10AF /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -76,6 +84,41 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		340491D625779CC200CD1BD7 /* User Interface */ = {
+			isa = PBXGroup;
+			children = (
+				340491D725779CDB00CD1BD7 /* MainTabView.swift */,
+				340491DF25779CEB00CD1BD7 /* Home */,
+				340491E125779CF500CD1BD7 /* Labatory */,
+				340491E225779CFD00CD1BD7 /* Settings */,
+			);
+			path = "User Interface";
+			sourceTree = "<group>";
+		};
+		340491DF25779CEB00CD1BD7 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				340491E425779D2C00CD1BD7 /* HomeView.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		340491E125779CF500CD1BD7 /* Labatory */ = {
+			isa = PBXGroup;
+			children = (
+				340491EC25779D3600CD1BD7 /* LabatoryView.swift */,
+			);
+			path = Labatory;
+			sourceTree = "<group>";
+		};
+		340491E225779CFD00CD1BD7 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				340491F125779D4300CD1BD7 /* SettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
 		34D88F31256D2A65009B10AF = {
 			isa = PBXGroup;
 			children = (
@@ -99,6 +142,7 @@
 		34D88F3C256D2A65009B10AF /* VoCap */ = {
 			isa = PBXGroup;
 			children = (
+				340491D625779CC200CD1BD7 /* User Interface */,
 				34D88F3D256D2A65009B10AF /* VoCapApp.swift */,
 				34D88F3F256D2A65009B10AF /* ContentView.swift */,
 				34D88F41256D2A68009B10AF /* Assets.xcassets */,
@@ -266,9 +310,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				34D88F47256D2A68009B10AF /* Persistence.swift in Sources */,
+				340491F225779D4300CD1BD7 /* SettingsView.swift in Sources */,
+				340491ED25779D3600CD1BD7 /* LabatoryView.swift in Sources */,
 				34D88F40256D2A65009B10AF /* ContentView.swift in Sources */,
 				34D88F3E256D2A65009B10AF /* VoCapApp.swift in Sources */,
+				340491E525779D2C00CD1BD7 /* HomeView.swift in Sources */,
 				34D88F4A256D2A68009B10AF /* VoCap.xcdatamodeld in Sources */,
+				340491D825779CDB00CD1BD7 /* MainTabView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
