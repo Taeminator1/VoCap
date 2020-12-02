@@ -9,7 +9,12 @@ import SwiftUI
 
 struct HomeView: View {
     var body: some View {
-        Text("Home View")
+        VStack {
+            Text("Home View")
+            Button(action: { LexicalaAPI.getJSON(userName: "Taeminator1", password: "Gksmf6890!", url: "https://dictapi.lexicala.com/entries/PW00003877")}) {
+                Text("Lexicala API Test")
+            }
+        }
     }
 }
 
