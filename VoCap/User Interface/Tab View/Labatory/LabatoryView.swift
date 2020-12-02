@@ -1,5 +1,5 @@
 //
-//  HomeView.swift
+//  LabatoryView.swift
 //  VoCap
 //
 //  Created by 윤태민 on 12/2/20.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct HomeView: View {
+struct LabatoryView: View {
     @ObservedObject var entry = LexicalaFetchData(entryID: "PW00003877")
     @ObservedObject var entries = LexicalaFetchData(source: "global", language: "en", text: "chair", morph: false, analyzed: true)
     
@@ -39,7 +39,7 @@ struct HomeView: View {
     
 }
 
-struct HomeView_Previews: PreviewProvider {
+struct LabatoryView_Previews: PreviewProvider {
     static var previews: some View {
         HomeView()
     }
