@@ -24,15 +24,15 @@ struct LabatoryView: View {
     }
     
     func test1() -> Void {
-        for i in entries.lexicalaEntries!.results {
-            print(i.id)
+        for i in entries.lexicalaEntries!.results! {
+            print(i.id!)
         }
     }
     
     func test2() -> Void {
-        for i in entry.lexicalaEntry!.senses {
-            print(i.id)
-            print(i.translations["ko"]!.text)
+        for i in entry.lexicalaEntry!.senses! {
+            print(i.id!)
+            print(i.translations!["ko"]!.text!)
         }
     }
     

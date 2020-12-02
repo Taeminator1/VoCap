@@ -11,7 +11,6 @@
 		340491E525779D2C00CD1BD7 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 340491E425779D2C00CD1BD7 /* HomeView.swift */; };
 		340491ED25779D3600CD1BD7 /* LabatoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 340491EC25779D3600CD1BD7 /* LabatoryView.swift */; };
 		340491F225779D4300CD1BD7 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 340491F125779D4300CD1BD7 /* SettingsView.swift */; };
-		340491FC25779E8000CD1BD7 /* LexicalaAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 340491FB25779E8000CD1BD7 /* LexicalaAPI.swift */; };
 		3404920A25779F9D00CD1BD7 /* LexicalaEntries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3404920925779F9D00CD1BD7 /* LexicalaEntries.swift */; };
 		3404921225779FAD00CD1BD7 /* LexicalaEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3404921125779FAD00CD1BD7 /* LexicalaEntry.swift */; };
 		3404921725779FC800CD1BD7 /* LexicalaFetchData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3404921625779FC800CD1BD7 /* LexicalaFetchData.swift */; };
@@ -48,7 +47,6 @@
 		340491E425779D2C00CD1BD7 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		340491EC25779D3600CD1BD7 /* LabatoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabatoryView.swift; sourceTree = "<group>"; };
 		340491F125779D4300CD1BD7 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		340491FB25779E8000CD1BD7 /* LexicalaAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LexicalaAPI.swift; sourceTree = "<group>"; };
 		3404920925779F9D00CD1BD7 /* LexicalaEntries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LexicalaEntries.swift; path = ../../../../Documents/LexicalaEntries.swift; sourceTree = "<group>"; };
 		3404921125779FAD00CD1BD7 /* LexicalaEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LexicalaEntry.swift; sourceTree = "<group>"; };
 		3404921625779FC800CD1BD7 /* LexicalaFetchData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LexicalaFetchData.swift; sourceTree = "<group>"; };
@@ -130,7 +128,6 @@
 		340491FA25779E6500CD1BD7 /* Lexicala API */ = {
 			isa = PBXGroup;
 			children = (
-				340491FB25779E8000CD1BD7 /* LexicalaAPI.swift */,
 				3404921625779FC800CD1BD7 /* LexicalaFetchData.swift */,
 				3404920425779F4300CD1BD7 /* Data */,
 			);
@@ -353,7 +350,6 @@
 				3404920A25779F9D00CD1BD7 /* LexicalaEntries.swift in Sources */,
 				340491F225779D4300CD1BD7 /* SettingsView.swift in Sources */,
 				340491ED25779D3600CD1BD7 /* LabatoryView.swift in Sources */,
-				340491FC25779E8000CD1BD7 /* LexicalaAPI.swift in Sources */,
 				34D88F40256D2A65009B10AF /* ContentView.swift in Sources */,
 				34D88F3E256D2A65009B10AF /* VoCapApp.swift in Sources */,
 				3404922F2577A24900CD1BD7 /* MainNavigationView.swift in Sources */,

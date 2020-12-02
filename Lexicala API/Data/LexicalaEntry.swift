@@ -8,10 +8,10 @@
 import Foundation
 
 struct LexicalaEntry: Codable {
-    let id, source, language: String
-    let headword: DataHeadword
-    let senses: [DataSense]
-    let relatedEntries: [String]
+    let id, source, language: String?
+    let headword: DataHeadword?
+    let senses: [DataSense]?
+    let relatedEntries: [String]?
 
     enum CodingKeys: String, CodingKey {
         case id, source, language, headword, senses
@@ -20,22 +20,21 @@ struct LexicalaEntry: Codable {
 }
 
 struct DataHeadword: Codable {
-    let text: String
+    let text, pos: String?
     let pronunciation: DataPronunciation
-    let pos: String
 }
 
 struct DataPronunciation: Codable {
-    let value: String
+    let value: String?
 }
 
 struct DataSense: Codable {
-    let id, definition: String
-    let translations: [String: DataExample]
-    let examples: [DataExample]
+    let id, definition: String?
+    let translations: [String: DataExample]?
+    let examples: [DataExample]?
 }
 
 struct DataExample: Codable {
-    let text: String
+    let text: String?
 }
 
