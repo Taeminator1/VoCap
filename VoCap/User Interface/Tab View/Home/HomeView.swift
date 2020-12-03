@@ -12,37 +12,18 @@ struct HomeView: View {
     
     var body: some View {
         VStack {
-            NavigationLink(destination: testTextFieldView) {
+            NavigationLink(destination: SearchView()) {
                 Text("Search")
                     .foregroundColor(Color.black)
                     .multilineTextAlignment(.leading)
                     .frame(maxWidth: .infinity, minHeight: 35, maxHeight: 35, alignment: .leading)
                     .background(RoundedRectangle(cornerRadius: 5).strokeBorder())
                     .padding(.all)
-            }
-        }
-    }
-    
-    var testTextFieldView: some View {
-        HStack {
-            Image(systemName: "magnifyingglass")
-            TextField("Search", text: $word, onEditingChanged: { _ in print("change") }, onCommit: { print("commit") })
-                .textFieldStyle(RoundedBorderTextFieldStyle())
                 
-                Button(action: { print("Cancel") }) {
-                    Text("Cancel")
-                }
+            }
+            Spacer()
         }
-        .padding(.all)
     }
-    func testOnEditingChanged() -> Void {
-        print("change")
-    }
-    
-    func testOnCommit() -> Void {
-        print("commit")
-    }
-    
 }
 
 struct HomeView_Previews: PreviewProvider {
