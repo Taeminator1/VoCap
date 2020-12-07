@@ -23,7 +23,7 @@ class LexicalaFetchData: ObservableObject {
         urlString += "text=\(text)&"
         urlString += "morph=\(morph)&"
         urlString += "analyzed=\(analyzed)"
-//        print(urlString)
+        print(urlString)
         
         let url = URL(string: urlString)
         let config = URLSessionConfiguration.default
@@ -42,6 +42,7 @@ class LexicalaFetchData: ObservableObject {
                         let data = try decoder.decode(LexicalaEntries.self, from: data!)
                         DispatchQueue.main.async {
                             self.lexicalaEntries = data
+                            //print(data)
                         }
                     } catch {
                         print(error.localizedDescription)
@@ -53,7 +54,7 @@ class LexicalaFetchData: ObservableObject {
     init(entryID: String) {
         var urlString = urlBasicURLString
         urlString += "entries/\(entryID)"
-//        print(urlString)
+        print(urlString)
         
         let url = URL(string: urlString)
         let config = URLSessionConfiguration.default

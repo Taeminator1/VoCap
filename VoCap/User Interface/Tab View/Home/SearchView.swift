@@ -55,7 +55,8 @@ struct SearchView: View {
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .autocapitalization(.none)
                 
-                TextField("meaning", text: $meaning)
+                TextField("meaning", text: $meaning, onEditingChanged: { _ in
+                            testOnEditingChanged2() })
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .autocapitalization(.none)
                 
@@ -73,38 +74,14 @@ struct SearchView: View {
         print("change")
     }
     
+    func testOnEditingChanged2() -> Void {
+        fromEnToKo(word: word)
+    }
+    
     func testOnCommit() -> Void {
         print("testOnCommit")
 //        self.showingDictionarySheet.toggle()
     }
-    
-//    func testOnCommit() -> Void {
-//        let globalEntries = LexicalaFetchData(source: "global", text: word, morph: true)
-//
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 10.0) {
-//            if let results = globalEntries.lexicalaEntries!.results {
-//                for result in results {
-//                    if let headword = result.headword {
-//                        if let text = headword.text {
-//                            print(text)
-//                            let passwordEntries = LexicalaFetchData(source: "password", text: text, analyzed: true)
-//
-//                            DispatchQueue.main.asyncAfter(deadline: .now() + 10.0) {
-//                                if let results = passwordEntries.lexicalaEntries!.results {
-//                                    for result in results {
-//                                        if let id = result.id {
-//                                            print(id)
-//                                        }
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-//                    break               // results 중 첫 번째 것만 사용
-//                }
-//            }
-//        }
-//    }
 }
 
 struct SearchView_Previews: PreviewProvider {
@@ -147,5 +124,55 @@ struct textInputView: View {
         })
         
         return TextField("Search", text: text)
+    }
+}
+
+func fromEnToKo(word: String) -> Void {
+    let passwordEntries = LexicalaFetchData(source: "password", text: word)
+
+    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+        if let results = passwordEntries.lexicalaEntries!.results {
+            for result in results {
+                if let id = result.id {
+                    let passwordEntry = LexicalaFetchData(entryID: id)
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+                        if let results = passwordEntry.lexicalaEntry!.senses {
+                            for result in results {
+                                print(result.translations!["ko"]!.text!)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+func fromEnToKoTest(word: String) -> Void {
+    let globalEntries = LexicalaFetchData(source: "global", text: word, morph: true)
+
+    DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+        if let results = globalEntries.lexicalaEntries!.results {
+            for result in results {
+                if let headword = result.headword {
+                    if let text = headword.text {
+                        print(text)
+                        let passwordEntries = LexicalaFetchData(source: "password", text: text, analyzed: true)
+
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                            if let results = passwordEntries.lexicalaEntries!.results {
+                                for result in results {
+                                    if let id = result.id {
+                                        print(id)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                break               // results 중 첫 번째 것만 사용
+            }
+        }
     }
 }

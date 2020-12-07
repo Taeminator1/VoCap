@@ -10,9 +10,12 @@ import SwiftUI
 struct MainNavigationView: View {
     @State private var word: String = ""
     
+    
     var body: some View {
-        NavigationView {
+        
+        return NavigationView {
             MainTabView()
+                .navigationBarItems(leading: leadingItem, trailing: trailingItem)
                 .navigationBarTitle("VoCap", displayMode: .inline)
         }
     }
@@ -21,5 +24,19 @@ struct MainNavigationView: View {
 struct MainNavigationView_Previews: PreviewProvider {
     static var previews: some View {
         MainNavigationView()
+    }
+}
+
+private extension MainNavigationView {
+    var leadingItem: some View {
+        NavigationLink(destination: SearchView()) {
+            Image(systemName: "magnifyingglass").imageScale(.large)
+        }
+    }
+    
+    var trailingItem: some View {
+        Button(action: { print("trailingItem item tapped") }) {
+            Text("Edit")
+        }
     }
 }

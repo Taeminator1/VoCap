@@ -12,16 +12,17 @@ struct HomeView: View {
     
     var body: some View {
         VStack {
-            NavigationLink(destination: SearchView()) {
-                Text("Search")
-                    .foregroundColor(Color.black)
-                    .multilineTextAlignment(.leading)
-                    .frame(maxWidth: .infinity, minHeight: 35, maxHeight: 35, alignment: .leading)
-                    .background(RoundedRectangle(cornerRadius: 5).strokeBorder())
-                    .padding(.all)
-                
-            }
-            Spacer()
+            Text("Home View")
+//            NavigationLink(destination: SearchView()) {
+//                Text("Search")
+//                    .foregroundColor(Color.black)
+//                    .multilineTextAlignment(.leading)
+//                    .frame(maxWidth: .infinity, minHeight: 35, maxHeight: 35, alignment: .leading)
+//                    .background(RoundedRectangle(cornerRadius: 5).strokeBorder())
+//                    .padding(.all)
+//
+//            }
+//            Spacer()
         }
     }
 }
