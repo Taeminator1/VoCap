@@ -11,18 +11,14 @@ struct HomeView: View {
     @State private var word: String = ""
     
     var body: some View {
-        VStack {
-            Text("Home View")
-//            NavigationLink(destination: SearchView()) {
-//                Text("Search")
-//                    .foregroundColor(Color.black)
-//                    .multilineTextAlignment(.leading)
-//                    .frame(maxWidth: .infinity, minHeight: 35, maxHeight: 35, alignment: .leading)
-//                    .background(RoundedRectangle(cornerRadius: 5).strokeBorder())
-//                    .padding(.all)
-//
-//            }
-//            Spacer()
+        ScrollView {
+            LazyVStack() {
+                AddingNoteRow(note: Note())
+                
+                ForEach(0..<100) {_ in
+                    NoteRow(note: Note(title: "Architecture", color: Color.yellow, memorizedNumber: 5, totalNumber: 121))
+                }
+            }
         }
     }
 }
