@@ -14,6 +14,7 @@
 		3404921225779FAD00CD1BD7 /* LexicalaEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3404921125779FAD00CD1BD7 /* LexicalaEntry.swift */; };
 		3404921725779FC800CD1BD7 /* LexicalaFetchData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3404921625779FC800CD1BD7 /* LexicalaFetchData.swift */; };
 		3404922F2577A24900CD1BD7 /* MainNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3404922E2577A24900CD1BD7 /* MainNavigationView.swift */; };
+		344D33F8257F8E5A004DDCCF /* AddNoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 344D33F7257F8E5A004DDCCF /* AddNoteView.swift */; };
 		345A97CE2577A8DA009323E4 /* LexicalaEntries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 345A97CD2577A8DA009323E4 /* LexicalaEntries.swift */; };
 		345A97D92577AE85009323E4 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 345A97D82577AE85009323E4 /* SearchView.swift */; };
 		34A5B63A257E3AC60023D1AC /* NoteRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A5B639257E3AC60023D1AC /* NoteRow.swift */; };
@@ -54,6 +55,7 @@
 		3404921125779FAD00CD1BD7 /* LexicalaEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LexicalaEntry.swift; sourceTree = "<group>"; };
 		3404921625779FC800CD1BD7 /* LexicalaFetchData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LexicalaFetchData.swift; sourceTree = "<group>"; };
 		3404922E2577A24900CD1BD7 /* MainNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNavigationView.swift; sourceTree = "<group>"; };
+		344D33F7257F8E5A004DDCCF /* AddNoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNoteView.swift; sourceTree = "<group>"; };
 		345A97CD2577A8DA009323E4 /* LexicalaEntries.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LexicalaEntries.swift; sourceTree = "<group>"; };
 		345A97D82577AE85009323E4 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		34A5B639257E3AC60023D1AC /* NoteRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteRow.swift; sourceTree = "<group>"; };
@@ -117,6 +119,7 @@
 				340491E425779D2C00CD1BD7 /* HomeView.swift */,
 				345A97D82577AE85009323E4 /* SearchView.swift */,
 				34A5B639257E3AC60023D1AC /* NoteRow.swift */,
+				344D33F7257F8E5A004DDCCF /* AddNoteView.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -377,6 +380,7 @@
 				3404921225779FAD00CD1BD7 /* LexicalaEntry.swift in Sources */,
 				340491F225779D4300CD1BD7 /* SettingsView.swift in Sources */,
 				340491ED25779D3600CD1BD7 /* LabatoryView.swift in Sources */,
+				344D33F8257F8E5A004DDCCF /* AddNoteView.swift in Sources */,
 				34D88F40256D2A65009B10AF /* ContentView.swift in Sources */,
 				34A5B640257E3B130023D1AC /* Note.swift in Sources */,
 				34D88F3E256D2A65009B10AF /* VoCapApp.swift in Sources */,
