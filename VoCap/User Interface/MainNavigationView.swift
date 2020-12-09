@@ -35,7 +35,7 @@ private extension MainNavigationView {
     }
     
     var trailingItem: some View {
-        Button(action: { print("trailingItem item tapped") }) {
+        Button(action: { print("trailingItem item is tapped") }) {
             Text("Edit")
         }
     }

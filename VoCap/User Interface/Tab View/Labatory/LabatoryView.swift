@@ -41,6 +41,6 @@ struct LabatoryView: View {
 
 struct LabatoryView_Previews: PreviewProvider {
     static var previews: some View {
-        HomeView()
+        LabatoryView()
     }
 }

@@ -38,7 +38,7 @@ struct NoteRow: View {
     }
 }
 
-struct AddingNoteRow: View {
+struct AddNoteRow: View {
     let note: Note
     
     var body: some View {
@@ -67,7 +67,7 @@ struct NoteRow_Previews: PreviewProvider {
         NoteRow(note: Note(title: "Architecture", color: Color.yellow, memorizedNumber: 5, totalNumber: 121))
             .previewLayout(.sizeThatFits)
         
-        AddingNoteRow(note: Note())
+        AddNoteRow(note: Note())
             .previewLayout(.sizeThatFits)
     }
 }
