@@ -8,27 +8,26 @@
 import SwiftUI
 
 struct HomeView: View {
-//    @State private var word: String = ""
     @State private var showingAddNoteView: Bool = false
+    
+    @ObservedObject var noteStore = NoteStore()
     
     var body: some View {
         ScrollView {            // To remove separator
             LazyVStack() {
                 Button(action: { self.showingAddNoteView.toggle() }) {
-                    AddNoteRow(note: Note())
+                    AddNoteRow(addNote: AddNote())
                 }
                 .sheet(isPresented: $showingAddNoteView, content: {
-                    AddNoteView()
+                    AddNoteView(noteStore: self.noteStore, showingAddNoteView: $showingAddNoteView)
                 })
                 
-//                ForEach(0..<10) {
-//                    NavigationLink(destination: Text("\($0)")) {
-//                        NoteRow(note: Note(title: "Architecture", color: Color.yellow, memorizedNumber: 5, totalNumber: 121))
-//                    }
-//                }
+                ForEach(noteStore.notes) { note in
+                    NavigationLink(destination: Text("abc")) {
+                        NoteRow(note: note)
+                    }
+                }
             }
-        }
-        NavigationLink(destination: Text("d")) {
         }
     }
 }

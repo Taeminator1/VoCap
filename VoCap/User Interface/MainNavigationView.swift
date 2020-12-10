@@ -8,12 +8,8 @@
 import SwiftUI
 
 struct MainNavigationView: View {
-    @State private var word: String = ""
-    
-    
     var body: some View {
-        
-        return NavigationView {
+        NavigationView {
             MainTabView()
                 .navigationBarItems(leading: leadingItem, trailing: trailingItem)
                 .navigationBarTitle("VoCap", displayMode: .inline)

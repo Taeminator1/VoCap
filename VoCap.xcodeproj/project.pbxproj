@@ -18,6 +18,7 @@
 		344D33F8257F8E5A004DDCCF /* AddNoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 344D33F7257F8E5A004DDCCF /* AddNoteView.swift */; };
 		345A97CE2577A8DA009323E4 /* LexicalaEntries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 345A97CD2577A8DA009323E4 /* LexicalaEntries.swift */; };
 		345A97D92577AE85009323E4 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 345A97D82577AE85009323E4 /* SearchView.swift */; };
+		3472B67725811CCC00EFA0AB /* NoteDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3472B67625811CCC00EFA0AB /* NoteDetail.swift */; };
 		34A5B63A257E3AC60023D1AC /* NoteRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A5B639257E3AC60023D1AC /* NoteRow.swift */; };
 		34A5B640257E3B130023D1AC /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A5B63F257E3B130023D1AC /* Note.swift */; };
 		34A5B649257E522A0023D1AC /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A5B648257E522A0023D1AC /* ColorExtension.swift */; };
@@ -60,6 +61,7 @@
 		344D33F7257F8E5A004DDCCF /* AddNoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNoteView.swift; sourceTree = "<group>"; };
 		345A97CD2577A8DA009323E4 /* LexicalaEntries.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LexicalaEntries.swift; sourceTree = "<group>"; };
 		345A97D82577AE85009323E4 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
+		3472B67625811CCC00EFA0AB /* NoteDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetail.swift; sourceTree = "<group>"; };
 		34A5B639257E3AC60023D1AC /* NoteRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteRow.swift; sourceTree = "<group>"; };
 		34A5B63F257E3B130023D1AC /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
 		34A5B648257E522A0023D1AC /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
@@ -107,10 +109,10 @@
 		340491D625779CC200CD1BD7 /* User Interface */ = {
 			isa = PBXGroup;
 			children = (
-				34A5B647257E52190023D1AC /* Extension */,
-				34A5B63E257E3AFB0023D1AC /* Model */,
 				3404922E2577A24900CD1BD7 /* MainNavigationView.swift */,
 				340492362577A28800CD1BD7 /* Tab View */,
+				34A5B63E257E3AFB0023D1AC /* Model */,
+				34A95A3525823EB700592FA7 /* Helper */,
 			);
 			path = "User Interface";
 			sourceTree = "<group>";
@@ -120,8 +122,9 @@
 			children = (
 				340491E425779D2C00CD1BD7 /* HomeView.swift */,
 				345A97D82577AE85009323E4 /* SearchView.swift */,
-				34A5B639257E3AC60023D1AC /* NoteRow.swift */,
 				344D33F7257F8E5A004DDCCF /* AddNoteView.swift */,
+				34A5B639257E3AC60023D1AC /* NoteRow.swift */,
+				3472B67625811CCC00EFA0AB /* NoteDetail.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -186,6 +189,14 @@
 				34A5B648257E522A0023D1AC /* ColorExtension.swift */,
 			);
 			path = Extension;
+			sourceTree = "<group>";
+		};
+		34A95A3525823EB700592FA7 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				34A5B647257E52190023D1AC /* Extension */,
+			);
+			path = Helper;
 			sourceTree = "<group>";
 		};
 		34D88F31256D2A65009B10AF = {
@@ -397,6 +408,7 @@
 				345A97CE2577A8DA009323E4 /* LexicalaEntries.swift in Sources */,
 				3404921725779FC800CD1BD7 /* LexicalaFetchData.swift in Sources */,
 				340491D825779CDB00CD1BD7 /* MainTabView.swift in Sources */,
+				3472B67725811CCC00EFA0AB /* NoteDetail.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

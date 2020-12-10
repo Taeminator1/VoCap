@@ -8,37 +8,18 @@
 import Foundation
 import SwiftUI
 
-struct Note {
-    var title: String
-    var color: Color
-    var isMemorized: Bool
-    var isInWidget: Bool
-    var memorizedNumber: Int
-    var totalNumber: Int
-    
-    init() {
-        self.title = "Add Note"
-        self.color = Color.white
-        self.isMemorized = false
-        self.isInWidget = false
-        self.memorizedNumber = 0
-        self.totalNumber = 0
-    }
-    
-    init(title: String, color: Color = Color.white, isMemorized: Bool = false, isInWidget: Bool = true, memorizedNumber: Int, totalNumber: Int) {
-        self.title = title
-        self.color = color
-        self.isMemorized = isMemorized
-        self.isInWidget = isInWidget
-        self.memorizedNumber = memorizedNumber
-        self.totalNumber = totalNumber
-    }
+struct Note: Codable, Identifiable {
+    var id: String = ""
+    var title: String = ""
+    var colorIndex: Int = 0
+    var isMemorized: Bool = false
+    var isInWidget: Bool = false
+    var memorizedNumber: Int = 0
+    var totalNumber: Int = 0
+    var notes: String = ""
 }
 
-struct AddingNote {
-    var title: String
-    
-    init(title: String) {
-        self.title = title
-    }
+struct AddNote {
+    var title: String = "Add Note"
+    var color: Color = Color.white
 }

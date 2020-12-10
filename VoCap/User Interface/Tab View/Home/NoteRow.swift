@@ -31,7 +31,7 @@ struct NoteRow: View {
             .padding([.leading, .bottom, .trailing])
         }
         .frame(height: 100)
-        .background(note.color)
+        .background(myColor.colors[note.colorIndex])
         .cornerRadius(10)
         .shadow(color: .blue, radius: 1, x: 2, y: 2)
         .padding([.top, .leading, .trailing])
@@ -39,7 +39,7 @@ struct NoteRow: View {
 }
 
 struct AddNoteRow: View {
-    let note: Note
+    let addNote: AddNote
     
     var body: some View {
         VStack() {
@@ -47,7 +47,7 @@ struct AddNoteRow: View {
                 Spacer()
                 
                 Image(systemName: "plus.circle").imageScale(.large)
-                Text(note.title)
+                Text(addNote.title)
                     .font(.title)
                     .fontWeight(.medium)
                     
@@ -55,7 +55,7 @@ struct AddNoteRow: View {
             }
         }
         .frame(height: 100)
-        .background(note.color)
+        .background(addNote.color)
         .cornerRadius(10)
         .shadow(color: .blue, radius: 1, x: 2, y: 2)
         .padding([.top, .leading, .trailing])
@@ -64,10 +64,10 @@ struct AddNoteRow: View {
 
 struct NoteRow_Previews: PreviewProvider {
     static var previews: some View {
-        NoteRow(note: Note(title: "Architecture", color: Color.yellow, memorizedNumber: 5, totalNumber: 121))
+        NoteRow(note: Note())
             .previewLayout(.sizeThatFits)
         
-        AddNoteRow(note: Note())
+        AddNoteRow(addNote: AddNote())
             .previewLayout(.sizeThatFits)
     }
 }

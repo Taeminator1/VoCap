@@ -9,20 +9,23 @@ import SwiftUI
 
 struct AddNoteView: View {
     
+    @ObservedObject var noteStore = NoteStore()
+    @State var note = Note()
+    
+    @State private var isWidget: Bool = true
+    @State private var isAutoCheck: Bool = true
+    @State private var shwoingWidgetAlert: Bool = false
+    @State private var shwoingAutoCheckAlert: Bool = false
+    
+    @Binding var showingAddNoteView: Bool
+    
     var body: some View {
         NavigationView {
             List {
-                Section() {             // Basic Info.
-                    BasicInfoView()
-                }
+                basicInfo
+                toggleConfig
+                others
                 
-                Section() {             // Toggle Config.
-                    ToggleConfigView()
-                }
-                
-                Section() {             // Notes
-                    NotesView()
-                }
             }
 //            .padding(.top, -90.0)           // Navigation Bar와 정확히 접점
 //            .padding(.top, -73.0)           // Calender에서 Page와 일치
@@ -36,95 +39,102 @@ struct AddNoteView: View {
 }
 
 struct AddNoteView_Previews: PreviewProvider {
+    @State private var showingAddNoteView: Bool = false
+    
     static var previews: some View {
-        AddNoteView()
+        AddNoteView(showingAddNoteView: .constant(false))
     }
 }
 
+
+// MARK: - Navigation Bar Items
 private extension AddNoteView {
+    
     var leadingItem: some View {
-        Button(action: { print("leadingItem item is tapped") }) {
+        Button(action: cancel) {
             Text("Cancel")
         }
     }
     
     var trailingItem: some View {
-        Button(action: { print("trailingItem item is tapped") }) {
+        Button(action: done) {
             Text("Done")
         }
     }
-}
-
-struct BasicInfoView: View {
-    @State private var title: String = ""
     
-    var colors: [Color] = [.black, .red, .green, .blue]
-    var colornames = ["Black", "Red", "Green", "Blue"]
+    func cancel() {         // If there is editing, app has to ask whether discard or not
+        showingAddNoteView.toggle()
+    }
     
-    @State private var colorIndex = 0
-    
-    var body: some View {
-        TextField("Title", text: $title)
+    func done() {
+        let newNote = Note(id: UUID().uuidString, title: note.title, colorIndex: note.colorIndex, isMemorized: note.isMemorized, isInWidget: note.isInWidget, memorizedNumber: note.memorizedNumber, totalNumber: note.totalNumber)
         
-        // Group List에서 이상
-        Picker(selection: $colorIndex, label: Text("Color")) {              // Need to check the style
-            ForEach (0..<colornames.count) {
-                Text(self.colornames[$0])
-                    .foregroundColor(self.colors[$0])
-            }
-        }
+        noteStore.notes.append(newNote)
+        
+        showingAddNoteView.toggle()
     }
 }
 
-struct ToggleConfigView: View {
-    @State private var isWidget: Bool = true
-    @State private var isAutoCheck: Bool = true
-    @State private var shwoingWidgetAlert: Bool = false
-    @State private var shwoingAutoCheckAlert: Bool = false
+// MARK: - Item of AddNoteView List
+private extension AddNoteView {
     
-    var body: some View {
-        HStack {
-            Text("Widget")
-            Button(action: { self.shwoingWidgetAlert.toggle() }) {
-                Image(systemName: "info.circle")
-            }
-            .buttonStyle(BorderlessButtonStyle())
-            .alert(isPresented: $shwoingWidgetAlert) {
-                Alert(title: Text("Widget Info"))
-            }
+    var basicInfo: some View {
+        Section() {
+            TextField("Title", text: $note.title)
             
-            
-            Spacer()
-            
-            Toggle(isOn: self.$isWidget) {
-            }
-        }
-        HStack {
-            Text("Auto Check")
-            Button(action: { self.shwoingAutoCheckAlert.toggle() }) {
-                Image(systemName: "info.circle")
-            }
-            .buttonStyle(BorderlessButtonStyle())
-            .alert(isPresented: $shwoingAutoCheckAlert) {
-                Alert(title: Text("Auto Check Info"))
-            }
-            
-            Spacer()
-            
-            Toggle(isOn: self.$isAutoCheck) {
+            // Group List에서 이상
+            Picker(selection: $note.colorIndex, label: Text("Color")) {      // Need to check the style
+                ForEach (0..<myColor.colornames.count) {
+                    Text(myColor.colornames[$0])
+                        .foregroundColor(myColor.colors[$0])
+                }
             }
         }
     }
-}
-
-struct NotesView: View {
-    @State private var notes: String = ""
     
-    var body: some View {
-        VStack(alignment: .leading) {
-            Text("Notes")                       // Need to add multi line textfield
-            
-            TextField("", text: $notes)
+    var toggleConfig: some View {
+        Section() {
+            HStack {
+                Text("Widget")
+                Button(action: { self.shwoingWidgetAlert.toggle() }) {
+                    Image(systemName: "info.circle")
+                }
+                .buttonStyle(BorderlessButtonStyle())
+                .alert(isPresented: $shwoingWidgetAlert) {
+                    Alert(title: Text("Widget Info"))
+                }
+                
+                
+                Spacer()
+                
+                Toggle(isOn: self.$isWidget) {
+                }
+            }
+            HStack {
+                Text("Auto Check")
+                Button(action: { self.shwoingAutoCheckAlert.toggle() }) {
+                    Image(systemName: "info.circle")
+                }
+                .buttonStyle(BorderlessButtonStyle())
+                .alert(isPresented: $shwoingAutoCheckAlert) {
+                    Alert(title: Text("Auto Check Info"))
+                }
+                
+                Spacer()
+                
+                Toggle(isOn: self.$isAutoCheck) {
+                }
+            }
+        }
+    }
+    
+    var others: some View {
+        Section() {
+            VStack(alignment: .leading) {
+                Text("Notes")                       // Need to add multi line textfield
+                
+                TextField("", text: $note.notes)
+            }
         }
     }
 }
