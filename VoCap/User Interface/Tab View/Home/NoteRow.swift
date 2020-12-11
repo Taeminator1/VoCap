@@ -34,7 +34,7 @@ struct NoteRow: View {
         .background(myColor.colors[note.colorIndex])
         .cornerRadius(10)
         .shadow(color: .blue, radius: 1, x: 2, y: 2)
-        .padding([.top, .leading, .trailing])
+        .padding(.vertical, 5.0)
     }
 }
 
@@ -58,7 +58,7 @@ struct AddNoteRow: View {
         .background(addNote.color)
         .cornerRadius(10)
         .shadow(color: .blue, radius: 1, x: 2, y: 2)
-        .padding([.top, .leading, .trailing])
+        .padding(.vertical, 5.0)
     }
 }
 

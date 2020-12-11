@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct Note: Codable, Identifiable {
-    var id: String = ""
+    var id = UUID()
     var title: String = ""
     var colorIndex: Int = 0
     var isMemorized: Bool = false

@@ -13,7 +13,9 @@ struct VoCapApp: App {
 
     var body: some Scene {
         WindowGroup {
-            MainNavigationView()
+//            HomeView(noteStore: NoteStore())
+            MainTabView()
+//            MainNavigationView()
 //            ContentView()
 //                .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }

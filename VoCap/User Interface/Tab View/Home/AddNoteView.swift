@@ -67,7 +67,7 @@ private extension AddNoteView {
     }
     
     func done() {
-        let newNote = Note(id: UUID().uuidString, title: note.title, colorIndex: note.colorIndex, isMemorized: note.isMemorized, isInWidget: note.isInWidget, memorizedNumber: note.memorizedNumber, totalNumber: note.totalNumber)
+        let newNote = Note(id: note.id, title: note.title, colorIndex: note.colorIndex, isMemorized: note.isMemorized, isInWidget: note.isInWidget, memorizedNumber: note.memorizedNumber, totalNumber: note.totalNumber)
         
         noteStore.notes.append(newNote)
         
