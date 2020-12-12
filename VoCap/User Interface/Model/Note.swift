@@ -21,5 +21,5 @@ struct Note: Codable, Identifiable {
 
 struct AddNote {
     var title: String = "Add Note"
-    var color: Color = Color.white
+    var color: Color = Color.clear
 }

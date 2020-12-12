@@ -13,7 +13,7 @@ struct HomeView: View {
     @ObservedObject var noteStore: NoteStore
     
     @State private var isEditMode: EditMode = .inactive
-    @State private var action: Bool? = false
+    @State private var noteRowSelection: Int? = 0
     
     var body: some View {
 //        ScrollView {            // To remove separator
@@ -42,24 +42,27 @@ struct HomeView: View {
                 .sheet(isPresented: $showingAddNoteView, content: {
                     AddNoteView(noteStore: self.noteStore, showingAddNoteView: $showingAddNoteView)
                 })
-//                .listRowBackground(Color.secondary)
-
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .listRowInsets(EdgeInsets())
+                .background(Color(UIColor.systemBackground))
                 
                 
                 ForEach(noteStore.notes) { note in
                     HStack {
-                        Button(action: { self.action = true}) {
+                        Button(action: { self.noteRowSelection = 1}) {
                             NoteRow(note: note)
                         }
                         .buttonStyle(PlainButtonStyle())
                         
-                        NavigationLink(destination: Text("\(note.title) View"), tag: true, selection: $action) {
+                        NavigationLink(destination: Text("\(note.title) View"), tag: 1, selection: $noteRowSelection) {
                             EmptyView()
                         }
                         .frame(width: 0).hidden()
-                        .disabled(true)             // Button 길게 눌릴 때, NavigationLink View가 활성화되는 것 방지
+                        .disabled(true)     // Button 길게 눌릴 때, NavigationLink View가 활성화되는 것 방지
                     }
-//                    .listRowBackground(Color.secondary)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .listRowInsets(EdgeInsets())
+                    .background(Color(UIColor.systemBackground))
                 }
                 .onDelete(perform: deleteItems)
                 .onMove(perform: moveItems)
@@ -75,6 +78,10 @@ struct HomeView: View {
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
         HomeView(noteStore: NoteStore())
+            .previewDevice("iPhone 11 Pro")
+//            .previewDevice("iPhone SE (2nd generation)")
+        HomeView(noteStore: NoteStore())
+            .preferredColorScheme(.dark)
     }
 }
 
