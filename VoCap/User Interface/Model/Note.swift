@@ -17,6 +17,9 @@ struct Note: Codable, Identifiable {
     var memorizedNumber: Int = 0
     var totalNumber: Int = 0
     var notes: String = ""
+    
+    var isWidget: Bool = true
+    var isAutoCheck: Bool = true
 }
 
 struct AddNote {

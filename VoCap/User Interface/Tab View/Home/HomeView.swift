@@ -13,25 +13,9 @@ struct HomeView: View {
     @ObservedObject var noteStore: NoteStore
     
     @State private var isEditMode: EditMode = .inactive
-    @State private var noteRowSelection: Int? = 0
+    @State private var noteRowSelection: UUID?
     
     var body: some View {
-//        ScrollView {            // To remove separator
-//            LazyVStack() {
-//                Button(action: { self.showingAddNoteView.toggle() }) {
-//                    AddNoteRow(addNote: AddNote())
-//                }
-//                .sheet(isPresented: $showingAddNoteView, content: {
-//                    AddNoteView(noteStore: self.noteStore, showingAddNoteView: $showingAddNoteView)
-//                })
-//
-//                ForEach(noteStore.notes) { note in
-//                    NavigationLink(destination: Text("abc")) {
-//                        NoteRow(note: note)
-//                    }
-//                }
-//            }
-//        }
         
         NavigationView {
             List {
@@ -49,16 +33,22 @@ struct HomeView: View {
                 
                 ForEach(noteStore.notes) { note in
                     HStack {
-                        Button(action: { self.noteRowSelection = 1}) {
+                        Button(action: {
+                            if isEditMode == .inactive {    // When Edit Button is not pressed
+                                self.noteRowSelection = note.id         // 왜 noteRowSelection에 !붙일 때랑 안 붙일 때 다르지?
+                            }
+                            else {                          // When Edit Button is pressed
+                                
+                            }
+                        }) {
                             NoteRow(note: note)
                         }
                         .buttonStyle(PlainButtonStyle())
-                        
-                        NavigationLink(destination: Text("\(note.title) View"), tag: 1, selection: $noteRowSelection) {
+
+                        NavigationLink(destination: NoteDetail(selectedNote: note), tag: note.id, selection: $noteRowSelection) {
                             EmptyView()
                         }
                         .frame(width: 0).hidden()
-                        .disabled(true)     // Button 길게 눌릴 때, NavigationLink View가 활성화되는 것 방지
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .listRowInsets(EdgeInsets())

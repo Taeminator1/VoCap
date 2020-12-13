@@ -1,21 +1,20 @@
 //
-//  AddNoteView.swift
+//  EditNoteView.swift
 //  VoCap
 //
-//  Created by 윤태민 on 12/8/20.
+//  Created by 윤태민 on 12/13/20.
 //
 
 import SwiftUI
 
-struct AddNoteView: View {
+struct EditNoteView: View {
     
-    @ObservedObject var noteStore = NoteStore()
-    @State var note = Note()
+    @State var note: Note
     
     @State private var shwoingWidgetAlert: Bool = false
     @State private var shwoingAutoCheckAlert: Bool = false
     
-    @Binding var showingAddNoteView: Bool
+    @Binding var showingEditNoteView: Bool
     
     var body: some View {
         NavigationView {
@@ -25,28 +24,25 @@ struct AddNoteView: View {
                 others
                 
             }
-//            .padding(.top, -90.0)           // Navigation Bar와 정확히 접점
-//            .padding(.top, -73.0)           // Calender에서 Page와 일치
             .listStyle(GroupedListStyle())
             .environment(\.horizontalSizeClass, .regular)               // 이건 뭐지?
             .navigationBarItems(leading: leadingItem, trailing: trailingItem)
-            .navigationBarTitle("New Note", displayMode: .inline)
-            
+            .navigationBarTitle("Edit Note", displayMode: .inline)
         }
     }
 }
 
-struct AddNoteView_Previews: PreviewProvider {
+struct EditNoteView_Previews: PreviewProvider {
     @State private var showingAddNoteView: Bool = false
     
     static var previews: some View {
-        AddNoteView(showingAddNoteView: .constant(false))
+        EditNoteView(note: Note(), showingEditNoteView: .constant(false))
     }
 }
 
 
 // MARK: - Navigation Bar Items
-private extension AddNoteView {
+private extension EditNoteView {
     
     var leadingItem: some View {
         Button(action: cancel) {
@@ -55,26 +51,23 @@ private extension AddNoteView {
     }
     
     var trailingItem: some View {
-        Button(action: done) {
-            Text("Done")
+        Button(action: Save) {
+            Text("Save")
         }
     }
     
     func cancel() {         // If there is editing, app has to ask whether discard or not
-        showingAddNoteView.toggle()
+        showingEditNoteView.toggle()
     }
     
-    func done() {
-        let newNote = Note(id: note.id, title: note.title, colorIndex: note.colorIndex, isMemorized: note.isMemorized, isInWidget: note.isInWidget, memorizedNumber: note.memorizedNumber, totalNumber: note.totalNumber)
-        
-        noteStore.notes.append(newNote)
-        
-        showingAddNoteView.toggle()
+    func Save() {
+        print("Save")
+        showingEditNoteView.toggle()
     }
 }
 
 // MARK: - Item of AddNoteView List
-private extension AddNoteView {
+private extension EditNoteView {
     
     var basicInfo: some View {
         Section() {
