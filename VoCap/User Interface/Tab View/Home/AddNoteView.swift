@@ -25,8 +25,6 @@ struct AddNoteView: View {
                 others
                 
             }
-//            .padding(.top, -90.0)           // Navigation Bar와 정확히 접점
-//            .padding(.top, -73.0)           // Calender에서 Page와 일치
             .listStyle(GroupedListStyle())
             .environment(\.horizontalSizeClass, .regular)               // 이건 뭐지?
             .navigationBarItems(leading: leadingItem, trailing: trailingItem)
@@ -78,7 +76,10 @@ private extension AddNoteView {
     
     var basicInfo: some View {
         Section() {
-            TextField("Title", text: $note.title)
+//            TextField("Title", text: $note.title)
+            CustomTextField(text: $note.title, isFirstResponder: true)
+            
+            
             
             // Group List에서 이상
             Picker(selection: $note.colorIndex, label: Text("Color")) {      // Need to check the style

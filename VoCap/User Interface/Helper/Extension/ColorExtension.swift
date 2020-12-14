@@ -13,6 +13,6 @@ extension Color {
 
 // MARK: - myColor
 struct myColor {
-    static var colors: [Color] = [.white, .black, .red, .green, .blue]
-    static var colornames = ["White", "Black", "Red", "Green", "Blue"]
+    static var colors: [Color] = [.red, .green, .blue]
+    static var colornames = ["Red", "Green", "Blue"]
 }

@@ -9,7 +9,8 @@ import SwiftUI
 
 struct EditNoteView: View {
     
-    @State var note: Note
+    @ObservedObject var noteStore: NoteStore
+    @Binding var note: Note
     
     @State private var shwoingWidgetAlert: Bool = false
     @State private var shwoingAutoCheckAlert: Bool = false
@@ -22,7 +23,6 @@ struct EditNoteView: View {
                 basicInfo
                 toggleConfig
                 others
-                
             }
             .listStyle(GroupedListStyle())
             .environment(\.horizontalSizeClass, .regular)               // 이건 뭐지?
@@ -36,7 +36,7 @@ struct EditNoteView_Previews: PreviewProvider {
     @State private var showingAddNoteView: Bool = false
     
     static var previews: some View {
-        EditNoteView(note: Note(), showingEditNoteView: .constant(false))
+        EditNoteView(noteStore: NoteStore(), note: .constant(Note()), showingEditNoteView: .constant(false))
     }
 }
 
@@ -61,7 +61,18 @@ private extension EditNoteView {
     }
     
     func Save() {
-        print("Save")
+        
+//        if let note = noteStore.notes.first(where: { $0.id == note.id }) {
+//
+//        }
+        
+        let editedNote = Note(id: note.id, title: note.title, colorIndex: note.colorIndex, isMemorized: note.isMemorized, isInWidget: note.isInWidget, memorizedNumber: note.memorizedNumber, totalNumber: note.totalNumber)
+        
+        if let index = noteStore.notes.firstIndex(where: { $0.id == note.id }) {
+            print(index)
+            noteStore.notes[index] = editedNote
+        }
+        
         showingEditNoteView.toggle()
     }
 }

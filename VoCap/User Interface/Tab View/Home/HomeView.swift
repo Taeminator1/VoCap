@@ -9,6 +9,8 @@ import SwiftUI
 
 struct HomeView: View {
     @State private var showingAddNoteView: Bool = false
+    @State private var showingEditNoteView: Bool = false
+    @State private var note = Note()
     
     @ObservedObject var noteStore: NoteStore
     
@@ -38,7 +40,8 @@ struct HomeView: View {
                                 self.noteRowSelection = note.id         // 왜 noteRowSelection에 !붙일 때랑 안 붙일 때 다르지?
                             }
                             else {                          // When Edit Button is pressed
-                                
+                                self.note = note
+                                self.showingEditNoteView = true
                             }
                         }) {
                             NoteRow(note: note)
@@ -61,6 +64,9 @@ struct HomeView: View {
             .navigationBarItems(leading: leadingItem, trailing: EditButton())
             .navigationBarTitle("VoCap", displayMode: .inline)
             .environment(\.editMode, self.$isEditMode)          // 없으면 Edit 오류 생김(해당 위치에 있어야 함)
+            .sheet(isPresented: $showingEditNoteView, content: {
+                EditNoteView(noteStore: noteStore, note: $note, showingEditNoteView: $showingEditNoteView)        // @State를 두개로 해도 상관 없나..?
+            })
         }
     }
 }
