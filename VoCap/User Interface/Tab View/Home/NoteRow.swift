@@ -41,6 +41,7 @@ struct NoteRow: View {
 
 struct AddNoteRow: View {
     let addNote: AddNote
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         VStack() {
@@ -56,7 +57,7 @@ struct AddNoteRow: View {
             }
         }
         .frame(height: 100)
-        .background(addNote.color)
+        .background(colorScheme == .dark ? Color.white : Color.black)
         .cornerRadius(10)
         .shadow(color: .blue, radius: 1, x: 2, y: 2)
 //        .padding(.vertical, 5.0)

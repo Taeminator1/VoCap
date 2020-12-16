@@ -25,6 +25,7 @@ struct HomeView: View {
                     AddNoteRow(addNote: AddNote())
                 }
                 .buttonStyle(BorderlessButtonStyle())
+                .disabled(makeEddNoteDisabled())
                 .sheet(isPresented: $showingAddNoteView, content: {
                     AddNoteView(noteStore: self.noteStore, showingAddNoteView: $showingAddNoteView)
                 })
@@ -33,13 +34,13 @@ struct HomeView: View {
                 .background(Color(UIColor.systemBackground))
                 
                 
-                ForEach(noteStore.notes) { note in
+                ForEach(noteStore.notes.reversed()) { note in
                     HStack {
                         Button(action: {
-                            if isEditMode == .inactive {    // When Edit Button is not pressed
+                            if isEditMode == .inactive || isEditMode == .transient {    // When Edit Button is not pressed
                                 self.noteRowSelection = note.id         // 왜 noteRowSelection에 !붙일 때랑 안 붙일 때 다르지?
                             }
-                            else {                          // When Edit Button is pressed
+                            else {                          // When Edit Button is pressed by user
                                 self.note = note
                                 self.showingEditNoteView = true
                             }
@@ -65,8 +66,17 @@ struct HomeView: View {
             .navigationBarTitle("VoCap", displayMode: .inline)
             .environment(\.editMode, self.$isEditMode)          // 없으면 Edit 오류 생김(해당 위치에 있어야 함)
             .sheet(isPresented: $showingEditNoteView, content: {
-                EditNoteView(noteStore: noteStore, note: $note, showingEditNoteView: $showingEditNoteView)        // @State를 두개로 해도 상관 없나..?
+                EditNoteView(noteStore: noteStore, note: $note, showingEditNoteView: $showingEditNoteView, isEditMode: $isEditMode)        // @State를 두개로 해도 상관 없나..?
             })
+        }
+    }
+    
+    func makeEddNoteDisabled() -> Bool {
+        if isEditMode == .inactive {
+            return false
+        }
+        else {
+            return true
         }
     }
 }

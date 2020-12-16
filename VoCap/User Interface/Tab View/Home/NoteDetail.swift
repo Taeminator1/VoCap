@@ -18,6 +18,6 @@ struct NoteDetail: View {
 
 struct NoteDetail_Previews: PreviewProvider {
     static var previews: some View {
-        NoteDetail(selectedNote: Note())
+        NoteDetail(selectedNote: Note(title: "Note Detail"))
     }
 }

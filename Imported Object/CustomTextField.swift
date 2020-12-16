@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct CustomTextField: UIViewRepresentable {
-
+    
     class Coordinator: NSObject, UITextFieldDelegate {
 
         @Binding var text: String
@@ -22,15 +22,15 @@ struct CustomTextField: UIViewRepresentable {
         func textFieldDidChangeSelection(_ textField: UITextField) {
             text = textField.text ?? ""
         }
-
     }
 
+    var title: String = ""
     @Binding var text: String
     var isFirstResponder: Bool = false
 
     func makeUIView(context: UIViewRepresentableContext<CustomTextField>) -> UITextField {
         let textField = UITextField(frame: .zero)
-        textField.placeholder = "Title"             // 매개변수로 수정 필요
+        textField.placeholder = title
         textField.delegate = context.coordinator
         return textField
     }

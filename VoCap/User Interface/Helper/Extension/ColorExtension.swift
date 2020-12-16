@@ -8,11 +8,13 @@
 import SwiftUI
 
 extension Color {
-//    static let yellow = Color("yellow")
+    static let buttonBackground = Color(UIColor.systemGray6)
 }
 
 // MARK: - myColor
 struct myColor {
-    static var colors: [Color] = [.red, .green, .blue]
-    static var colornames = ["Red", "Green", "Blue"]
+    static var colors: [Color] = [.red, .orange, .yellow, .green, .blue, .purple]
+    static var colornames = ["Red", "Orange", "Yellow", "Green", "Blue", "Purple"]
 }
+
+

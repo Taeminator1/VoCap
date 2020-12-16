@@ -16,6 +16,7 @@ struct EditNoteView: View {
     @State private var shwoingAutoCheckAlert: Bool = false
     
     @Binding var showingEditNoteView: Bool
+    @Binding var isEditMode: EditMode
     
     var body: some View {
         NavigationView {
@@ -33,10 +34,8 @@ struct EditNoteView: View {
 }
 
 struct EditNoteView_Previews: PreviewProvider {
-    @State private var showingAddNoteView: Bool = false
-    
     static var previews: some View {
-        EditNoteView(noteStore: NoteStore(), note: .constant(Note()), showingEditNoteView: .constant(false))
+        EditNoteView(noteStore: NoteStore(), note: .constant(Note()), showingEditNoteView: .constant(true), isEditMode: .constant(.active))
     }
 }
 
@@ -56,7 +55,8 @@ private extension EditNoteView {
         }
     }
     
-    func cancel() {         // If there is editing, app has to ask whether discard or not
+    // If there is editing, app has to ask whether discard or not       -> 해당 주석이 아랫줄에 있으면 Preview 오류 일으킴
+    func cancel() {
         showingEditNoteView.toggle()
     }
     
@@ -66,7 +66,7 @@ private extension EditNoteView {
 //
 //        }
         
-        let editedNote = Note(id: note.id, title: note.title, colorIndex: note.colorIndex, isMemorized: note.isMemorized, isInWidget: note.isInWidget, memorizedNumber: note.memorizedNumber, totalNumber: note.totalNumber)
+        let editedNote = Note(id: note.id, title: note.title, colorIndex: note.colorIndex, isMemorized: note.isMemorized, isInWidget: note.isInWidget, memorizedNumber: note.memorizedNumber, totalNumber: note.totalNumber, notes: note.notes)
         
         if let index = noteStore.notes.firstIndex(where: { $0.id == note.id }) {
             print(index)
@@ -74,6 +74,7 @@ private extension EditNoteView {
         }
         
         showingEditNoteView.toggle()
+        isEditMode = .inactive
     }
 }
 

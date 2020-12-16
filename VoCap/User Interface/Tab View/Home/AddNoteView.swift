@@ -16,14 +16,13 @@ struct AddNoteView: View {
     @State private var shwoingAutoCheckAlert: Bool = false
     
     @Binding var showingAddNoteView: Bool
-    
+      
     var body: some View {
         NavigationView {
             List {
                 basicInfo
                 toggleConfig
                 others
-                
             }
             .listStyle(GroupedListStyle())
             .environment(\.horizontalSizeClass, .regular)               // 이건 뭐지?
@@ -35,10 +34,8 @@ struct AddNoteView: View {
 }
 
 struct AddNoteView_Previews: PreviewProvider {
-    @State private var showingAddNoteView: Bool = false
-    
     static var previews: some View {
-        AddNoteView(showingAddNoteView: .constant(false))
+        AddNoteView(noteStore: NoteStore(), showingAddNoteView: .constant(true))
     }
 }
 
@@ -58,12 +55,13 @@ private extension AddNoteView {
         }
     }
     
-    func cancel() {         // If there is editing, app has to ask whether discard or not
+    // If there is editing, app has to ask whether discard or not       -> 해당 주석이 아랫줄에 있으면 Preview 오류 일으킴
+    func cancel() {
         showingAddNoteView.toggle()
     }
     
     func done() {
-        let newNote = Note(id: note.id, title: note.title, colorIndex: note.colorIndex, isMemorized: note.isMemorized, isInWidget: note.isInWidget, memorizedNumber: note.memorizedNumber, totalNumber: note.totalNumber)
+        let newNote = Note(id: note.id, title: note.title, colorIndex: note.colorIndex, isMemorized: note.isMemorized, isInWidget: note.isInWidget, memorizedNumber: note.memorizedNumber, totalNumber: note.totalNumber, notes: note.notes)
         
         noteStore.notes.append(newNote)
         
@@ -77,9 +75,7 @@ private extension AddNoteView {
     var basicInfo: some View {
         Section() {
 //            TextField("Title", text: $note.title)
-            CustomTextField(text: $note.title, isFirstResponder: true)
-            
-            
+            CustomTextField(title: "Title", text: $note.title, isFirstResponder: true)
             
             // Group List에서 이상
             Picker(selection: $note.colorIndex, label: Text("Color")) {      // Need to check the style
@@ -87,6 +83,9 @@ private extension AddNoteView {
                     Text(myColor.colornames[$0])
                         .foregroundColor(myColor.colors[$0])
                 }
+            }
+            .onAppear() {
+                note.colorIndex = Int.random(in: 0..<myColor.colors.count)
             }
         }
     }
