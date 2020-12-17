@@ -21,6 +21,7 @@
 		345A97CE2577A8DA009323E4 /* LexicalaEntries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 345A97CD2577A8DA009323E4 /* LexicalaEntries.swift */; };
 		345A97D92577AE85009323E4 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 345A97D82577AE85009323E4 /* SearchView.swift */; };
 		3472B67725811CCC00EFA0AB /* NoteDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3472B67625811CCC00EFA0AB /* NoteDetail.swift */; };
+		3493EA91258A47EF00275DA2 /* SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3493EA90258A47EF00275DA2 /* SwiftUIView.swift */; };
 		34A5B63A257E3AC60023D1AC /* NoteRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A5B639257E3AC60023D1AC /* NoteRow.swift */; };
 		34A5B640257E3B130023D1AC /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A5B63F257E3B130023D1AC /* Note.swift */; };
 		34A5B649257E522A0023D1AC /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A5B648257E522A0023D1AC /* ColorExtension.swift */; };
@@ -66,6 +67,7 @@
 		345A97CD2577A8DA009323E4 /* LexicalaEntries.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LexicalaEntries.swift; sourceTree = "<group>"; };
 		345A97D82577AE85009323E4 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		3472B67625811CCC00EFA0AB /* NoteDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetail.swift; sourceTree = "<group>"; };
+		3493EA90258A47EF00275DA2 /* SwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIView.swift; sourceTree = "<group>"; };
 		34A5B639257E3AC60023D1AC /* NoteRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteRow.swift; sourceTree = "<group>"; };
 		34A5B63F257E3B130023D1AC /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
 		34A5B648257E522A0023D1AC /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
@@ -240,6 +242,7 @@
 				340491D625779CC200CD1BD7 /* User Interface */,
 				34D88F3D256D2A65009B10AF /* VoCapApp.swift */,
 				34D88F3F256D2A65009B10AF /* ContentView.swift */,
+				3493EA90258A47EF00275DA2 /* SwiftUIView.swift */,
 				34D88F41256D2A68009B10AF /* Assets.xcassets */,
 				34D88F46256D2A68009B10AF /* Persistence.swift */,
 				34D88F4B256D2A68009B10AF /* Info.plist */,
@@ -406,6 +409,7 @@
 			files = (
 				34D88F47256D2A68009B10AF /* Persistence.swift in Sources */,
 				3404921225779FAD00CD1BD7 /* LexicalaEntry.swift in Sources */,
+				3493EA91258A47EF00275DA2 /* SwiftUIView.swift in Sources */,
 				340491F225779D4300CD1BD7 /* SettingsView.swift in Sources */,
 				340491ED25779D3600CD1BD7 /* LabatoryView.swift in Sources */,
 				344D33F8257F8E5A004DDCCF /* AddNoteView.swift in Sources */,

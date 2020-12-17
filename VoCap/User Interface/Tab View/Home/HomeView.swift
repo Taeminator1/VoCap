@@ -101,7 +101,8 @@ private extension HomeView {
     }
     
     func deleteItems(at offsets: IndexSet) {
-        noteStore.notes.remove(atOffsets: offsets)
+//        noteStore.notes.remove(atOffsets: offsets)
+        noteStore.notes.remove(at: noteStore.notes.count - (offsets.map({$0}).first! + 1))
     }
     
     func moveItems(from source: IndexSet, to destination: Int) {

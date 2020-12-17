@@ -16,6 +16,8 @@ struct VoCapApp: App {
 //            HomeView(noteStore: NoteStore())
             MainTabView()
 //            MainNavigationView()
+//            SwiftUIView()
+//                .environment(\.managedObjectContext, persistenceController.container.viewContext)
 //            ContentView()
 //                .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
