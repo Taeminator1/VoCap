@@ -8,13 +8,16 @@
 import SwiftUI
 
 struct NoteRow: View {
-    let note: Note
+    var title: String?
+    var colorIndex: Int16 = 0
+    var totalNumber: Int16 = 0
+    var memorizedNumber: Int16 = 0
     
     var body: some View {
         VStack() {
             HStack() {
                 Image(systemName: "square").imageScale(.large)
-                Text(note.title)
+                Text(title!)
                     .font(.system(size: 40))
                     .fontWeight(.medium)
                     
@@ -26,21 +29,19 @@ struct NoteRow: View {
             
             HStack() {
                 Spacer()
-                Text("외운 목록 수: \(note.memorizedNumber) / \(note.totalNumber)")
+                Text("외운 목록 수: \(memorizedNumber) / \(totalNumber)")
             }
             .padding([.leading, .bottom, .trailing])
         }
         .frame(height: 100)
-        .background(myColor.colors[note.colorIndex])
+        .background(myColor.colors[Int(colorIndex)])
         .cornerRadius(10)
         .shadow(color: .blue, radius: 1, x: 2, y: 2)
-//        .padding(.vertical, 5.0)
         .padding(.all)
     }
 }
 
 struct AddNoteRow: View {
-    let addNote: AddNote
     @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
@@ -49,7 +50,7 @@ struct AddNoteRow: View {
                 Spacer()
                 
                 Image(systemName: "plus.circle").imageScale(.large)
-                Text(addNote.title)
+                Text("Add Note")
                     .font(.title)
                     .fontWeight(.medium)
                     
@@ -60,17 +61,17 @@ struct AddNoteRow: View {
         .background(colorScheme == .dark ? Color.white : Color.black)
         .cornerRadius(10)
         .shadow(color: .blue, radius: 1, x: 2, y: 2)
-//        .padding(.vertical, 5.0)
         .padding(.all)
     }
 }
 
+
 struct NoteRow_Previews: PreviewProvider {
     static var previews: some View {
-        NoteRow(note: Note())
+        NoteRow(title: "sample")
             .previewLayout(.sizeThatFits)
         
-        AddNoteRow(addNote: AddNote())
+        AddNoteRow()
             .previewLayout(.sizeThatFits)
     }
 }

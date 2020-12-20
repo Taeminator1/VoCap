@@ -13,8 +13,10 @@ struct VoCapApp: App {
 
     var body: some Scene {
         WindowGroup {
-//            HomeView(noteStore: NoteStore())
+//            HomeView()
+//                .environment(\.managedObjectContext, persistenceController.container.viewContext)
             MainTabView()
+                .environment(\.managedObjectContext, persistenceController.container.viewContext)
 //            MainNavigationView()
 //            SwiftUIView()
 //                .environment(\.managedObjectContext, persistenceController.container.viewContext)

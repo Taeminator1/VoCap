@@ -8,16 +8,14 @@
 import SwiftUI
 
 struct NoteDetail: View {
-    
-    let selectedNote: Note
-    
+    var title: String?
     var body: some View {
-        Text("\(selectedNote.title)")
+        Text(title!)
     }
 }
 
 struct NoteDetail_Previews: PreviewProvider {
     static var previews: some View {
-        NoteDetail(selectedNote: Note(title: "Note Detail"))
+        NoteDetail(title: "sample")
     }
 }

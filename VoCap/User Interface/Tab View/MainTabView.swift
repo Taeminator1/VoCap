@@ -28,7 +28,7 @@ struct MainTabView: View {
 // MARK: - MainTabView_TabItem
 private extension MainTabView {
     var home: some View {
-        HomeView(noteStore: NoteStore())
+        HomeView()
             .tag(Tabs.home)
             .tabItem {
                 Image(systemName: "house").imageScale(.large)

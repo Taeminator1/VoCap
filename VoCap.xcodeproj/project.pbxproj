@@ -15,15 +15,12 @@
 		3404921725779FC800CD1BD7 /* LexicalaFetchData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3404921625779FC800CD1BD7 /* LexicalaFetchData.swift */; };
 		3404922F2577A24900CD1BD7 /* MainNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3404922E2577A24900CD1BD7 /* MainNavigationView.swift */; };
 		3404B4C6258784890021CDAE /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3404B4C5258784890021CDAE /* CustomTextField.swift */; };
-		3421810B2580F3BD00AD66B8 /* NoteStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3421810A2580F3BD00AD66B8 /* NoteStore.swift */; };
 		343F89E22586333F00E72A41 /* EditNoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 343F89E12586333F00E72A41 /* EditNoteView.swift */; };
 		344D33F8257F8E5A004DDCCF /* AddNoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 344D33F7257F8E5A004DDCCF /* AddNoteView.swift */; };
 		345A97CE2577A8DA009323E4 /* LexicalaEntries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 345A97CD2577A8DA009323E4 /* LexicalaEntries.swift */; };
 		345A97D92577AE85009323E4 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 345A97D82577AE85009323E4 /* SearchView.swift */; };
 		3472B67725811CCC00EFA0AB /* NoteDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3472B67625811CCC00EFA0AB /* NoteDetail.swift */; };
-		3493EA91258A47EF00275DA2 /* SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3493EA90258A47EF00275DA2 /* SwiftUIView.swift */; };
 		34A5B63A257E3AC60023D1AC /* NoteRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A5B639257E3AC60023D1AC /* NoteRow.swift */; };
-		34A5B640257E3B130023D1AC /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A5B63F257E3B130023D1AC /* Note.swift */; };
 		34A5B649257E522A0023D1AC /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A5B648257E522A0023D1AC /* ColorExtension.swift */; };
 		34D88F3E256D2A65009B10AF /* VoCapApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D88F3D256D2A65009B10AF /* VoCapApp.swift */; };
 		34D88F40256D2A65009B10AF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D88F3F256D2A65009B10AF /* ContentView.swift */; };
@@ -61,15 +58,12 @@
 		3404921625779FC800CD1BD7 /* LexicalaFetchData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LexicalaFetchData.swift; sourceTree = "<group>"; };
 		3404922E2577A24900CD1BD7 /* MainNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNavigationView.swift; sourceTree = "<group>"; };
 		3404B4C5258784890021CDAE /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
-		3421810A2580F3BD00AD66B8 /* NoteStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteStore.swift; sourceTree = "<group>"; };
 		343F89E12586333F00E72A41 /* EditNoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditNoteView.swift; sourceTree = "<group>"; };
 		344D33F7257F8E5A004DDCCF /* AddNoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNoteView.swift; sourceTree = "<group>"; };
 		345A97CD2577A8DA009323E4 /* LexicalaEntries.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LexicalaEntries.swift; sourceTree = "<group>"; };
 		345A97D82577AE85009323E4 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		3472B67625811CCC00EFA0AB /* NoteDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetail.swift; sourceTree = "<group>"; };
-		3493EA90258A47EF00275DA2 /* SwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIView.swift; sourceTree = "<group>"; };
 		34A5B639257E3AC60023D1AC /* NoteRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteRow.swift; sourceTree = "<group>"; };
-		34A5B63F257E3B130023D1AC /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
 		34A5B648257E522A0023D1AC /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 		34D88F3A256D2A65009B10AF /* VoCap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VoCap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		34D88F3D256D2A65009B10AF /* VoCapApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoCapApp.swift; sourceTree = "<group>"; };
@@ -117,7 +111,6 @@
 			children = (
 				3404922E2577A24900CD1BD7 /* MainNavigationView.swift */,
 				340492362577A28800CD1BD7 /* Tab View */,
-				34A5B63E257E3AFB0023D1AC /* Model */,
 				34A95A3525823EB700592FA7 /* Helper */,
 			);
 			path = "User Interface";
@@ -189,15 +182,6 @@
 			path = "Imported Object";
 			sourceTree = "<group>";
 		};
-		34A5B63E257E3AFB0023D1AC /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				34A5B63F257E3B130023D1AC /* Note.swift */,
-				3421810A2580F3BD00AD66B8 /* NoteStore.swift */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
 		34A5B647257E52190023D1AC /* Extension */ = {
 			isa = PBXGroup;
 			children = (
@@ -242,7 +226,6 @@
 				340491D625779CC200CD1BD7 /* User Interface */,
 				34D88F3D256D2A65009B10AF /* VoCapApp.swift */,
 				34D88F3F256D2A65009B10AF /* ContentView.swift */,
-				3493EA90258A47EF00275DA2 /* SwiftUIView.swift */,
 				34D88F41256D2A68009B10AF /* Assets.xcassets */,
 				34D88F46256D2A68009B10AF /* Persistence.swift */,
 				34D88F4B256D2A68009B10AF /* Info.plist */,
@@ -409,12 +392,10 @@
 			files = (
 				34D88F47256D2A68009B10AF /* Persistence.swift in Sources */,
 				3404921225779FAD00CD1BD7 /* LexicalaEntry.swift in Sources */,
-				3493EA91258A47EF00275DA2 /* SwiftUIView.swift in Sources */,
 				340491F225779D4300CD1BD7 /* SettingsView.swift in Sources */,
 				340491ED25779D3600CD1BD7 /* LabatoryView.swift in Sources */,
 				344D33F8257F8E5A004DDCCF /* AddNoteView.swift in Sources */,
 				34D88F40256D2A65009B10AF /* ContentView.swift in Sources */,
-				34A5B640257E3B130023D1AC /* Note.swift in Sources */,
 				34D88F3E256D2A65009B10AF /* VoCapApp.swift in Sources */,
 				343F89E22586333F00E72A41 /* EditNoteView.swift in Sources */,
 				3404922F2577A24900CD1BD7 /* MainNavigationView.swift in Sources */,
@@ -423,7 +404,6 @@
 				345A97D92577AE85009323E4 /* SearchView.swift in Sources */,
 				34A5B649257E522A0023D1AC /* ColorExtension.swift in Sources */,
 				3404B4C6258784890021CDAE /* CustomTextField.swift in Sources */,
-				3421810B2580F3BD00AD66B8 /* NoteStore.swift in Sources */,
 				34D88F4A256D2A68009B10AF /* VoCap.xcdatamodeld in Sources */,
 				345A97CE2577A8DA009323E4 /* LexicalaEntries.swift in Sources */,
 				3404921725779FC800CD1BD7 /* LexicalaFetchData.swift in Sources */,
