@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct AddNoteView: View {
+struct MakeNoteView: View {
     
     @State var title: String = ""
     @State var colorIndex: Int = 0              // Int16으로 선언하면 Picker에서 오류 발생
@@ -19,6 +19,7 @@ struct AddNoteView: View {
     @State private var shwoingAutoCheckAlert: Bool = false
     
     @Binding var isAddNotePresented: Bool
+    @Binding var isEditNotePresented: Bool
     
     let onComplete: (String, Int16, String) -> Void
     
@@ -32,7 +33,7 @@ struct AddNoteView: View {
             .listStyle(GroupedListStyle())
             .environment(\.horizontalSizeClass, .regular)               // 이건 뭐지?
             .navigationBarItems(leading: leadingItem, trailing: trailingItem)
-            .navigationBarTitle("New Note", displayMode: .inline)
+            .navigationBarTitle(isAddNotePresented == true ? "Add Note" : "Edit Not", displayMode: .inline)
         }
     }
 }
@@ -49,7 +50,7 @@ struct AddNoteView: View {
 
 
 // MARK: - Navigation Bar Items
-private extension AddNoteView {
+private extension MakeNoteView {
     
     var leadingItem: some View {
         Button(action: cancel) {
@@ -59,7 +60,8 @@ private extension AddNoteView {
     
     var trailingItem: some View {
         Button(action: done) {
-            Text("Done")
+            if isAddNotePresented == true { Text("Done") }
+            else { Text("Save") }
         }
     }
 
@@ -73,7 +75,7 @@ private extension AddNoteView {
 }
 
 // MARK: - View of List
-private extension AddNoteView {
+private extension MakeNoteView {
     
     var basicInfo: some View {
         Section() {
@@ -89,7 +91,7 @@ private extension AddNoteView {
                 }
             }
             .onAppear() {
-                colorIndex = Int.random(in: 0..<myColor.colors.count)
+                if isAddNotePresented == true { colorIndex = Int.random(in: 0..<myColor.colors.count) }
             }
         }
     }

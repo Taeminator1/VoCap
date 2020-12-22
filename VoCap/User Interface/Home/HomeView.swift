@@ -18,11 +18,12 @@ struct HomeView: View {
     
     @State private var isAddNotePresented: Bool = false
     @State private var isEditNotePresented: Bool = false
-
     @State private var isEditMode: EditMode = .inactive
     @State private var noteRowSelection: UUID?
+    @State private var noteRowOrder: Int16 = 0
     
-    @State var noteRowOrder: Int16 = 0
+    @State private var showEddition: Bool = false
+    @State private var showSettings: Bool = false
     
     var body: some View {
         NavigationView {
@@ -33,7 +34,7 @@ struct HomeView: View {
                 .buttonStyle(BorderlessButtonStyle())
                 .disabled(makeEddNoteDisabled())
                 .sheet(isPresented: $isAddNotePresented) {
-                    AddNoteView(isAddNotePresented: $isAddNotePresented) { title, colorIndex, memo in
+                    MakeNoteView(isAddNotePresented: $isAddNotePresented, isEditNotePresented: $isEditNotePresented) { title, colorIndex, memo in
                         self.addNote(title: title, colorIndex: colorIndex, memo: memo)
                         self.isAddNotePresented = false
                     }
@@ -73,35 +74,51 @@ struct HomeView: View {
             }
             .listStyle(PlainListStyle())                        // 안해주면 Add Note 누를 때, title bar button 초기 색이 하얗게 됨
             .navigationBarItems(leading: leadingItem, trailing: EditButton())
-            .navigationBarTitle("Taemin", displayMode: .inline)
+            .navigationBarTitle("VoCap", displayMode: .inline)
             .environment(\.editMode, self.$isEditMode)          // 없으면 Edit 오류 생김(해당 위치에 있어야 함)
             .sheet(isPresented: $isEditNotePresented) {
-                EditNoteView(title: notes[Int(noteRowOrder)].title!, colorIndex: Int(notes[Int(noteRowOrder)].colorIndex), memo: notes[Int(noteRowOrder)].memo!, isEditNotePresented: $isEditNotePresented) { title, colorIndex, memo in
+                MakeNoteView(title: notes[Int(noteRowOrder)].title!, colorIndex: Int(notes[Int(noteRowOrder)].colorIndex), memo: notes[Int(noteRowOrder)].memo!, isAddNotePresented: $isAddNotePresented, isEditNotePresented: $isEditNotePresented) { title, colorIndex, memo in
                     self.editItems(title: title, colorIndex: colorIndex, memo: memo)
                     self.isEditNotePresented = false
                 }
             }
-        }
-    }
-    func makeEddNoteDisabled() -> Bool {
-        if isEditMode == .inactive {
-            return false
-        }
-        else {
-            return true
+            .background(NavigationLink(destination: UtilityView(), isActive: $showEddition) {
+                EmptyView()
+            })
+            .background(NavigationLink(destination: SettingsView(), isActive: $showSettings) {
+                EmptyView()
+            })
+            .toolbar {
+                ToolbarItem(placement: .bottomBar) {
+                    Button(action: { showEddition.toggle() }) {
+                        Image(systemName: "plus.circle").imageScale(.large)
+                    }
+                }
+                    
+                ToolbarItem(placement: .bottomBar) { Spacer() }
+                
+                ToolbarItem(placement: .bottomBar) {
+                    Button(action: { showSettings.toggle() }) {
+                        Image(systemName: "gearshape").imageScale(.large)
+                    }
+                }
+            }
+            
+            
         }
     }
 }
 
+// MARK: - Preivew
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
         HomeView()
             .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
-            .previewDevice("iPhone 11 Pro")
-//            .previewDevice("iPhone SE (2nd generation)")
-        HomeView()
-            .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
-            .preferredColorScheme(.dark)
+            .previewDevice("iPhone SE (2nd generation)")
+//        HomeView()
+//            .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+//            .previewDevice("iPhone 12 Pro")
+//            .preferredColorScheme(.dark)
     }
 }
 
@@ -118,12 +135,7 @@ private extension HomeView {
         notes[Int(noteRowOrder)].colorIndex = colorIndex
         notes[Int(noteRowOrder)].memo = memo
         
-        do {
-            try viewContext.save()
-        } catch {
-            let nsError = error as NSError
-            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-        }
+        saveContext()
     }
 }
 
@@ -137,23 +149,9 @@ private extension HomeView {
             newNote.colorIndex = colorIndex
             newNote.memo = memo
 
-            do {
-                try viewContext.save()
-            } catch {
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
-            
-            for i in 0..<notes.count {
-                notes[i].order = Int16(i)
-            }
-            
-            do {
-                try viewContext.save()
-            } catch {
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
+            saveContext()
+            makeOrder()
+            saveContext()
         }
     }
 
@@ -161,50 +159,54 @@ private extension HomeView {
         withAnimation {
             offsets.map { notes[$0] }.forEach(viewContext.delete)
 
-            do {
-                try viewContext.save()
-            } catch {
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
-            
-            for i in 0..<notes.count {
-                notes[i].order = Int16(i)
-            }
-            
-            do {
-                try viewContext.save()
-            } catch {
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
+            saveContext()
+            makeOrder()
+            saveContext()
         }
     }
     
     private func moveItems(from source: IndexSet, to destination: Int) {
         withAnimation {
-            let start = source.map({$0}).first!
-            
-            if start == destination { return }
-            
-            if start < destination {
-                for i in start..<destination {
-                    notes[i].order -= 1
-                }
-            }
-            else {
-                for i in destination..<start {
-                    notes[i].order += 1
-                }
-            }
-            notes[start].order = Int16(destination - 1)
-            
-            do {
-                try viewContext.save()
-            } catch {
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+            arrangeOrder(start: source.map({$0}).first!, destination: destination)
+            saveContext()
+        }
+    }
+}
+
+// MARK: - Other Functions
+private extension HomeView {
+    func makeEddNoteDisabled() -> Bool {
+        return isEditMode == .inactive ? false : true
+    }
+    
+    func saveContext() {
+        do {
+            try viewContext.save()
+        } catch {
+            let nsError = error as NSError
+            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+        }
+    }
+    
+    func makeOrder() {
+        for i in 0..<notes.count {
+            notes[i].order = Int16(i)
+        }
+    }
+    
+    func arrangeOrder(start: Int, destination: Int) {
+        if start == destination { return }
+        
+        if start < destination {
+            for i in start..<destination {
+                notes[i].order -= 1
             }
         }
+        else {
+            for i in destination..<start {
+                notes[i].order += 1
+            }
+        }
+        notes[start].order = Int16(destination - 1)
     }
 }

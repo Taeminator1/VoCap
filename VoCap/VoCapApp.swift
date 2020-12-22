@@ -13,11 +13,8 @@ struct VoCapApp: App {
 
     var body: some Scene {
         WindowGroup {
-//            HomeView()
-//                .environment(\.managedObjectContext, persistenceController.container.viewContext)
-            MainTabView()
+            HomeView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
-//            MainNavigationView()
 //            SwiftUIView()
 //                .environment(\.managedObjectContext, persistenceController.container.viewContext)
 //            ContentView()
