@@ -10,7 +10,7 @@ import SwiftUI
 struct MakeNoteView: View {
     
     @State var title: String = ""
-    @State var colorIndex: Int = 0              // Int16으로 선언하면 Picker에서 오류 발생
+    @State var colorIndex: Int = Int.random(in: 0..<myColor.colors.count)       // Int16으로 선언하면 Picker에서 오류 발생
     @State var isWidget: Bool = false
     @State var isAutoCheck: Bool = false
     @State var memo: String = ""
@@ -89,9 +89,6 @@ private extension MakeNoteView {
 //                        .tag(myColor.colornames[$0])                // 여기선 없어도 되는데, 용도가 있는 듯
                         .foregroundColor(myColor.colors[$0])
                 }
-            }
-            .onAppear() {
-                if isAddNotePresented == true { colorIndex = Int.random(in: 0..<myColor.colors.count) }
             }
         }
     }
