@@ -82,12 +82,8 @@ struct HomeView: View {
                     self.isEditNotePresented = false
                 }
             }
-            .background(NavigationLink(destination: UtilityView(), isActive: $showEddition) {
-                EmptyView()
-            })
-            .background(NavigationLink(destination: SettingsView(), isActive: $showSettings) {
-                EmptyView()
-            })
+            .background(NavigationLink(destination: UtilityView(), isActive: $showEddition) { EmptyView() })
+            .background(NavigationLink(destination: SettingsView(), isActive: $showSettings) { EmptyView() })
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
                     Button(action: { showEddition.toggle() }) {
@@ -103,9 +99,8 @@ struct HomeView: View {
                     }
                 }
             }
-            
-            
         }
+        .navigationViewStyle(StackNavigationViewStyle())                // 없으면 View전환할 때마다 Tool Bar 로딩되는데 시간이 걸림
     }
 }
 

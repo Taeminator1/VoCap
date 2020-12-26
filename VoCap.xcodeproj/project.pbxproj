@@ -104,7 +104,7 @@
 			isa = PBXGroup;
 			children = (
 				340491DF25779CEB00CD1BD7 /* Home */,
-				340491E125779CF500CD1BD7 /* Labatory */,
+				340491E125779CF500CD1BD7 /* Utility */,
 				340491E225779CFD00CD1BD7 /* Settings */,
 				34A95A3525823EB700592FA7 /* Helper */,
 			);
@@ -123,12 +123,12 @@
 			path = Home;
 			sourceTree = "<group>";
 		};
-		340491E125779CF500CD1BD7 /* Labatory */ = {
+		340491E125779CF500CD1BD7 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
 				340491EC25779D3600CD1BD7 /* UtilityView.swift */,
 			);
-			path = Labatory;
+			path = Utility;
 			sourceTree = "<group>";
 		};
 		340491E225779CFD00CD1BD7 /* Settings */ = {
