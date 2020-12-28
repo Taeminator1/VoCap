@@ -9,17 +9,15 @@ import SwiftUI
 
 struct MakeNoteView: View {
     
-    @State var title: String = ""
-    @State var colorIndex: Int = Int.random(in: 0..<myColor.colors.count)       // Int16으로 선언하면 Picker에서 오류 발생
-    @State var isWidget: Bool = false
-    @State var isAutoCheck: Bool = false
-    @State var memo: String = ""
-    
-    @State private var shwoingWidgetAlert: Bool = false
-    @State private var shwoingAutoCheckAlert: Bool = false
+    @State var note = TmpNote()
+    @State var dNote = TmpNote()            // duplicated Note
     
     @Binding var isAddNotePresented: Bool
     @Binding var isEditNotePresented: Bool
+    
+    @State private var shwoingWidgetAlert: Bool = false
+    @State private var shwoingAutoCheckAlert: Bool = false
+    @State private var showingCancelSheet: Bool = false
     
     let onComplete: (String, Int16, String) -> Void
     
@@ -56,34 +54,62 @@ private extension MakeNoteView {
         Button(action: cancel) {
             Text("Cancel")
         }
+        .actionSheet(isPresented: $showingCancelSheet) {
+//            "Are you sure you want to discard this new note?"
+            ActionSheet(title: Text("Are you sure you want to discard your changes?"), message: .none,
+                        buttons: [
+                            .destructive(Text("Discard Changes"), action: {
+                                            showingCancelSheet.toggle()
+                                            isAddNotePresented = false
+                                            isEditNotePresented = false }),
+                            .cancel(Text("Keep Editing"))]
+            )
+        }
     }
-    
+
+    @ViewBuilder            // for conditionally view
     var trailingItem: some View {
-        Button(action: done) {
-            if isAddNotePresented == true { Text("Done") }
-            else { Text("Save") }
+        if isAddNotePresented == true {
+            Button(action: { onComplete(note.title, Int16(note.colorIndex), note.memo) }) {
+                Text("Done")
+            }
+        }
+        else {
+            Button(action: { onComplete(note.title, Int16(note.colorIndex), note.memo) }) {
+                Text("Save")
+            }
+            .disabled(note.isEqual(dNote))
         }
     }
 
     func cancel() {
-        isAddNotePresented.toggle()
-    }
-    
-    func done() {
-        onComplete(title, Int16(colorIndex), memo)
+        // 바뀜
+        if note.isEqual(dNote) {
+            isAddNotePresented = false
+            isEditNotePresented = false
+        }
+        else {
+            showingCancelSheet.toggle()
+        }
     }
 }
 
 // MARK: - View of List
 private extension MakeNoteView {
     
+    @ViewBuilder            // for conditionally view
     var basicInfo: some View {
         Section() {
-//            TextField("Title", text: $note.title)
-            CustomTextField(title: "Title", text: $title, isFirstResponder: true)
+            
+            if isAddNotePresented == true {         // 조건문으로 안하면 Add시, Discard Changes일 때, 키패드가 두 번 띄어지는 오류 발생
+                CustomTextField(title: "Title", text: $note.title, isFirstResponder: true)
+            }
+            else {
+                TextField("Title", text: $note.title)
+            }
             
             // Group List에서 이상
-            Picker(selection: $colorIndex, label: Text("Color")) {      // Need to check the style
+            Picker(selection: $note.colorIndex, label: Text("Color")) {      // Need to check the style
                 ForEach (0..<myColor.colornames.count) {
                     Text(myColor.colornames[$0])
 //                        .tag(myColor.colornames[$0])                // 여기선 없어도 되는데, 용도가 있는 듯
@@ -92,7 +118,7 @@ private extension MakeNoteView {
             }
         }
     }
-    
+
     var toggleConfig: some View {
         Section() {
             HStack {
@@ -104,11 +130,11 @@ private extension MakeNoteView {
                 .alert(isPresented: $shwoingWidgetAlert) {
                     Alert(title: Text("Widget Info"))
                 }
-                
-                
+
+
                 Spacer()
-                
-                Toggle(isOn: $isWidget) {
+
+                Toggle(isOn: $note.isWidget) {
                 }
             }
             HStack {
@@ -120,22 +146,23 @@ private extension MakeNoteView {
                 .alert(isPresented: $shwoingAutoCheckAlert) {
                     Alert(title: Text("Auto Check Info"))
                 }
-                
+
                 Spacer()
-                
-                Toggle(isOn: $isAutoCheck) {
+
+                Toggle(isOn: $note.isAutoCheck) {
                 }
             }
         }
     }
-    
+
     var others: some View {
         Section() {
             VStack(alignment: .leading) {
                 Text("Memo")                       // Need to add multi line textfield
-                
-                TextField("", text: $memo)
+
+                TextField("", text: $note.memo)
             }
         }
     }
 }
+

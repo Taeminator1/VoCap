@@ -20,7 +20,7 @@ struct HomeView: View {
     @State private var isEditNotePresented: Bool = false
     @State private var isEditMode: EditMode = .inactive
     @State private var noteRowSelection: UUID?
-    @State private var noteRowOrder: Int16 = 0
+    @State private var noteRowOrder: Int = 0
     
     @State private var showEddition: Bool = false
     @State private var showSettings: Bool = false
@@ -28,13 +28,14 @@ struct HomeView: View {
     var body: some View {
         NavigationView {
             List {
-                Button(action: { self.isAddNotePresented.toggle() }) {
+                Button(action: { self.isAddNotePresented = true }) {
                     AddNoteRow()
                 }
                 .buttonStyle(BorderlessButtonStyle())
-                .disabled(makeEddNoteDisabled())
+                .disabled(isEditMode == .inactive ? false : true)
                 .sheet(isPresented: $isAddNotePresented) {
-                    MakeNoteView(isAddNotePresented: $isAddNotePresented, isEditNotePresented: $isEditNotePresented) { title, colorIndex, memo in
+                    let tmpNote = TmpNote()
+                    MakeNoteView(note: tmpNote, dNote: tmpNote, isAddNotePresented: $isAddNotePresented, isEditNotePresented: $isEditNotePresented) { title, colorIndex, memo in
                         self.addNote(title: title, colorIndex: colorIndex, memo: memo)
                         self.isAddNotePresented = false
                     }
@@ -50,8 +51,8 @@ struct HomeView: View {
                                 self.noteRowSelection = note.id         // 왜 noteRowSelection에 !붙일 때랑 안 붙일 때 다르지?
                             }
                             else {                          // When Edit Button is pressed by user
-                                self.noteRowOrder = note.order
-                                self.isEditNotePresented.toggle()
+                                self.noteRowOrder = Int(note.order)
+                                self.isEditNotePresented = true
                             }
                         }) {
                             VStack(alignment: .leading) {
@@ -77,7 +78,7 @@ struct HomeView: View {
             .navigationBarTitle("VoCap", displayMode: .inline)
             .environment(\.editMode, self.$isEditMode)          // 없으면 Edit 오류 생김(해당 위치에 있어야 함)
             .sheet(isPresented: $isEditNotePresented) {
-                MakeNoteView(title: notes[Int(noteRowOrder)].title!, colorIndex: Int(notes[Int(noteRowOrder)].colorIndex), memo: notes[Int(noteRowOrder)].memo!, isAddNotePresented: $isAddNotePresented, isEditNotePresented: $isEditNotePresented) { title, colorIndex, memo in
+                MakeNoteView(note: TmpNote(note: notes[noteRowOrder]), dNote: TmpNote(note: notes[noteRowOrder]), isAddNotePresented: $isAddNotePresented, isEditNotePresented: $isEditNotePresented) { title, colorIndex, memo in
                     self.editItems(title: title, colorIndex: colorIndex, memo: memo)
                     self.isEditNotePresented = false
                 }
@@ -86,7 +87,7 @@ struct HomeView: View {
             .background(NavigationLink(destination: SettingsView(), isActive: $showSettings) { EmptyView() })
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
-                    Button(action: { showEddition.toggle() }) {
+                    Button(action: { showEddition = true }) {
                         Image(systemName: "plus.circle").imageScale(.large)
                     }
                 }
@@ -94,7 +95,7 @@ struct HomeView: View {
                 ToolbarItem(placement: .bottomBar) { Spacer() }
                 
                 ToolbarItem(placement: .bottomBar) {
-                    Button(action: { showSettings.toggle() }) {
+                    Button(action: { showSettings = true }) {
                         Image(systemName: "gearshape").imageScale(.large)
                     }
                 }
@@ -126,9 +127,9 @@ private extension HomeView {
     }
     
     private func editItems(title: String, colorIndex: Int16, memo: String) {
-        notes[Int(noteRowOrder)].title = title
-        notes[Int(noteRowOrder)].colorIndex = colorIndex
-        notes[Int(noteRowOrder)].memo = memo
+        notes[noteRowOrder].title = title
+        notes[noteRowOrder].colorIndex = colorIndex
+        notes[noteRowOrder].memo = memo
         
         saveContext()
     }
@@ -170,9 +171,6 @@ private extension HomeView {
 
 // MARK: - Other Functions
 private extension HomeView {
-    func makeEddNoteDisabled() -> Bool {
-        return isEditMode == .inactive ? false : true
-    }
     
     func saveContext() {
         do {

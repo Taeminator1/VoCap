@@ -13,6 +13,7 @@ struct VoCapApp: App {
 
     var body: some Scene {
         WindowGroup {
+//            SettingsView()
             HomeView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
 //            SwiftUIView()

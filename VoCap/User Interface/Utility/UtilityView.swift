@@ -14,21 +14,7 @@ struct UtilityView: View {
     var body: some View {
         VStack {
             Text("Addition")
-                .toolbar {          // When access, Constraint Warning
-                    ToolbarItem(placement: .bottomBar) {
-                        Button(action: {print("1") }) {
-                            Image(systemName: "1.square")
-                        }
-                    }
-                    
-                    ToolbarItem(placement: .bottomBar) { Spacer() }
-                    
-                    ToolbarItem(placement: .bottomBar) {
-                        Button(action: {print("2") }) {
-                            Image(systemName: "2.square")
-                        }
-                    }
-                }
+                
             
 //            Text("Home View")
 //            Button(action: { test1() }) {
@@ -37,6 +23,21 @@ struct UtilityView: View {
 //            Button(action: { test2() }) {
 //                Text("get an entry")
 //            }
+        }
+        .toolbar {          // When access, Constraint Warning
+            ToolbarItem(placement: .bottomBar) {
+                Button(action: {print("1") }) {
+                    Image(systemName: "1.square")
+                }
+            }
+            
+            ToolbarItem(placement: .bottomBar) { Spacer() }
+            
+            ToolbarItem(placement: .bottomBar) {
+                Button(action: {print("2") }) {
+                    Image(systemName: "2.square")
+                }
+            }
         }
     }
     
