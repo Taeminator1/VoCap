@@ -74,9 +74,7 @@ struct HomeView: View {
                 .onMove(perform: moveItems)
             }
             .listStyle(PlainListStyle())                        // 안해주면 Add Note 누를 때, title bar button 초기 색이 하얗게 됨
-            .navigationBarItems(leading: leadingItem, trailing: EditButton())
             .navigationBarTitle("VoCap", displayMode: .inline)
-            .environment(\.editMode, self.$isEditMode)          // 없으면 Edit 오류 생김(해당 위치에 있어야 함)
             .sheet(isPresented: $isEditNotePresented) {
                 MakeNoteView(note: TmpNote(note: notes[noteRowOrder]), dNote: TmpNote(note: notes[noteRowOrder]), isAddNotePresented: $isAddNotePresented, isEditNotePresented: $isEditNotePresented) { title, colorIndex, memo in
                     self.editItems(title: title, colorIndex: colorIndex, memo: memo)
@@ -86,6 +84,14 @@ struct HomeView: View {
             .background(NavigationLink(destination: UtilityView(), isActive: $showEddition) { EmptyView() })
             .background(NavigationLink(destination: SettingsView(), isActive: $showSettings) { EmptyView() })
             .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    leadingItem
+                }
+                
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    EditButton()
+                }
+                
                 ToolbarItem(placement: .bottomBar) {
                     Button(action: { showEddition = true }) {
                         Image(systemName: "plus.circle").imageScale(.large)
@@ -100,6 +106,7 @@ struct HomeView: View {
                     }
                 }
             }
+            .environment(\.editMode, self.$isEditMode)          // 없으면 Edit 오류 생김(해당 위치에 있어야 함)
         }
         .navigationViewStyle(StackNavigationViewStyle())                // 없으면 View전환할 때마다 Tool Bar 로딩되는데 시간이 걸림
     }
@@ -146,7 +153,7 @@ private extension HomeView {
             newNote.memo = memo
 
             saveContext()
-            makeOrder()
+            makeOrder()             // 간단하게 바꿔도 될 듯
             saveContext()
         }
     }
