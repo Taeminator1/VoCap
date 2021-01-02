@@ -61,7 +61,7 @@ struct HomeView: View {
                         }
                         .buttonStyle(PlainButtonStyle())
                         
-                        NavigationLink(destination: NoteDetail(title: note.title), tag: note.id!, selection: $noteRowSelection) {
+                        NavigationLink(destination: NoteDetail(note: note), tag: note.id!, selection: $noteRowSelection) {
                             EmptyView()
                         }
                         .frame(width: 0).hidden()
