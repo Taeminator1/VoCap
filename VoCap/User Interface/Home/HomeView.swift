@@ -117,10 +117,8 @@ struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
         HomeView()
             .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
-            .previewDevice("iPhone SE (2nd generation)")
-//        HomeView()
-//            .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
-//            .previewDevice("iPhone 12 Pro")
+            .previewDevice("iPhone XR")
+//            .previewDevice("iPhone SE (2nd generation)")
 //            .preferredColorScheme(.dark)
     }
 }

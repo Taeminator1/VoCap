@@ -36,15 +36,13 @@ struct MakeNoteView: View {
     }
 }
 
-//struct AddNoteView_Previews: PreviewProvider {
-//
-//    static var previews: some View {
-//        AddNoteView(isAddNotePresented: .constant(true),
-//                    onComplete: { (String, Int16, String) -> Void in
-//                        return
-//                    })
-//    }
-//}
+struct AddNoteView_Previews: PreviewProvider {
+
+    static var previews: some View {
+        MakeNoteView(isAddNotePresented: .constant(true), isEditNotePresented: .constant(false)) {_,_,_ in
+        }
+    }
+}
 
 
 // MARK: - Navigation Bar Items

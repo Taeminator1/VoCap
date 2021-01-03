@@ -23,7 +23,6 @@
 		34C33C6125A02F7E00302560 /* Note+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C33C5F25A02F7E00302560 /* Note+CoreDataClass.swift */; };
 		34C33C6225A02F7E00302560 /* Note+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C33C6025A02F7E00302560 /* Note+CoreDataProperties.swift */; };
 		34D88F3E256D2A65009B10AF /* VoCapApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D88F3D256D2A65009B10AF /* VoCapApp.swift */; };
-		34D88F40256D2A65009B10AF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D88F3F256D2A65009B10AF /* ContentView.swift */; };
 		34D88F42256D2A68009B10AF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 34D88F41256D2A68009B10AF /* Assets.xcassets */; };
 		34D88F45256D2A68009B10AF /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 34D88F44256D2A68009B10AF /* Preview Assets.xcassets */; };
 		34D88F47256D2A68009B10AF /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D88F46256D2A68009B10AF /* Persistence.swift */; };
@@ -67,7 +66,6 @@
 		34C33C6025A02F7E00302560 /* Note+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Note+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		34D88F3A256D2A65009B10AF /* VoCap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VoCap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		34D88F3D256D2A65009B10AF /* VoCapApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoCapApp.swift; sourceTree = "<group>"; };
-		34D88F3F256D2A65009B10AF /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		34D88F41256D2A68009B10AF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		34D88F44256D2A68009B10AF /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		34D88F46256D2A68009B10AF /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
@@ -216,7 +214,6 @@
 			isa = PBXGroup;
 			children = (
 				34D88F3D256D2A65009B10AF /* VoCapApp.swift */,
-				34D88F3F256D2A65009B10AF /* ContentView.swift */,
 				340491D625779CC200CD1BD7 /* User Interface */,
 				34D88F46256D2A68009B10AF /* Persistence.swift */,
 				34D88F41256D2A68009B10AF /* Assets.xcassets */,
@@ -387,7 +384,6 @@
 				340491F225779D4300CD1BD7 /* SettingsView.swift in Sources */,
 				340491ED25779D3600CD1BD7 /* UtilityView.swift in Sources */,
 				344D33F8257F8E5A004DDCCF /* MakeNoteView.swift in Sources */,
-				34D88F40256D2A65009B10AF /* ContentView.swift in Sources */,
 				34D88F3E256D2A65009B10AF /* VoCapApp.swift in Sources */,
 				340491E525779D2C00CD1BD7 /* HomeView.swift in Sources */,
 				34152FB7259A08A5007E4953 /* TmpNote.swift in Sources */,
