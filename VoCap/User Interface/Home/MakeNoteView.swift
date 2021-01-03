@@ -30,22 +30,17 @@ struct MakeNoteView: View {
             }
             .listStyle(GroupedListStyle())
             .environment(\.horizontalSizeClass, .regular)               // 이건 뭐지?
-            .navigationBarItems(leading: leadingItem, trailing: trailingItem)
             .navigationBarTitle(isAddNotePresented == true ? "Add Note" : "Edit Not", displayMode: .inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) { leadingItem }
+                ToolbarItem(placement: .navigationBarTrailing) { trailingItem }
+            }
         }
     }
 }
 
-struct AddNoteView_Previews: PreviewProvider {
 
-    static var previews: some View {
-        MakeNoteView(isAddNotePresented: .constant(true), isEditNotePresented: .constant(false)) {_,_,_ in
-        }
-    }
-}
-
-
-// MARK: - Navigation Bar Items
+// MARK: - Tool Bar Items
 private extension MakeNoteView {
     
     var leadingItem: some View {
@@ -164,3 +159,9 @@ private extension MakeNoteView {
     }
 }
 
+
+struct AddNoteView_Previews: PreviewProvider {
+    static var previews: some View {
+        MakeNoteView(isAddNotePresented: .constant(true), isEditNotePresented: .constant(false)) { _,_,_ in }
+    }
+}

@@ -21,35 +21,21 @@ struct NoteDetail: View {
     
     @State private var isEditMode: EditMode = .inactive
     
-    let cornerRadius: CGFloat = 5
-    
-    @ViewBuilder
     var body: some View {
         List {
             ForEach(tmpNoteDetails) { tmpNoteDetail in
                 HStack {
                     Text(tmpNoteDetail.term)
-                        .frame(maxWidth: .infinity, maxHeight: 60)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: cornerRadius)
-                                .stroke(Color.blue, lineWidth: 2)
-                        )
-                        .background(Color.gray)
-                        .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+                        .modifier(NoteDetailListModifier())
                         
-                    
                     Text(tmpNoteDetail.definition)
-                        .frame(maxWidth: .infinity, maxHeight: 60)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: cornerRadius)
-                                .stroke(Color.blue, lineWidth: 2)
-                        )
-                        .background(Color.gray)
-                        .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+                        .modifier(NoteDetailListModifier())
                     
                     Button(action: {
-                        if isEditMode == .inactive  { changeMemorizedState(id: tmpNoteDetail.id) }
-                        else                        {
+                        if isEditMode == .inactive  {
+                            changeMemorizedState(id: tmpNoteDetail.id)
+                        }
+                        else {
                             id = tmpNoteDetail.id
                             editNoteDetail(id: tmpNoteDetail.id)
                         }
@@ -71,34 +57,20 @@ struct NoteDetail: View {
         }
         .navigationBarTitle("\(note.title!)", displayMode: .inline)
         .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                EditButton()
-            }
+            ToolbarItem(placement: .navigationBarTrailing) { EditButton() }
             
-            ToolbarItem(placement: .bottomBar) {
-                Button(action: {print("1") }) {
-                    Image(systemName: "1.square.fill")
-                }
-            }
-            
+            ToolbarItem(placement: .bottomBar) { bottom1Item }
             ToolbarItem(placement: .bottomBar) { Spacer() }
-            
-            ToolbarItem(placement: .bottomBar) {
-                Button(action: {print("2") }) {
-                    Image(systemName: "2.square.fill")
-                }
-            }
+            ToolbarItem(placement: .bottomBar) { bottom2Item }
         }
         .environment(\.editMode, self.$isEditMode)          // 해당 위치에 없으면 isEditMode 안 먹힘
         
         HStack {
             TextField("term", text: $term)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .autocapitalization(.none)
+                .modifier(NoteDetailEditorModifier())
             
             TextField("definition", text: $definition)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .autocapitalization(.none)
+                .modifier(NoteDetailEditorModifier())
             
             Button(action: { add() }) {
                 Text("Add")
@@ -109,15 +81,24 @@ struct NoteDetail: View {
     }
 }
 
-struct TmpNoteDetail: Identifiable {
-    var id: Int = -1
-    var term: String = ""
-    var definition: String = ""
-    var isMemorized: Bool = false
+// MARK: - Tool Bar Items
+extension NoteDetail {
+    var bottom1Item: some View {
+        Button(action: {print("1") }) {
+            Image(systemName: "1.square.fill")
+        }
+    }
+    
+    var bottom2Item: some View {
+        Button(action: {print("2") }) {
+            Image(systemName: "2.square.fill")
+        }
+    }
 }
 
+
 extension NoteDetail {
-    func save() {
+    func saveContext() {
         do {
             try viewContext.save()
         } catch {
@@ -134,14 +115,14 @@ extension NoteDetail {
             id = note.term.count - 1
             tmpNoteDetails.append(TmpNoteDetail(id: id, term: term, definition: definition, isMemorized: isMemorized))
             note.totalNumber = Int16(id + 1)
-            save()
+            saveContext()
         }
         else {
             note.term[id] = term
             note.definition[id] = definition
             
             tmpNoteDetails[id] = TmpNoteDetail(id: id, term: term, definition: definition, isMemorized: isMemorized)
-            save()
+            saveContext()
         }
         term = ""
         definition = ""
@@ -158,8 +139,8 @@ extension NoteDetail {
         note.isMemorized.remove(atOffsets: offsets)
         
         tmpNoteDetails.remove(atOffsets: offsets)
+        saveContext()
         
-        save()
         for i in 0..<note.term.count {
             tmpNoteDetails[i].id = i
         }
@@ -175,7 +156,7 @@ extension NoteDetail {
             note.memorizedNumber += 1
         }
         note.isMemorized[id] = tmpNoteDetails[id].isMemorized
-        save()
+        saveContext()
     }
     
     func editNoteDetail(id: Int) {
@@ -186,9 +167,38 @@ extension NoteDetail {
 }
 
 //struct NoteDetail_Previews: PreviewProvider {
+//
 //    static var previews: some View {
-//        NoteDetail(title: "sample")
+//        NoteDetail(note: Note())
+//            .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+//            .previewDevice("iPhone XR")
 //    }
 //}
+
+
+// MARK: - Modifier
+struct NoteDetailListModifier: ViewModifier {
+
+    let cornerRadius: CGFloat = 5
+    
+    func body(content: Content) -> some View {
+        content
+            .frame(maxWidth: .infinity, maxHeight: 60)
+            .overlay(
+                RoundedRectangle(cornerRadius: cornerRadius)
+                    .stroke(Color.blue, lineWidth: 2)
+            )
+            .background(Color.gray)
+            .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+    }
+}
+struct NoteDetailEditorModifier: ViewModifier {
+    
+    func body(content: Content) -> some View {
+        content
+            .textFieldStyle(RoundedBorderTextFieldStyle())
+            .autocapitalization(.none)
+    }
+}
 
 

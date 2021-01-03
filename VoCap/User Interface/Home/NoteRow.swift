@@ -33,11 +33,7 @@ struct NoteRow: View {
             }
             .padding([.leading, .bottom, .trailing])
         }
-        .frame(height: 100)
-        .background(myColor.colors[Int(colorIndex)])
-        .cornerRadius(10)
-        .shadow(color: .blue, radius: 1, x: 2, y: 2)
-        .padding(.all)
+        .modifier(NoteRowModifier(colorIndex: Int(colorIndex)))
     }
 }
 
@@ -57,15 +53,12 @@ struct AddNoteRow: View {
                 Spacer()
             }
         }
-        .frame(height: 100)
-        .background(colorScheme == .dark ? Color.white : Color.black)
-        .cornerRadius(10)
-        .shadow(color: .blue, radius: 1, x: 2, y: 2)
-        .padding(.all)
+        .modifier(NoteRowModifier(colorIndex: -1))
     }
 }
 
 
+// MARK: - Preivew
 struct NoteRow_Previews: PreviewProvider {
     static var previews: some View {
         NoteRow(title: "sample")
@@ -73,5 +66,30 @@ struct NoteRow_Previews: PreviewProvider {
         
         AddNoteRow()
             .previewLayout(.sizeThatFits)
+    }
+}
+
+
+// MARK: - Modifier
+struct NoteRowModifier: ViewModifier {
+    @Environment(\.colorScheme) var colorScheme
+    let colorIndex: Int
+    
+    func body(content: Content) -> some View {
+        content
+            .frame(height: 100)
+            .background(noteRowColor())
+            .cornerRadius(10)
+            .shadow(color: .blue, radius: 1, x: 2, y: 2)
+            .padding(.all)
+    }
+    
+    func noteRowColor() -> Color {
+        if colorIndex == -1 {       // Add Note Row
+            return colorScheme == .dark ? Color.white : Color.black
+        }
+        else {                      // Note Row
+            return myColor.colors[colorIndex]
+        }
     }
 }

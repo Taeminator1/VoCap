@@ -22,6 +22,7 @@
 		34A5B649257E522A0023D1AC /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A5B648257E522A0023D1AC /* ColorExtension.swift */; };
 		34C33C6125A02F7E00302560 /* Note+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C33C5F25A02F7E00302560 /* Note+CoreDataClass.swift */; };
 		34C33C6225A02F7E00302560 /* Note+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C33C6025A02F7E00302560 /* Note+CoreDataProperties.swift */; };
+		34D5B91825A1EC3B0071326A /* TmpNoteDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D5B91725A1EC3B0071326A /* TmpNoteDetail.swift */; };
 		34D88F3E256D2A65009B10AF /* VoCapApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D88F3D256D2A65009B10AF /* VoCapApp.swift */; };
 		34D88F42256D2A68009B10AF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 34D88F41256D2A68009B10AF /* Assets.xcassets */; };
 		34D88F45256D2A68009B10AF /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 34D88F44256D2A68009B10AF /* Preview Assets.xcassets */; };
@@ -64,6 +65,7 @@
 		34A5B648257E522A0023D1AC /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 		34C33C5F25A02F7E00302560 /* Note+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Note+CoreDataClass.swift"; sourceTree = "<group>"; };
 		34C33C6025A02F7E00302560 /* Note+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Note+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		34D5B91725A1EC3B0071326A /* TmpNoteDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TmpNoteDetail.swift; sourceTree = "<group>"; };
 		34D88F3A256D2A65009B10AF /* VoCap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VoCap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		34D88F3D256D2A65009B10AF /* VoCapApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoCapApp.swift; sourceTree = "<group>"; };
 		34D88F41256D2A68009B10AF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -123,7 +125,7 @@
 				344D33F7257F8E5A004DDCCF /* MakeNoteView.swift */,
 				34152FB6259A08A5007E4953 /* TmpNote.swift */,
 				34A5B639257E3AC60023D1AC /* NoteRow.swift */,
-				3472B67625811CCC00EFA0AB /* NoteDetail.swift */,
+				34D5B91625A1EBF80071326A /* Note Detail */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -184,6 +186,15 @@
 				34A5B647257E52190023D1AC /* Extension */,
 			);
 			path = Helper;
+			sourceTree = "<group>";
+		};
+		34D5B91625A1EBF80071326A /* Note Detail */ = {
+			isa = PBXGroup;
+			children = (
+				3472B67625811CCC00EFA0AB /* NoteDetail.swift */,
+				34D5B91725A1EC3B0071326A /* TmpNoteDetail.swift */,
+			);
+			path = "Note Detail";
 			sourceTree = "<group>";
 		};
 		34D88F31256D2A65009B10AF = {
@@ -397,6 +408,7 @@
 				34C33C6125A02F7E00302560 /* Note+CoreDataClass.swift in Sources */,
 				3404921725779FC800CD1BD7 /* LexicalaFetchData.swift in Sources */,
 				3472B67725811CCC00EFA0AB /* NoteDetail.swift in Sources */,
+				34D5B91825A1EC3B0071326A /* TmpNoteDetail.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

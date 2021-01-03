@@ -28,29 +28,26 @@ struct HomeView: View {
     var body: some View {
         NavigationView {
             List {
-                Button(action: { self.isAddNotePresented = true }) {
-                    AddNoteRow()
-                }
-                .buttonStyle(BorderlessButtonStyle())
+                Button(action: { self.isAddNotePresented = true }) { AddNoteRow() }
                 .disabled(isEditMode == .inactive ? false : true)
                 .sheet(isPresented: $isAddNotePresented) {
                     let tmpNote = TmpNote()
                     MakeNoteView(note: tmpNote, dNote: tmpNote, isAddNotePresented: $isAddNotePresented, isEditNotePresented: $isEditNotePresented) { title, colorIndex, memo in
                         self.addNote(title: title, colorIndex: colorIndex, memo: memo)
                         self.isAddNotePresented = false
+                        self.isEditNotePresented = false
                     }
                 }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .listRowInsets(EdgeInsets())
-                .background(Color(UIColor.systemBackground))
+                .modifier(HomeViewNoteRowModifier())
+                .buttonStyle(BorderlessButtonStyle())
                 
                 ForEach(notes) { note in
                     HStack {
                         Button(action: {
                             if isEditMode == .inactive || isEditMode == .transient {    // When Edit Button is not pressed
-                                self.noteRowSelection = note.id         // 왜 noteRowSelection에 !붙일 때랑 안 붙일 때 다르지?
+                                self.noteRowSelection = note.id                         // 왜 noteRowSelection에 !붙일 때랑 안 붙일 때 다르지?
                             }
-                            else {                          // When Edit Button is pressed by user
+                            else {                                                      // When Edit Button is pressed by user
                                 self.noteRowOrder = Int(note.order)
                                 self.isEditNotePresented = true
                             }
@@ -59,16 +56,14 @@ struct HomeView: View {
                                 NoteRow(title: note.title!, colorIndex: note.colorIndex, totalNumber: note.totalNumber, memorizedNumber: note.memorizedNumber)
                             }
                         }
-                        .buttonStyle(PlainButtonStyle())
                         
                         NavigationLink(destination: NoteDetail(note: note), tag: note.id!, selection: $noteRowSelection) {
                             EmptyView()
                         }
                         .frame(width: 0).hidden()
                     }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .listRowInsets(EdgeInsets())
-                    .background(Color(UIColor.systemBackground))
+                    .modifier(HomeViewNoteRowModifier())
+                    .buttonStyle(PlainButtonStyle())            // .active 상태 일대 버튼 눌릴 수 있도록 함
                 }
                 .onDelete(perform: deleteItems)
                 .onMove(perform: moveItems)
@@ -76,35 +71,22 @@ struct HomeView: View {
             .listStyle(PlainListStyle())                        // 안해주면 Add Note 누를 때, title bar button 초기 색이 하얗게 됨
             .navigationBarTitle("VoCap", displayMode: .inline)
             .sheet(isPresented: $isEditNotePresented) {
-                MakeNoteView(note: TmpNote(note: notes[noteRowOrder]), dNote: TmpNote(note: notes[noteRowOrder]), isAddNotePresented: $isAddNotePresented, isEditNotePresented: $isEditNotePresented) { title, colorIndex, memo in
+                let tmpNote = TmpNote(note: notes[noteRowOrder])
+                MakeNoteView(note: tmpNote, dNote: tmpNote, isAddNotePresented: $isAddNotePresented, isEditNotePresented: $isEditNotePresented) { title, colorIndex, memo in
                     self.editItems(title: title, colorIndex: colorIndex, memo: memo)
+                    self.isEditNotePresented = false
                     self.isEditNotePresented = false
                 }
             }
             .background(NavigationLink(destination: UtilityView(), isActive: $showEddition) { EmptyView() })
             .background(NavigationLink(destination: SettingsView(), isActive: $showSettings) { EmptyView() })
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    leadingItem
-                }
+                ToolbarItem(placement: .navigationBarLeading) { leadingItem }
+                ToolbarItem(placement: .navigationBarTrailing) { EditButton() }
                 
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
-                
-                ToolbarItem(placement: .bottomBar) {
-                    Button(action: { showEddition = true }) {
-                        Image(systemName: "plus.circle").imageScale(.large)
-                    }
-                }
-                    
+                ToolbarItem(placement: .bottomBar) { bottom1Item }
                 ToolbarItem(placement: .bottomBar) { Spacer() }
-                
-                ToolbarItem(placement: .bottomBar) {
-                    Button(action: { showSettings = true }) {
-                        Image(systemName: "gearshape").imageScale(.large)
-                    }
-                }
+                ToolbarItem(placement: .bottomBar) { bottom2Item }
             }
             .environment(\.editMode, self.$isEditMode)          // 없으면 Edit 오류 생김(해당 위치에 있어야 함)
         }
@@ -112,18 +94,8 @@ struct HomeView: View {
     }
 }
 
-// MARK: - Preivew
-struct HomeView_Previews: PreviewProvider {
-    static var previews: some View {
-        HomeView()
-            .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
-            .previewDevice("iPhone XR")
-//            .previewDevice("iPhone SE (2nd generation)")
-//            .preferredColorScheme(.dark)
-    }
-}
 
-// MARK: - Navigation Bar Items
+// MARK: - Tool Bar Items
 private extension HomeView {
     var leadingItem: some View {
         NavigationLink(destination: SearchView()) {
@@ -138,9 +110,21 @@ private extension HomeView {
         
         saveContext()
     }
+    
+    var bottom1Item: some View {
+        Button(action: { showEddition = true }) {
+            Image(systemName: "plus.circle").imageScale(.large)
+        }
+    }
+    
+    var bottom2Item: some View {
+        Button(action: { showSettings = true }) {
+            Image(systemName: "gearshape").imageScale(.large)
+        }
+    }
 }
 
-// MARK: - Items
+// MARK: - Item Functions
 private extension HomeView {
     private func addNote(title: String, colorIndex: Int16, memo: String) {
         withAnimation {
@@ -176,7 +160,6 @@ private extension HomeView {
 
 // MARK: - Other Functions
 private extension HomeView {
-    
     func saveContext() {
         do {
             try viewContext.save()
@@ -206,5 +189,28 @@ private extension HomeView {
             }
         }
         notes[start].order = Int16(destination - 1)
+    }
+}
+
+
+// MARK: - Preivew
+struct HomeView_Previews: PreviewProvider {
+    static var previews: some View {
+        HomeView()
+            .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+            .previewDevice("iPhone XR")
+//            .previewDevice("iPhone SE (2nd generation)")
+//            .preferredColorScheme(.dark)
+    }
+}
+
+
+// MARK: - Modifier
+struct HomeViewNoteRowModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .listRowInsets(EdgeInsets())
+            .background(Color(UIColor.systemBackground))
     }
 }
