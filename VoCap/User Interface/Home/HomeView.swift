@@ -203,14 +203,3 @@ struct HomeView_Previews: PreviewProvider {
 //            .preferredColorScheme(.dark)
     }
 }
-
-
-// MARK: - Modifier
-struct HomeViewNoteRowModifier: ViewModifier {
-    func body(content: Content) -> some View {
-        content
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .listRowInsets(EdgeInsets())
-            .background(Color(UIColor.systemBackground))
-    }
-}

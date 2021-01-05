@@ -68,28 +68,3 @@ struct NoteRow_Previews: PreviewProvider {
             .previewLayout(.sizeThatFits)
     }
 }
-
-
-// MARK: - Modifier
-struct NoteRowModifier: ViewModifier {
-    @Environment(\.colorScheme) var colorScheme
-    let colorIndex: Int
-    
-    func body(content: Content) -> some View {
-        content
-            .frame(height: 100)
-            .background(noteRowColor())
-            .cornerRadius(10)
-            .shadow(color: .blue, radius: 1, x: 2, y: 2)
-            .padding(.all)
-    }
-    
-    func noteRowColor() -> Color {
-        if colorIndex == -1 {       // Add Note Row
-            return colorScheme == .dark ? Color.white : Color.black
-        }
-        else {                      // Note Row
-            return myColor.colors[colorIndex]
-        }
-    }
-}

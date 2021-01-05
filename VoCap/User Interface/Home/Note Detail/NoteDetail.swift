@@ -176,29 +176,6 @@ extension NoteDetail {
 //}
 
 
-// MARK: - Modifier
-struct NoteDetailListModifier: ViewModifier {
 
-    let cornerRadius: CGFloat = 5
-    
-    func body(content: Content) -> some View {
-        content
-            .frame(maxWidth: .infinity, maxHeight: 60)
-            .overlay(
-                RoundedRectangle(cornerRadius: cornerRadius)
-                    .stroke(Color.blue, lineWidth: 2)
-            )
-            .background(Color.gray)
-            .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
-    }
-}
-struct NoteDetailEditorModifier: ViewModifier {
-    
-    func body(content: Content) -> some View {
-        content
-            .textFieldStyle(RoundedBorderTextFieldStyle())
-            .autocapitalization(.none)
-    }
-}
 
 

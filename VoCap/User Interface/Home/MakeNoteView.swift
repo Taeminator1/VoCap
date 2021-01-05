@@ -31,6 +31,17 @@ struct MakeNoteView: View {
             .listStyle(GroupedListStyle())
             .environment(\.horizontalSizeClass, .regular)               // 이건 뭐지?
             .navigationBarTitle(isAddNotePresented == true ? "Add Note" : "Edit Not", displayMode: .inline)
+            .actionSheet(isPresented: $showingCancelSheet) {
+    //            "Are you sure you want to discard this new note?"
+                ActionSheet(title: Text("Are you sure you want to discard your changes?"), message: .none,
+                            buttons: [
+                                .destructive(Text("Discard Changes"), action: {
+                                                showingCancelSheet = false
+                                                isAddNotePresented = false
+                                                isEditNotePresented = false }),
+                                .cancel(Text("Keep Editing"))]
+                )
+            }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) { leadingItem }
                 ToolbarItem(placement: .navigationBarTrailing) { trailingItem }
@@ -47,17 +58,7 @@ private extension MakeNoteView {
         Button(action: cancel) {
             Text("Cancel")
         }
-        .actionSheet(isPresented: $showingCancelSheet) {
-//            "Are you sure you want to discard this new note?"
-            ActionSheet(title: Text("Are you sure you want to discard your changes?"), message: .none,
-                        buttons: [
-                            .destructive(Text("Discard Changes"), action: {
-                                            showingCancelSheet.toggle()
-                                            isAddNotePresented = false
-                                            isEditNotePresented = false }),
-                            .cancel(Text("Keep Editing"))]
-            )
-        }
+        
     }
 
     @ViewBuilder            // for conditionally view
@@ -82,7 +83,7 @@ private extension MakeNoteView {
             isEditNotePresented = false
         }
         else {
-            showingCancelSheet.toggle()
+            showingCancelSheet = true
         }
     }
 }
