@@ -42,6 +42,21 @@ struct NoteRowModifier: ViewModifier {
     }
 }
 
+struct VisibilityStyle: ViewModifier {
+   
+   @Binding var hidden: Bool
+    
+   func body(content: Content) -> some View {
+      Group {
+         if hidden {
+            content.hidden()
+         } else {
+            content
+         }
+      }
+   }
+}
+
 
 // MARK: - NoteDetail
 struct NoteDetailListModifier: ViewModifier {
@@ -67,3 +82,4 @@ struct NoteDetailEditorModifier: ViewModifier {
             .autocapitalization(.none)
     }
 }
+

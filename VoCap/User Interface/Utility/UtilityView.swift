@@ -13,7 +13,7 @@ struct UtilityView: View {
     
     var body: some View {
         VStack {
-            Text("Addition")
+            Text("Utility")
                 
             
 //            Text("Home View")

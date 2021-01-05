@@ -22,8 +22,10 @@ struct HomeView: View {
     @State private var noteRowSelection: UUID?
     @State private var noteRowOrder: Int = 0
     
-    @State private var showEddition: Bool = false
+    @State private var showUtility: Bool = false
     @State private var showSettings: Bool = false
+    
+    @State var hideNoteDetailsNumber: Bool = false
     
     var body: some View {
         NavigationView {
@@ -44,16 +46,16 @@ struct HomeView: View {
                 ForEach(notes) { note in
                     HStack {
                         Button(action: {
-                            if isEditMode == .inactive || isEditMode == .transient {    // When Edit Button is not pressed
+                            if isEditMode == .inactive || isEditMode == .transient {    // When Edit Button has been not pressed
                                 self.noteRowSelection = note.id                         // 왜 noteRowSelection에 !붙일 때랑 안 붙일 때 다르지?
                             }
-                            else {                                                      // When Edit Button is pressed by user
+                            else {                                                      // When Edit Button has been pressed by user
                                 self.noteRowOrder = Int(note.order)
                                 self.isEditNotePresented = true
                             }
                         }) {
                             VStack(alignment: .leading) {
-                                NoteRow(title: note.title!, colorIndex: note.colorIndex, totalNumber: note.totalNumber, memorizedNumber: note.memorizedNumber)
+                                NoteRow(title: note.title!, colorIndex: note.colorIndex, totalNumber: note.totalNumber, memorizedNumber: note.memorizedNumber, hideNoteDetailsNumber: $hideNoteDetailsNumber)
                             }
                         }
                         
@@ -78,11 +80,22 @@ struct HomeView: View {
                     self.isEditNotePresented = false
                 }
             }
-            .background(NavigationLink(destination: UtilityView(), isActive: $showEddition) { EmptyView() })
+            .background(NavigationLink(destination: UtilityView(), isActive: $showUtility) { EmptyView() })
             .background(NavigationLink(destination: SettingsView(), isActive: $showSettings) { EmptyView() })
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) { leadingItem }
-                ToolbarItem(placement: .navigationBarTrailing) { EditButton() }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    EditButton()
+                        .onAppear() {
+                            if isEditMode == .inactive || isEditMode == .transient {    // When Edit Button has been not pressed
+                                hideNoteDetailsNumber = false
+                            }
+                            else {                                                      // When Edit Button has been pressed by user
+                                hideNoteDetailsNumber = true
+                            }
+                        }
+                        
+                }
                 
                 ToolbarItem(placement: .bottomBar) { bottom1Item }
                 ToolbarItem(placement: .bottomBar) { Spacer() }
@@ -101,6 +114,11 @@ private extension HomeView {
         NavigationLink(destination: SearchView()) {
             Image(systemName: "magnifyingglass").imageScale(.large)
         }
+//        Button(action: {
+//            hideNoteDetailsNumber.toggle()
+//        }) {
+//            Text("aa")
+//        }
     }
     
     private func editItems(title: String, colorIndex: Int16, memo: String) {
@@ -112,7 +130,7 @@ private extension HomeView {
     }
     
     var bottom1Item: some View {
-        Button(action: { showEddition = true }) {
+        Button(action: { showUtility = true }) {
             Image(systemName: "plus.circle").imageScale(.large)
         }
     }

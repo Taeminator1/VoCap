@@ -13,6 +13,8 @@ struct NoteRow: View {
     var totalNumber: Int16 = 0
     var memorizedNumber: Int16 = 0
     
+    @Binding var hideNoteDetailsNumber: Bool
+    
     var body: some View {
         VStack() {
             HStack() {
@@ -30,6 +32,7 @@ struct NoteRow: View {
             HStack() {
                 Spacer()
                 Text("외운 목록 수: \(memorizedNumber) / \(totalNumber)")
+                    .modifier(VisibilityStyle(hidden: $hideNoteDetailsNumber))
             }
             .padding([.leading, .bottom, .trailing])
         }
@@ -61,7 +64,7 @@ struct AddNoteRow: View {
 // MARK: - Preivew
 struct NoteRow_Previews: PreviewProvider {
     static var previews: some View {
-        NoteRow(title: "sample")
+        NoteRow(title: "sample", hideNoteDetailsNumber: .constant(false))
             .previewLayout(.sizeThatFits)
         
         AddNoteRow()
