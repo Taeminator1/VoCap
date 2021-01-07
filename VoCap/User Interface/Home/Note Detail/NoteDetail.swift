@@ -12,7 +12,7 @@ struct NoteDetail: View {
     
     @ObservedObject var note: Note          // @State할 때는, 값이 바뀌어도 갱신이 안 됨,
     
-    @State var id: Int = -1
+    @State var order: Int = -1
     @State var term: String = ""
     @State var definition: String = ""
     @State var isMemorized: Bool = false
@@ -21,27 +21,45 @@ struct NoteDetail: View {
     
     @State private var isEditMode: EditMode = .inactive
     
+    @State private var isTermsHiding: Bool = false
+    @State private var isDefsHiding: Bool = false
+    @State private var isShuffled: Bool = false
+    
     var body: some View {
         List {
-            ForEach(tmpNoteDetails) { tmpNoteDetail in
+            ForEach(tmpNoteDetails) { noteDetail in
                 HStack {
-                    Text(tmpNoteDetail.term)
-                        .modifier(NoteDetailListModifier())
+                    ZStack {
+                        Text(noteDetail.term)
+                            .modifier(NoteDetailListModifier())
+                        if isTermsHiding == true {
+                            Button(action: { print(noteDetail.id) }) {
+                                Rectangle()
+                                    .frame(maxWidth: .infinity, maxHeight: 60)
+                                    .padding(-5)
+                            }
+                            .buttonStyle(PlainButtonStyle())
+                        }
+                    }
                         
-                    Text(tmpNoteDetail.definition)
-                        .modifier(NoteDetailListModifier())
+                    ZStack {
+                        Text(noteDetail.definition)
+                            .modifier(NoteDetailListModifier())
+                        if isDefsHiding == true {
+                            Button(action: { print(noteDetail.id) }) {
+                                Rectangle()
+                                    .frame(maxWidth: .infinity, maxHeight: 60)
+                                    .padding(-5)
+                            }
+                            .buttonStyle(PlainButtonStyle())
+                        }
+                    }
                     
                     Button(action: {
-                        if isEditMode == .inactive  {
-                            changeMemorizedState(id: tmpNoteDetail.id)
-                        }
-                        else {
-                            id = tmpNoteDetail.id
-                            editNoteDetail(id: tmpNoteDetail.id)
-                        }
+                        if isEditMode == .inactive  { changeMemorizedState(index: noteDetail.order) }
+                        else                        { editNoteDetail(index: noteDetail.order) }
                     }) {
-                        if tmpNoteDetail.isMemorized == true    { Image(systemName: "square.fill").imageScale(.large) }
-                        else                                    { Image(systemName: "square").imageScale(.large) }
+                        noteDetail.isMemorized == true ? Image(systemName: "square.fill") : Image(systemName: "square")
                     }
                     .buttonStyle(PlainButtonStyle())
                 }
@@ -50,18 +68,16 @@ struct NoteDetail: View {
             }
             .onDelete(perform: deleteItems)
         }
-        .onAppear() {
-            for i in 0..<note.term.count {
-                tmpNoteDetails.append(TmpNoteDetail(id: i, term: note.term[i], definition: note.definition[i], isMemorized: note.isMemorized[i]))
-            }
-        }
+        .onAppear() { copyNoteDetails() }
         .navigationBarTitle("\(note.title!)", displayMode: .inline)
         .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) { EditButton() }
+            ToolbarItem(placement: .navigationBarTrailing) { EditButton().disabled(isShuffled) }
             
-            ToolbarItem(placement: .bottomBar) { bottom1Item }
+            ToolbarItem(placement: .bottomBar) { showingTermsButton }
             ToolbarItem(placement: .bottomBar) { Spacer() }
-            ToolbarItem(placement: .bottomBar) { bottom2Item }
+            ToolbarItem(placement: .bottomBar) { shuffleButton }
+            ToolbarItem(placement: .bottomBar) { Spacer() }
+            ToolbarItem(placement: .bottomBar) { showingDefsButton }
         }
         .environment(\.editMode, self.$isEditMode)          // 해당 위치에 없으면 isEditMode 안 먹힘
         
@@ -83,20 +99,51 @@ struct NoteDetail: View {
 
 // MARK: - Tool Bar Items
 extension NoteDetail {
-    var bottom1Item: some View {
-        Button(action: {print("1") }) {
-            Image(systemName: "1.square.fill")
+    var showingTermsButton: some View {
+        Button(action: { isTermsHiding.toggle() }) {
+            isTermsHiding == true ? Image(systemName: "arrow.left") : Image(systemName: "arrow.right")
         }
     }
     
-    var bottom2Item: some View {
-        Button(action: {print("2") }) {
-            Image(systemName: "2.square.fill")
+    var shuffleButton: some View {
+        Button(action: { shuffleButtonAction() }) {
+            isShuffled == true ? Image(systemName: "return") : Image(systemName: "shuffle")
+        }
+    }
+    
+    var showingDefsButton: some View {
+        Button(action: { isDefsHiding.toggle() }) {
+            isDefsHiding == true ? Image(systemName: "arrow.right") : Image(systemName: "arrow.left")
         }
     }
 }
 
 
+// MARK: - Other Functions
+private extension NoteDetail {
+    func copyNoteDetails() {
+        for i in 0..<note.term.count {
+            tmpNoteDetails.append(TmpNoteDetail(id: i, order: i, term: note.term[i], definition: note.definition[i], isMemorized: note.isMemorized[i]))
+        }
+    }
+    
+    func shuffleButtonAction() -> Void {
+        isShuffled.toggle()
+        if isShuffled == true {
+            tmpNoteDetails.shuffle()
+            for i in 0..<note.term.count {
+                tmpNoteDetails[i].order = i
+            }
+        }
+        else {
+            tmpNoteDetails.removeAll()
+            copyNoteDetails()
+        }
+    }
+}
+
+
+// MARK: - Modify NoteDetails
 extension NoteDetail {
     func saveContext() {
         do {
@@ -112,16 +159,16 @@ extension NoteDetail {
             note.definition.append(definition)
             note.isMemorized.append(false)
             
-            id = note.term.count - 1
-            tmpNoteDetails.append(TmpNoteDetail(id: id, term: term, definition: definition, isMemorized: isMemorized))
-            note.totalNumber = Int16(id + 1)
+            order = note.term.count - 1
+            tmpNoteDetails.append(TmpNoteDetail(id: order, order: order, term: term, definition: definition, isMemorized: isMemorized))
+            note.totalNumber = Int16(order + 1)
             saveContext()
         }
         else {
-            note.term[id] = term
-            note.definition[id] = definition
+            note.term[order] = term
+            note.definition[order] = definition
             
-            tmpNoteDetails[id] = TmpNoteDetail(id: id, term: term, definition: definition, isMemorized: isMemorized)
+            tmpNoteDetails[order] = TmpNoteDetail(id: order, order: order, term: term, definition: definition, isMemorized: isMemorized)
             saveContext()
         }
         term = ""
@@ -143,28 +190,30 @@ extension NoteDetail {
         
         for i in 0..<note.term.count {
             tmpNoteDetails[i].id = i
+            tmpNoteDetails[i].order = i
         }
     }
     
-    func changeMemorizedState(id: Int) {
-        if tmpNoteDetails[id].isMemorized == true {
-            tmpNoteDetails[id].isMemorized = false
+    func changeMemorizedState(index: Int) {
+        if tmpNoteDetails[index].isMemorized == true {
+            tmpNoteDetails[index].isMemorized = false
             note.memorizedNumber -= 1
         }
         else {
-            tmpNoteDetails[id].isMemorized = true
+            tmpNoteDetails[index].isMemorized = true
             note.memorizedNumber += 1
         }
-        note.isMemorized[id] = tmpNoteDetails[id].isMemorized
+        
+        note.isMemorized[tmpNoteDetails[index].id] = tmpNoteDetails[index].isMemorized
         saveContext()
     }
     
-    func editNoteDetail(id: Int) {
-        term = tmpNoteDetails[id].term
-        definition = tmpNoteDetails[id].definition
+    func editNoteDetail(index: Int) {
+        term = tmpNoteDetails[index].term
+        definition = tmpNoteDetails[index].definition
     }
-    
 }
+
 
 //struct NoteDetail_Previews: PreviewProvider {
 //

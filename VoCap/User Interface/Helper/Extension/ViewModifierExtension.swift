@@ -20,6 +20,7 @@ struct HomeViewNoteRowModifier: ViewModifier {
 
 // MARK: - NoteRow
 struct NoteRowModifier: ViewModifier {
+    
     @Environment(\.colorScheme) var colorScheme
     let colorIndex: Int
     

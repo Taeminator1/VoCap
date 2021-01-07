@@ -91,7 +91,6 @@ private extension MakeNoteView {
 // MARK: - View of List
 private extension MakeNoteView {
     
-    @ViewBuilder            // for conditionally view
     var basicInfo: some View {
         Section() {
             

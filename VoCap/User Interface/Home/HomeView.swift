@@ -142,7 +142,7 @@ private extension HomeView {
     }
 }
 
-// MARK: - Item Functions
+// MARK: - Modify NoteRows
 private extension HomeView {
     private func addNote(title: String, colorIndex: Int16, memo: String) {
         withAnimation {
@@ -174,10 +174,7 @@ private extension HomeView {
             saveContext()
         }
     }
-}
-
-// MARK: - Other Functions
-private extension HomeView {
+    
     func saveContext() {
         do {
             try viewContext.save()
@@ -186,7 +183,10 @@ private extension HomeView {
             fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
         }
     }
-    
+}
+
+// MARK: - Other Functions
+private extension HomeView {
     func makeOrder() {
         for i in 0..<notes.count {
             notes[i].order = Int16(i)
