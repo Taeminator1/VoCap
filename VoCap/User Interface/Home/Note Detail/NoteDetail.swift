@@ -56,7 +56,7 @@ struct NoteDetail: View {
                     }
                     
                     Button(action: {
-                        if isEditMode == .inactive  { changeMemorizedState(index: noteDetail.order) }
+                        if isEditMode == .inactive  { changeMemorizedState(id: noteDetail.id) }
                         else                        { editNoteDetail(index: noteDetail.order) }
                     }) {
                         noteDetail.isMemorized == true ? Image(systemName: "square.fill") : Image(systemName: "square")
@@ -66,7 +66,7 @@ struct NoteDetail: View {
                 .listRowInsets(EdgeInsets())
                 .padding(5)
             }
-            .onDelete(perform: deleteItems)
+            .onDelete(perform: deleteItems)     // Shuffle 상태일 때 막아야 하는데...
         }
         .onAppear() { copyNoteDetails() }
         .navigationBarTitle("\(note.title!)", displayMode: .inline)
@@ -123,7 +123,7 @@ extension NoteDetail {
 private extension NoteDetail {
     func copyNoteDetails() {
         for i in 0..<note.term.count {
-            tmpNoteDetails.append(TmpNoteDetail(id: i, order: i, term: note.term[i], definition: note.definition[i], isMemorized: note.isMemorized[i]))
+            tmpNoteDetails.append(TmpNoteDetail(order: i, order2: i, term: note.term[i], definition: note.definition[i], isMemorized: note.isMemorized[i]))
         }
     }
     
@@ -153,6 +153,7 @@ extension NoteDetail {
             fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
         }
     }
+    
     func add() {
         if isEditMode == .inactive {
             note.term.append(term)
@@ -160,15 +161,15 @@ extension NoteDetail {
             note.isMemorized.append(false)
             
             order = note.term.count - 1
-            tmpNoteDetails.append(TmpNoteDetail(id: order, order: order, term: term, definition: definition, isMemorized: isMemorized))
+            tmpNoteDetails.append(TmpNoteDetail(order: order, order2: order, term: term, definition: definition, isMemorized: isMemorized))
             note.totalNumber = Int16(order + 1)
             saveContext()
         }
         else {
             note.term[order] = term
             note.definition[order] = definition
-            
-            tmpNoteDetails[order] = TmpNoteDetail(id: order, order: order, term: term, definition: definition, isMemorized: isMemorized)
+
+            tmpNoteDetails.append(TmpNoteDetail(order: order, order2: order, term: term, definition: definition, isMemorized: isMemorized))
             saveContext()
         }
         term = ""
@@ -189,26 +190,29 @@ extension NoteDetail {
         saveContext()
         
         for i in 0..<note.term.count {
-            tmpNoteDetails[i].id = i
             tmpNoteDetails[i].order = i
+            tmpNoteDetails[i].order2 = i
         }
     }
     
-    func changeMemorizedState(index: Int) {
-        if tmpNoteDetails[index].isMemorized == true {
-            tmpNoteDetails[index].isMemorized = false
-            note.memorizedNumber -= 1
+    func changeMemorizedState(id: UUID) {
+        if let index = tmpNoteDetails.firstIndex(where: { $0.id == id }) {
+            if tmpNoteDetails[index].isMemorized == true {
+                tmpNoteDetails[index].isMemorized = false
+                note.memorizedNumber -= 1
+            }
+            else {
+                tmpNoteDetails[index].isMemorized = true
+                note.memorizedNumber += 1
+            }
+            
+            note.isMemorized[tmpNoteDetails[index].order2] = tmpNoteDetails[index].isMemorized
+            saveContext()
         }
-        else {
-            tmpNoteDetails[index].isMemorized = true
-            note.memorizedNumber += 1
-        }
-        
-        note.isMemorized[tmpNoteDetails[index].id] = tmpNoteDetails[index].isMemorized
-        saveContext()
     }
     
     func editNoteDetail(index: Int) {
+        order = index
         term = tmpNoteDetails[index].term
         definition = tmpNoteDetails[index].definition
     }

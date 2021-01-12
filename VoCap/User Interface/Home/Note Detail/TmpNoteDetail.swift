@@ -8,8 +8,9 @@
 import Foundation
 
 struct TmpNoteDetail: Identifiable {
-    var id: Int = -1                    // Shuffle 해도 변하지 않음
-    var order: Int = -1                 // NoteDetail의 List에 나오는 순서
+    var id: UUID = UUID()                    // Shuffle 해도 변하지 않음 -> Delete시 갱신안하게 하기 위함
+    var order: Int = -1                      // NoteDetail의 List에 나오는 순서
+    var order2: Int = -1                     // Shuffle 해도 변하지 않음 -> changeMemorizedState
     var term: String = ""
     var definition: String = ""
     var isMemorized: Bool = false

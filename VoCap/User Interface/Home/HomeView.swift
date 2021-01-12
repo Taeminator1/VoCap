@@ -64,6 +64,7 @@ struct HomeView: View {
                         }
                         .frame(width: 0).hidden()
                     }
+                    .animation(.default)
                     .modifier(HomeViewNoteRowModifier())
                     .buttonStyle(PlainButtonStyle())            // .active 상태 일대 버튼 눌릴 수 있도록 함
                 }
