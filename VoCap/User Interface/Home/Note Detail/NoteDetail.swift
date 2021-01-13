@@ -25,33 +25,49 @@ struct NoteDetail: View {
     @State private var isDefsHiding: Bool = false
     @State private var isShuffled: Bool = false
     
+    @Namespace var namespace
+    
     var body: some View {
         List {
             ForEach(tmpNoteDetails) { noteDetail in
                 HStack {
-                    ZStack {
+                    ZStack(alignment: .leading) {
                         Text(noteDetail.term)
-                            .modifier(NoteDetailListModifier())
-                        if isTermsHiding == true {
-                            Button(action: { print(noteDetail.id) }) {
-                                Rectangle()
-                                    .frame(maxWidth: .infinity, maxHeight: 60)
-                                    .padding(-5)
-                            }
-                            .buttonStyle(PlainButtonStyle())
+                            .modifier(NoteDetailListModifier(strokeColor: Color.blue))
+                        
+                        if isTermsHiding {
+                            Rectangle()
+                                .foregroundColor(.blue)
+                                .matchedGeometryEffect(id: "TermEffect\(noteDetail.id)", in: namespace)
+                                .animation(.default)
+                                .frame(maxWidth: .infinity, maxHeight: 40)
+                        }
+                        else {
+                            Rectangle()
+                                .foregroundColor(.blue)
+                                .matchedGeometryEffect(id: "TermEffect\(noteDetail.id)", in: namespace)
+                                .animation(.default)
+                                .frame(width: 5)
                         }
                     }
                         
-                    ZStack {
+                    ZStack(alignment: .trailing) {
                         Text(noteDetail.definition)
-                            .modifier(NoteDetailListModifier())
-                        if isDefsHiding == true {
-                            Button(action: { print(noteDetail.id) }) {
-                                Rectangle()
-                                    .frame(maxWidth: .infinity, maxHeight: 60)
-                                    .padding(-5)
-                            }
-                            .buttonStyle(PlainButtonStyle())
+                            .modifier(NoteDetailListModifier(strokeColor: Color.green))
+                        
+                        if isDefsHiding {
+                            Rectangle()
+                                .foregroundColor(.green)
+                                .matchedGeometryEffect(id: "DefEffect\(noteDetail.id)", in: namespace)
+                                .animation(.default)
+                                .frame(maxWidth: .infinity, maxHeight: 40)
+                        }
+                        else {
+                            Rectangle()
+                                .foregroundColor(.green)
+                                .matchedGeometryEffect(id: "DefEffect\(noteDetail.id)", in: namespace)
+                                .animation(.default)
+                                .frame(width: 5)
                         }
                     }
                     
