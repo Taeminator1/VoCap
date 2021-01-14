@@ -25,7 +25,9 @@ struct NoteDetail: View {
     @State private var isDefsHiding: Bool = false
     @State private var isShuffled: Bool = false
     
-    @Namespace var namespace
+    @State var isTermScaled: Bool = false
+    @State var isDefScaled: Bool = false
+    @State var isScaledArray: [Bool] = []
     
     var body: some View {
         List {
@@ -33,42 +35,30 @@ struct NoteDetail: View {
                 HStack {
                     ZStack(alignment: .leading) {
                         Text(noteDetail.term)
+                            .padding(.horizontal)
                             .modifier(NoteDetailListModifier(strokeColor: Color.blue))
                         
-                        if isTermsHiding {
-                            Rectangle()
-                                .foregroundColor(.blue)
-                                .matchedGeometryEffect(id: "TermEffect\(noteDetail.id)", in: namespace)
-                                .animation(.default)
-                                .frame(maxWidth: .infinity, maxHeight: 40)
-                        }
-                        else {
-                            Rectangle()
-                                .foregroundColor(.blue)
-                                .matchedGeometryEffect(id: "TermEffect\(noteDetail.id)", in: namespace)
-                                .animation(.default)
-                                .frame(width: 5)
-                        }
+                        Rectangle()
+                            .foregroundColor(.blue)
+                            .frame(width: 5)
+                            .scaleEffect(x: isTermScaled && !isScaledArray[noteDetail.order] ? 35 : 1, y: 1, anchor: .leading)
+                            .animation(.default)
+                            .onTapGesture{}                 // Scroll 되게 하려면 필요(해당 자리에)
+                            .modifier(CustomGestureModifier(isPressed: $isScaledArray[noteDetail.order], f: { }))
                     }
                         
                     ZStack(alignment: .trailing) {
                         Text(noteDetail.definition)
+                            .padding(.horizontal)
                             .modifier(NoteDetailListModifier(strokeColor: Color.green))
                         
-                        if isDefsHiding {
-                            Rectangle()
-                                .foregroundColor(.green)
-                                .matchedGeometryEffect(id: "DefEffect\(noteDetail.id)", in: namespace)
-                                .animation(.default)
-                                .frame(maxWidth: .infinity, maxHeight: 40)
-                        }
-                        else {
-                            Rectangle()
-                                .foregroundColor(.green)
-                                .matchedGeometryEffect(id: "DefEffect\(noteDetail.id)", in: namespace)
-                                .animation(.default)
-                                .frame(width: 5)
-                        }
+                        Rectangle()
+                            .foregroundColor(.green)
+                            .frame(width: 5)
+                            .scaleEffect(x: isDefScaled && !isScaledArray[noteDetail.order] ? 35 : 1, y: 1, anchor: .trailing)
+                            .animation(.default)
+                            .onTapGesture{}                 // Scroll 되게 하려면 필요(해당 자리에)
+                            .modifier(CustomGestureModifier(isPressed: $isScaledArray[noteDetail.order], f: { }))
                     }
                     
                     Button(action: {
@@ -79,12 +69,15 @@ struct NoteDetail: View {
                     }
                     .buttonStyle(PlainButtonStyle())
                 }
+                .animation(.default)
                 .listRowInsets(EdgeInsets())
                 .padding(5)
             }
             .onDelete(perform: deleteItems)     // Shuffle 상태일 때 막아야 하는데...
         }
-        .onAppear() { copyNoteDetails() }
+        .onAppear() {
+            copyNoteDetails()
+        }
         .navigationBarTitle("\(note.title!)", displayMode: .inline)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) { EditButton().disabled(isShuffled) }
@@ -109,6 +102,7 @@ struct NoteDetail: View {
             }
             .disabled(term == "" || definition == "" ? true : false)
         }
+        .disabled(isShuffled)
         .padding()
     }
 }
@@ -116,7 +110,14 @@ struct NoteDetail: View {
 // MARK: - Tool Bar Items
 extension NoteDetail {
     var showingTermsButton: some View {
-        Button(action: { isTermsHiding.toggle() }) {
+        Button(action: {
+                if isDefsHiding == true {
+                    isDefsHiding.toggle()
+                    isDefScaled.toggle()
+                }
+                
+                isTermsHiding.toggle()
+                isTermScaled.toggle() }) {
             isTermsHiding == true ? Image(systemName: "arrow.left") : Image(systemName: "arrow.right")
         }
     }
@@ -128,7 +129,14 @@ extension NoteDetail {
     }
     
     var showingDefsButton: some View {
-        Button(action: { isDefsHiding.toggle() }) {
+        Button(action: {
+                if isTermsHiding == true {
+                    isTermsHiding.toggle()
+                    isTermScaled.toggle()
+                }
+                
+                isDefsHiding.toggle()
+                isDefScaled.toggle() }) {
             isDefsHiding == true ? Image(systemName: "arrow.right") : Image(systemName: "arrow.left")
         }
     }
@@ -140,6 +148,7 @@ private extension NoteDetail {
     func copyNoteDetails() {
         for i in 0..<note.term.count {
             tmpNoteDetails.append(TmpNoteDetail(order: i, order2: i, term: note.term[i], definition: note.definition[i], isMemorized: note.isMemorized[i]))
+            isScaledArray.append(Bool(false))
         }
     }
     
@@ -180,6 +189,8 @@ extension NoteDetail {
             tmpNoteDetails.append(TmpNoteDetail(order: order, order2: order, term: term, definition: definition, isMemorized: isMemorized))
             note.totalNumber = Int16(order + 1)
             saveContext()
+            
+            isScaledArray.append(Bool(true))
         }
         else {
             note.term[order] = term
@@ -193,22 +204,31 @@ extension NoteDetail {
     }
     
     func deleteItems(at offsets: IndexSet) {
+        let index = offsets.map({$0}).first!
+        
         note.totalNumber -= 1
-        if tmpNoteDetails[offsets.map({$0}).first!].isMemorized == true {
+        if tmpNoteDetails[index].isMemorized == true {
             note.memorizedNumber -= 1
         }
 
-        note.term.remove(atOffsets: offsets)
-        note.definition.remove(atOffsets: offsets)
-        note.isMemorized.remove(atOffsets: offsets)
+//        note.term.remove(atOffsets: offsets)
+//        note.definition.remove(atOffsets: offsets)
+//        note.isMemorized.remove(atOffsets: offsets)
         
+        note.term.remove(at: tmpNoteDetails[index].order2)
+        note.definition.remove(at: tmpNoteDetails[index].order2)
+        note.isMemorized.remove(at: tmpNoteDetails[index].order2)
+
         tmpNoteDetails.remove(atOffsets: offsets)
+        
         saveContext()
         
         for i in 0..<note.term.count {
             tmpNoteDetails[i].order = i
             tmpNoteDetails[i].order2 = i
         }
+        
+        isScaledArray.removeLast()
     }
     
     func changeMemorizedState(id: UUID) {

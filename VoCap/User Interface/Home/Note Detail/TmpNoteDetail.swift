@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 struct TmpNoteDetail: Identifiable {
     var id: UUID = UUID()                    // Shuffle 해도 변하지 않음 -> Delete시 갱신안하게 하기 위함
