@@ -64,13 +64,13 @@ struct HomeView: View {
                         }
                         .frame(width: 0).hidden()
                     }
-                    .animation(.default)
                     .modifier(HomeViewNoteRowModifier())
                     .buttonStyle(PlainButtonStyle())            // .active 상태 일대 버튼 눌릴 수 있도록 함
                 }
                 .onDelete(perform: deleteItems)
                 .onMove(perform: moveItems)
             }
+            .animation(.default)                    // 해당 자리에 있어야 함
             .listStyle(PlainListStyle())                        // 안해주면 Add Note 누를 때, title bar button 초기 색이 하얗게 됨
             .navigationBarTitle("VoCap", displayMode: .inline)
             .sheet(isPresented: $isEditNotePresented) {

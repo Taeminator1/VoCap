@@ -13,12 +13,10 @@ struct VoCapApp: App {
 
     var body: some Scene {
         WindowGroup {
+//            ContentView()
 //            CustomGestureModifierExample()
 //            SettingsView()
-            HomeView()
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
-//            SwiftUIView()
-//                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+            HomeView().environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
 }

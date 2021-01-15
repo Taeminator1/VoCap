@@ -69,12 +69,14 @@ struct NoteDetail: View {
                     }
                     .buttonStyle(PlainButtonStyle())
                 }
-                .animation(.default)
+                
                 .listRowInsets(EdgeInsets())
                 .padding(5)
             }
-            .onDelete(perform: deleteItems)     // Shuffle 상태일 때 막아야 하는데...
+            .onDelete(perform: deleteItems)
+            .deleteDisabled(isShuffled)             // Shuffle 상태일 때 delete 못하게 함
         }
+        .animation(.default)                    // 해당 자리에 있어야 함
         .onAppear() {
             copyNoteDetails()
         }
@@ -147,22 +149,19 @@ extension NoteDetail {
 private extension NoteDetail {
     func copyNoteDetails() {
         for i in 0..<note.term.count {
-            tmpNoteDetails.append(TmpNoteDetail(order: i, order2: i, term: note.term[i], definition: note.definition[i], isMemorized: note.isMemorized[i]))
+            tmpNoteDetails.append(TmpNoteDetail(order: i, term: note.term[i], definition: note.definition[i], isMemorized: note.isMemorized[i]))
             isScaledArray.append(Bool(false))
         }
     }
     
     func shuffleButtonAction() -> Void {
         isShuffled.toggle()
+        
         if isShuffled == true {
             tmpNoteDetails.shuffle()
-            for i in 0..<note.term.count {
-                tmpNoteDetails[i].order = i
-            }
         }
         else {
-            tmpNoteDetails.removeAll()
-            copyNoteDetails()
+            tmpNoteDetails = tmpNoteDetails.sorted(by: { $0.order < $1.order })
         }
     }
 }
@@ -186,7 +185,7 @@ extension NoteDetail {
             note.isMemorized.append(false)
             
             order = note.term.count - 1
-            tmpNoteDetails.append(TmpNoteDetail(order: order, order2: order, term: term, definition: definition, isMemorized: isMemorized))
+            tmpNoteDetails.append(TmpNoteDetail(order: order, term: term, definition: definition, isMemorized: isMemorized))
             note.totalNumber = Int16(order + 1)
             saveContext()
             
@@ -196,7 +195,7 @@ extension NoteDetail {
             note.term[order] = term
             note.definition[order] = definition
 
-            tmpNoteDetails.append(TmpNoteDetail(order: order, order2: order, term: term, definition: definition, isMemorized: isMemorized))
+            tmpNoteDetails.append(TmpNoteDetail(order: order, term: term, definition: definition, isMemorized: isMemorized))
             saveContext()
         }
         term = ""
@@ -215,20 +214,19 @@ extension NoteDetail {
 //        note.definition.remove(atOffsets: offsets)
 //        note.isMemorized.remove(atOffsets: offsets)
         
-        note.term.remove(at: tmpNoteDetails[index].order2)
-        note.definition.remove(at: tmpNoteDetails[index].order2)
-        note.isMemorized.remove(at: tmpNoteDetails[index].order2)
+        note.term.remove(at: tmpNoteDetails[index].order)
+        note.definition.remove(at: tmpNoteDetails[index].order)
+        note.isMemorized.remove(at: tmpNoteDetails[index].order)
 
         tmpNoteDetails.remove(atOffsets: offsets)
         
         saveContext()
         
+        // shuffle 상태에서 삭제하면 해당 구문이 return 못하게 함(shuffle 상태에서는 delete 못하게 함)
         for i in 0..<note.term.count {
             tmpNoteDetails[i].order = i
-            tmpNoteDetails[i].order2 = i
         }
-        
-        isScaledArray.removeLast()
+        isScaledArray.remove(at: tmpNoteDetails[index].order)
     }
     
     func changeMemorizedState(id: UUID) {
@@ -242,7 +240,7 @@ extension NoteDetail {
                 note.memorizedNumber += 1
             }
             
-            note.isMemorized[tmpNoteDetails[index].order2] = tmpNoteDetails[index].isMemorized
+            note.isMemorized[tmpNoteDetails[index].order] = tmpNoteDetails[index].isMemorized
             saveContext()
         }
     }
