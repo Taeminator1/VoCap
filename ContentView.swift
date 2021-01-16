@@ -6,28 +6,33 @@
 //
 
 //  https://www.ioscreator.com/tutorials/swiftui-delete-multiple-rows-list-tutorial
+//  https://fxstudio.dev/mini-series-swiftui-list-with-multiple-selection/
 //  Modified by Taeminator
 
 import SwiftUI
 
 struct ContentView: View {
-    @State var numbers = ["One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten"]
+    @State var xxNumbers: [xxStruct] = [xxStruct(number: "1"), xxStruct(number: "2"), xxStruct(number: "3"), xxStruct(number: "4")]
+    
     @State var editMode = EditMode.inactive
-    @State var selection = Set<String>()
+    @State var selection = Set<UUID>()
     
     var body: some View {
         NavigationView {
                 List(selection: $selection) {
-                    ForEach(numbers, id: \.self) { number in
-                        Text(number)
+                    ForEach(xxNumbers) { number in
+                        Text(number.number)
                     }
                     .onMove(perform: moveItems)
                     .onDelete(perform: deleteItems)
                 }
                 .animation(.default)
-                 // 2.
-                .navigationBarItems(leading: deleteButton, trailing: editButton)
-                 // 3.
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) { editButton }
+                    
+                    ToolbarItem(placement: .bottomBar) { Spacer() }
+                    ToolbarItem(placement: .bottomBar) { deleteButton }
+                }
                 .environment(\.editMode, self.$editMode)
             }
     }
@@ -36,7 +41,7 @@ struct ContentView: View {
         if editMode == .inactive {
             return Button(action: {
                 self.editMode = .active
-                self.selection = Set<String>()
+                self.selection = Set<UUID>()
             }) {
                 Text("Edit")
             }
@@ -44,7 +49,7 @@ struct ContentView: View {
         else {
             return Button(action: {
                 self.editMode = .inactive
-                self.selection = Set<String>()
+                self.selection = Set<UUID>()
             }) {
                 Text("Done")
             }
@@ -54,22 +59,23 @@ struct ContentView: View {
     private var deleteButton: some View {
         if editMode == .inactive {
             return Button(action: {}) {
-                Image(systemName: "square")
+                Text("")
             }
         } else {
             return Button(action: deleteNumbers) {
-                Image(systemName: "trash")
+                Text("Delete")
             }
         }
     }
     
     private func deleteNumbers() {
+        print("\(selection.count)")
         for id in selection {
-            if let index = numbers.lastIndex(where: { $0 == id })  {
-                numbers.remove(at: index)
+            if let index = xxNumbers.lastIndex(where: { $0.id == id })  {
+                xxNumbers.remove(at: index)
             }
         }
-        selection = Set<String>()
+        selection = Set<UUID>()
     }
     
     private func deleteItems(offsets: IndexSet) {
@@ -79,15 +85,19 @@ struct ContentView: View {
     
     private func moveItems(from source: IndexSet, to destination: Int) {
 //            withAnimation {
-//
 //            }
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
+struct xxStruct: Identifiable {
+    var id: UUID = UUID()
+    var number: String = "a"
 }
+
+//struct ContentView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ContentView()
+//    }
+//}
 
 

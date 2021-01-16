@@ -20,6 +20,7 @@ struct NoteDetail: View {
     @State var tmpNoteDetails: [TmpNoteDetail] = []
     
     @State private var isEditMode: EditMode = .inactive
+    @State var selection = Set<UUID>()
     
     @State private var isTermsHiding: Bool = false
     @State private var isDefsHiding: Bool = false
@@ -30,7 +31,7 @@ struct NoteDetail: View {
     @State var isScaledArray: [Bool] = []
     
     var body: some View {
-        List {
+        List(selection: $selection) {
             ForEach(tmpNoteDetails) { noteDetail in
                 HStack {
                     ZStack(alignment: .leading) {
@@ -62,14 +63,18 @@ struct NoteDetail: View {
                     }
                     
                     Button(action: {
-                        if isEditMode == .inactive  { changeMemorizedState(id: noteDetail.id) }
-                        else                        { editNoteDetail(index: noteDetail.order) }
+                        if isEditMode == .inactive { changeMemorizedState(id: noteDetail.id) }
+                        else {
+                            editNoteDetail(index: noteDetail.order)         // 선택 하면 해당 row 편집
+                        }
+                        
                     }) {
-                        noteDetail.isMemorized == true ? Image(systemName: "square.fill") : Image(systemName: "square")
+//                        if isEditMode == .inactive {
+                            noteDetail.isMemorized == true ? Image(systemName: "square.fill") : Image(systemName: "square")
+//                        }
                     }
                     .buttonStyle(PlainButtonStyle())
                 }
-                
                 .listRowInsets(EdgeInsets())
                 .padding(5)
             }
@@ -82,13 +87,17 @@ struct NoteDetail: View {
         }
         .navigationBarTitle("\(note.title!)", displayMode: .inline)
         .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) { EditButton().disabled(isShuffled) }
+//            ToolbarItem(placement: .navigationBarTrailing) { EditButton().disabled(isShuffled) }
+            ToolbarItem(placement: .navigationBarTrailing) { editButton.disabled(isShuffled) }
             
-            ToolbarItem(placement: .bottomBar) { showingTermsButton }
+            ToolbarItem(placement: .bottomBar) { if isEditMode == .inactive { showingTermsButton } }
             ToolbarItem(placement: .bottomBar) { Spacer() }
-            ToolbarItem(placement: .bottomBar) { shuffleButton }
+            ToolbarItem(placement: .bottomBar) { if isEditMode == .inactive { shuffleButton } }
             ToolbarItem(placement: .bottomBar) { Spacer() }
-            ToolbarItem(placement: .bottomBar) { showingDefsButton }
+            ToolbarItem(placement: .bottomBar) {
+                if isEditMode == .inactive { showingDefsButton }
+                else { deleteButton }
+            }
         }
         .environment(\.editMode, self.$isEditMode)          // 해당 위치에 없으면 isEditMode 안 먹힘
         
@@ -202,6 +211,47 @@ extension NoteDetail {
         definition = ""
     }
     
+    private var editButton: some View {
+        if isEditMode == .inactive {
+            return Button(action: {
+                self.isEditMode = .active
+                self.selection = Set<UUID>()
+            }) {
+                Text("Edit")
+            }
+        }
+        else {
+            return Button(action: {
+                self.isEditMode = .inactive
+                self.selection = Set<UUID>()
+            }) {
+                Text("Done")
+            }
+        }
+    }
+    
+    private var deleteButton: some View {
+        Button(action: {
+            for id in selection {
+                if let index = tmpNoteDetails.lastIndex(where: { $0.id == id })  {
+                    note.term.remove(at: index)
+                    note.definition.remove(at: index)
+                    note.isMemorized.remove(at: index)
+                    
+                    tmpNoteDetails.remove(at: index)
+                    isScaledArray.remove(at: index)
+                }
+            }
+            saveContext()
+            
+            for i in 0..<note.term.count {
+                tmpNoteDetails[i].order = i
+            }
+        }) {
+            Text("Delete")
+        }
+    }
+    
     func deleteItems(at offsets: IndexSet) {
         let index = offsets.map({$0}).first!
         
@@ -210,15 +260,16 @@ extension NoteDetail {
             note.memorizedNumber -= 1
         }
 
-//        note.term.remove(atOffsets: offsets)
-//        note.definition.remove(atOffsets: offsets)
-//        note.isMemorized.remove(atOffsets: offsets)
+        note.term.remove(atOffsets: offsets)
+        note.definition.remove(atOffsets: offsets)
+        note.isMemorized.remove(atOffsets: offsets)
         
-        note.term.remove(at: tmpNoteDetails[index].order)
-        note.definition.remove(at: tmpNoteDetails[index].order)
-        note.isMemorized.remove(at: tmpNoteDetails[index].order)
+//        note.term.remove(at: tmpNoteDetails[index].order)
+//        note.definition.remove(at: tmpNoteDetails[index].order)
+//        note.isMemorized.remove(at: tmpNoteDetails[index].order)
 
         tmpNoteDetails.remove(atOffsets: offsets)
+        isScaledArray.remove(atOffsets: offsets)
         
         saveContext()
         
@@ -226,7 +277,6 @@ extension NoteDetail {
         for i in 0..<note.term.count {
             tmpNoteDetails[i].order = i
         }
-        isScaledArray.remove(at: tmpNoteDetails[index].order)
     }
     
     func changeMemorizedState(id: UUID) {
