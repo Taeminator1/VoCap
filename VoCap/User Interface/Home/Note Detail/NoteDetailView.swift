@@ -12,18 +12,15 @@ struct NoteDetailView: View {
     
     @ObservedObject var note: Note          // @State할 때는, 값이 바뀌어도 갱신이 안 됨,
     
-    @State var order: Int = -1
-    @State var term: String = ""
-    @State var definition: String = ""
-    @State var isMemorized: Bool = false
+    @State var tmpNoteDetail = NoteDetail()         // note의 수정을 위한 임시 저장소
     
     @State var tmpNoteDetails: [NoteDetail] = []
     
     @State var editMode: EditMode = .inactive
     @State var selection = Set<UUID>()
     
-    @State var isTermsHiding: Bool = false
-    @State var isDefsHiding: Bool = false
+    @State var isTermsScreen: Bool = false
+    @State var isDefsScreen: Bool = false
     @State var isShuffled: Bool = false
     
     @State var isTermScaled: Bool = false
@@ -55,16 +52,16 @@ struct NoteDetailView: View {
         .environment(\.editMode, self.$editMode)          // 해당 위치에 없으면 editMode 안 먹힘
         
         HStack {
-            TextField("term", text: $term)
+            TextField("term", text: $tmpNoteDetail.term)
                 .modifier(NoteDetailEditorModifier())
             
-            TextField("definition", text: $definition)
+            TextField("definition", text: $tmpNoteDetail.definition)
                 .modifier(NoteDetailEditorModifier())
             
             Button(action: { add() }) {
                 Text("Add")
             }
-            .disabled(term == "" || definition == "" ? true : false)
+            .disabled(tmpNoteDetail.term == "" || tmpNoteDetail.definition == "" ? true : false)
         }
         .disabled(isShuffled)
         .padding()
@@ -76,12 +73,12 @@ extension NoteDetailView {
         HStack {
             ZStack(alignment: .leading) {
                 noteDetailText(noteDetail.term, strokeColor: .blue)
-                noteDetailScreen(noteDetail.order, strokeColor: .blue, isScreen: isTermsHiding, anchor: .leading)
+                noteDetailScreen(noteDetail.order, strokeColor: .blue, isScreen: isTermsScreen, anchor: .leading)
             }
                 
             ZStack(alignment: .trailing) {
                 noteDetailText(noteDetail.definition, strokeColor: .green)
-                noteDetailScreen(noteDetail.order, strokeColor: .green, isScreen: isDefsHiding, anchor: .trailing)
+                noteDetailScreen(noteDetail.order, strokeColor: .green, isScreen: isDefsScreen, anchor: .trailing)
             }
             
             Button(action: {
@@ -119,14 +116,13 @@ extension NoteDetailView {
 extension NoteDetailView {
     var showingTermsButton: some View {
         Button(action: {
-                if isDefsHiding == true {
-                    isDefsHiding.toggle()
+                if isDefsScreen == true {
+                    isDefsScreen.toggle()
                     isDefScaled.toggle()
                 }
-                
-                isTermsHiding.toggle()
+                isTermsScreen.toggle()
                 isTermScaled.toggle() }) {
-            isTermsHiding == true ? Image(systemName: "arrow.left") : Image(systemName: "arrow.right")
+            isTermsScreen == true ? Image(systemName: "arrow.left") : Image(systemName: "arrow.right")
         }
     }
     
@@ -138,14 +134,13 @@ extension NoteDetailView {
     
     var showingDefsButton: some View {
         Button(action: {
-                if isTermsHiding == true {
-                    isTermsHiding.toggle()
+                if isTermsScreen == true {
+                    isTermsScreen.toggle()
                     isTermScaled.toggle()
                 }
-                
-                isDefsHiding.toggle()
+                isDefsScreen.toggle()
                 isDefScaled.toggle() }) {
-            isDefsHiding == true ? Image(systemName: "arrow.right") : Image(systemName: "arrow.left")
+            isDefsScreen == true ? Image(systemName: "arrow.right") : Image(systemName: "arrow.left")
         }
     }
 }
@@ -187,40 +182,40 @@ extension NoteDetailView {
     
     func add() {
         if editMode == .inactive {
-            note.term.append(term)
-            note.definition.append(definition)
+            note.term.append(tmpNoteDetail.term)
+            note.definition.append(tmpNoteDetail.definition)
             note.isMemorized.append(false)
             
-            tmpNoteDetails.append(NoteDetail(order: note.term.count - 1, term: term, definition: definition, isMemorized: isMemorized))
-            note.totalNumber = Int16(order + 1)
+            tmpNoteDetail.order = note.term.count - 1
+            tmpNoteDetails.append(tmpNoteDetail)
             saveContext()
             
             isScaledArray.append(Bool(true))
         }
         else {
-            note.term[order] = term
-            note.definition[order] = definition
+            note.term[tmpNoteDetail.order] = tmpNoteDetail.term
+            note.definition[tmpNoteDetail.order] = tmpNoteDetail.definition
 
-            tmpNoteDetails[order] = NoteDetail(order: order, term: term, definition: definition, isMemorized: isMemorized)
+            tmpNoteDetails[tmpNoteDetail.order] = tmpNoteDetail
             saveContext()
         }
-        term = ""
-        definition = ""
+        tmpNoteDetail = NoteDetail()
     }
     
     private var editButton: some View {
         if editMode == .inactive {
             return Button(action: {
-                self.editMode = .active
-                self.selection = Set<UUID>()
+                editMode = .active
+                selection = Set<UUID>()
             }) {
                 Text("Edit")
             }
         }
         else {
             return Button(action: {
-                self.editMode = .inactive
-                self.selection = Set<UUID>()
+                editMode = .inactive
+                selection = Set<UUID>()
+                tmpNoteDetail = NoteDetail()
             }) {
                 Text("Done")
             }
@@ -241,29 +236,16 @@ extension NoteDetailView {
             }
             saveContext()
             
-            for i in 0..<note.term.count {
-                tmpNoteDetails[i].order = i
-            }
+            for i in 0..<note.term.count { tmpNoteDetails[i].order = i }
         }) {
             Text("Delete")
         }
     }
     
     func deleteItems(at offsets: IndexSet) {
-        let index = offsets.map({$0}).first!
-        
-        note.totalNumber -= 1
-        if tmpNoteDetails[index].isMemorized == true {
-            note.memorizedNumber -= 1
-        }
-
         note.term.remove(atOffsets: offsets)
         note.definition.remove(atOffsets: offsets)
         note.isMemorized.remove(atOffsets: offsets)
-        
-//        note.term.remove(at: tmpNoteDetails[index].order)
-//        note.definition.remove(at: tmpNoteDetails[index].order)
-//        note.isMemorized.remove(at: tmpNoteDetails[index].order)
 
         tmpNoteDetails.remove(atOffsets: offsets)
         isScaledArray.remove(atOffsets: offsets)
@@ -271,21 +253,12 @@ extension NoteDetailView {
         saveContext()
         
         // shuffle 상태에서 삭제하면 해당 구문이 return 못하게 함(shuffle 상태에서는 delete 못하게 함)
-        for i in 0..<note.term.count {
-            tmpNoteDetails[i].order = i
-        }
+        for i in 0..<note.term.count { tmpNoteDetails[i].order = i }
     }
     
     func changeMemorizedState(id: UUID) {
         if let index = tmpNoteDetails.firstIndex(where: { $0.id == id }) {
-            if tmpNoteDetails[index].isMemorized == true {
-                tmpNoteDetails[index].isMemorized = false
-                note.memorizedNumber -= 1
-            }
-            else {
-                tmpNoteDetails[index].isMemorized = true
-                note.memorizedNumber += 1
-            }
+            tmpNoteDetails[index].isMemorized.toggle()
             
             note.isMemorized[tmpNoteDetails[index].order] = tmpNoteDetails[index].isMemorized
             saveContext()
@@ -293,9 +266,7 @@ extension NoteDetailView {
     }
     
     func editNoteDetail(index: Int) {
-        order = index
-        term = tmpNoteDetails[index].term
-        definition = tmpNoteDetails[index].definition
+        tmpNoteDetail = tmpNoteDetails[index]
     }
 }
 

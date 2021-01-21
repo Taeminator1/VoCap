@@ -55,7 +55,7 @@ struct HomeView: View {
                             }
                         }) {
                             VStack(alignment: .leading) {
-                                NoteRow(title: note.title!, colorIndex: note.colorIndex, totalNumber: note.totalNumber, memorizedNumber: note.memorizedNumber, hideNoteDetailsNumber: $hideNoteDetailsNumber)
+                                NoteRow(title: note.title!, colorIndex: note.colorIndex, totalNumber: Int16(note.term.count), memorizedNumber: Int16(countTrues(note.isMemorized)), hideNoteDetailsNumber: $hideNoteDetailsNumber)
                             }
                         }
                         
@@ -208,6 +208,14 @@ private extension HomeView {
             }
         }
         notes[start].order = Int16(destination - 1)
+    }
+    
+    func countTrues(_ arr: [Bool]) -> Int {
+        var result: Int = 0
+        for i in 0..<arr.count {
+            if arr[i] { result += 1 }
+        }
+        return result
     }
 }
 
