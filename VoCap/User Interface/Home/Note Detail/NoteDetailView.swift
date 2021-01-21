@@ -19,12 +19,12 @@ struct NoteDetailView: View {
     
     @State var tmpNoteDetails: [NoteDetail] = []
     
-    @State private var editMode: EditMode = .inactive
+    @State var editMode: EditMode = .inactive
     @State var selection = Set<UUID>()
     
-    @State private var isTermsHiding: Bool = false
-    @State private var isDefsHiding: Bool = false
-    @State private var isShuffled: Bool = false
+    @State var isTermsHiding: Bool = false
+    @State var isDefsHiding: Bool = false
+    @State var isShuffled: Bool = false
     
     @State var isTermScaled: Bool = false
     @State var isDefScaled: Bool = false
@@ -33,63 +33,16 @@ struct NoteDetailView: View {
     var body: some View {
         List(selection: $selection) {
             ForEach(tmpNoteDetails) { noteDetail in
-                HStack {
-                    ZStack(alignment: .leading) {
-                        Text(noteDetail.term)
-                            .padding(.horizontal)
-                            .modifier(NoteDetailListModifier(strokeColor: Color.blue))
-                        
-                        Rectangle()
-                            .foregroundColor(.blue)
-                            .frame(width: 5)
-                            .scaleEffect(x: isTermScaled && !isScaledArray[noteDetail.order] ? 35 : 1, y: 1, anchor: .leading)
-                            .animation(.default)
-                            .onTapGesture{}                 // Scroll 되게 하려면 필요(해당 자리에)
-                            .modifier(CustomGestureModifier(isPressed: $isScaledArray[noteDetail.order], f: { }))
-                    }
-                        
-                    ZStack(alignment: .trailing) {
-                        Text(noteDetail.definition)
-                            .padding(.horizontal)
-                            .modifier(NoteDetailListModifier(strokeColor: Color.green))
-                        
-                        Rectangle()
-                            .foregroundColor(.green)
-                            .frame(width: 5)
-                            .scaleEffect(x: isDefScaled && !isScaledArray[noteDetail.order] ? 35 : 1, y: 1, anchor: .trailing)
-                            .animation(.default)
-                            .onTapGesture{}                 // Scroll 되게 하려면 필요(해당 자리에)
-                            .modifier(CustomGestureModifier(isPressed: $isScaledArray[noteDetail.order], f: { }))
-                    }
-                    
-                    Button(action: {
-                        if editMode == .inactive { changeMemorizedState(id: noteDetail.id) }
-                        else {
-                            editNoteDetail(index: noteDetail.order)         // 선택 하면 해당 row 편집
-                        }
-                        
-                    }) {
-//                        if editMode == .inactive {
-                            noteDetail.isMemorized == true ? Image(systemName: "square.fill") : Image(systemName: "square")
-//                        }
-                    }
-                    .buttonStyle(PlainButtonStyle())
-                }
-                .listRowInsets(EdgeInsets())
-                .padding(5)
+                noteDetailRow(noteDetail)
             }
             .onDelete(perform: deleteItems)
             .deleteDisabled(isShuffled)             // Shuffle 상태일 때 delete 못하게 함
         }
         .animation(.default)                    // 해당 자리에 있어야 함
-        .onAppear() {
-            copyNoteDetails()
-        }
+        .onAppear() { copyNoteDetails() }
         .navigationBarTitle("\(note.title!)", displayMode: .inline)
         .toolbar {
-//            ToolbarItem(placement: .navigationBarTrailing) { EditButton().disabled(isShuffled) }
             ToolbarItem(placement: .navigationBarTrailing) { editButton.disabled(isShuffled) }
-            
             ToolbarItem(placement: .bottomBar) { if editMode == .inactive { showingTermsButton } }
             ToolbarItem(placement: .bottomBar) { Spacer() }
             ToolbarItem(placement: .bottomBar) { if editMode == .inactive { shuffleButton } }
@@ -115,6 +68,50 @@ struct NoteDetailView: View {
         }
         .disabled(isShuffled)
         .padding()
+    }
+}
+
+extension NoteDetailView {
+    func noteDetailRow(_ noteDetail: NoteDetail) -> some View {
+        HStack {
+            ZStack(alignment: .leading) {
+                noteDetailText(noteDetail.term, strokeColor: .blue)
+                noteDetailScreen(noteDetail.order, strokeColor: .blue, isScreen: isTermsHiding, anchor: .leading)
+            }
+                
+            ZStack(alignment: .trailing) {
+                noteDetailText(noteDetail.definition, strokeColor: .green)
+                noteDetailScreen(noteDetail.order, strokeColor: .green, isScreen: isDefsHiding, anchor: .trailing)
+            }
+            
+            Button(action: {
+                if editMode == .inactive { changeMemorizedState(id: noteDetail.id) }
+                else { editNoteDetail(index: noteDetail.order) }         // 선택 하면 해당 row 편집
+            }) {
+//                        if editMode == .inactive {
+                    noteDetail.isMemorized == true ? Image(systemName: "square.fill") : Image(systemName: "square")
+//                        }
+            }
+            .buttonStyle(PlainButtonStyle())
+        }
+        .listRowInsets(EdgeInsets())
+        .padding(5)
+    }
+    
+    func noteDetailText(_ text: String, strokeColor: Color) -> some View {
+        Text(text)
+            .padding(.horizontal)
+            .modifier(NoteDetailListModifier(strokeColor: strokeColor))
+    }
+    
+    func noteDetailScreen(_ order: Int, strokeColor: Color, isScreen: Bool, anchor: UnitPoint) -> some View {
+        Rectangle()
+            .foregroundColor(strokeColor)
+            .frame(width: 5)
+            .scaleEffect(x: isScreen && !isScaledArray[order] ? 35 : 1, y: 1, anchor: anchor)
+            .animation(.default)
+            .onTapGesture{}                 // Scroll 되게 하려면 필요(해당 자리에)
+            .modifier(CustomGestureModifier(isPressed: $isScaledArray[order], f: { }))
     }
 }
 
@@ -194,8 +191,7 @@ extension NoteDetailView {
             note.definition.append(definition)
             note.isMemorized.append(false)
             
-            order = note.term.count - 1
-            tmpNoteDetails.append(NoteDetail(order: order, term: term, definition: definition, isMemorized: isMemorized))
+            tmpNoteDetails.append(NoteDetail(order: note.term.count - 1, term: term, definition: definition, isMemorized: isMemorized))
             note.totalNumber = Int16(order + 1)
             saveContext()
             
@@ -312,8 +308,4 @@ extension NoteDetailView {
 //            .previewDevice("iPhone XR")
 //    }
 //}
-
-
-
-
 
