@@ -59,7 +59,7 @@ struct HomeView: View {
                             }
                         }
                         
-                        NavigationLink(destination: NoteDetail(note: note), tag: note.id!, selection: $noteRowSelection) {
+                        NavigationLink(destination: NoteDetailView(note: note), tag: note.id!, selection: $noteRowSelection) {
                             EmptyView()
                         }
                         .frame(width: 0).hidden()

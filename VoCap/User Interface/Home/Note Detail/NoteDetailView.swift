@@ -1,5 +1,5 @@
 //
-//  NoteDetail.swift
+//  NoteDetailView.swift
 //  VoCap
 //
 //  Created by 윤태민 on 12/9/20.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct NoteDetail: View {
+struct NoteDetailView: View {
     @Environment(\.managedObjectContext) private var viewContext
     
     @ObservedObject var note: Note          // @State할 때는, 값이 바뀌어도 갱신이 안 됨,
@@ -17,9 +17,9 @@ struct NoteDetail: View {
     @State var definition: String = ""
     @State var isMemorized: Bool = false
     
-    @State var tmpNoteDetails: [TmpNoteDetail] = []
+    @State var tmpNoteDetails: [NoteDetail] = []
     
-    @State private var isEditMode: EditMode = .inactive
+    @State private var editMode: EditMode = .inactive
     @State var selection = Set<UUID>()
     
     @State private var isTermsHiding: Bool = false
@@ -63,13 +63,13 @@ struct NoteDetail: View {
                     }
                     
                     Button(action: {
-                        if isEditMode == .inactive { changeMemorizedState(id: noteDetail.id) }
+                        if editMode == .inactive { changeMemorizedState(id: noteDetail.id) }
                         else {
                             editNoteDetail(index: noteDetail.order)         // 선택 하면 해당 row 편집
                         }
                         
                     }) {
-//                        if isEditMode == .inactive {
+//                        if editMode == .inactive {
                             noteDetail.isMemorized == true ? Image(systemName: "square.fill") : Image(systemName: "square")
 //                        }
                     }
@@ -90,16 +90,16 @@ struct NoteDetail: View {
 //            ToolbarItem(placement: .navigationBarTrailing) { EditButton().disabled(isShuffled) }
             ToolbarItem(placement: .navigationBarTrailing) { editButton.disabled(isShuffled) }
             
-            ToolbarItem(placement: .bottomBar) { if isEditMode == .inactive { showingTermsButton } }
+            ToolbarItem(placement: .bottomBar) { if editMode == .inactive { showingTermsButton } }
             ToolbarItem(placement: .bottomBar) { Spacer() }
-            ToolbarItem(placement: .bottomBar) { if isEditMode == .inactive { shuffleButton } }
+            ToolbarItem(placement: .bottomBar) { if editMode == .inactive { shuffleButton } }
             ToolbarItem(placement: .bottomBar) { Spacer() }
             ToolbarItem(placement: .bottomBar) {
-                if isEditMode == .inactive { showingDefsButton }
+                if editMode == .inactive { showingDefsButton }
                 else { deleteButton }
             }
         }
-        .environment(\.editMode, self.$isEditMode)          // 해당 위치에 없으면 isEditMode 안 먹힘
+        .environment(\.editMode, self.$editMode)          // 해당 위치에 없으면 editMode 안 먹힘
         
         HStack {
             TextField("term", text: $term)
@@ -119,7 +119,7 @@ struct NoteDetail: View {
 }
 
 // MARK: - Tool Bar Items
-extension NoteDetail {
+extension NoteDetailView {
     var showingTermsButton: some View {
         Button(action: {
                 if isDefsHiding == true {
@@ -155,10 +155,11 @@ extension NoteDetail {
 
 
 // MARK: - Other Functions
-private extension NoteDetail {
+private extension NoteDetailView {
     func copyNoteDetails() {
         for i in 0..<note.term.count {
-            tmpNoteDetails.append(TmpNoteDetail(order: i, term: note.term[i], definition: note.definition[i], isMemorized: note.isMemorized[i]))
+            tmpNoteDetails.append(NoteDetail(order: i, term: note.term[i], definition: note.definition[i], isMemorized: note.isMemorized[i]))
+            
             isScaledArray.append(Bool(false))
         }
     }
@@ -177,7 +178,7 @@ private extension NoteDetail {
 
 
 // MARK: - Modify NoteDetails
-extension NoteDetail {
+extension NoteDetailView {
     func saveContext() {
         do {
             try viewContext.save()
@@ -188,13 +189,13 @@ extension NoteDetail {
     }
     
     func add() {
-        if isEditMode == .inactive {
+        if editMode == .inactive {
             note.term.append(term)
             note.definition.append(definition)
             note.isMemorized.append(false)
             
             order = note.term.count - 1
-            tmpNoteDetails.append(TmpNoteDetail(order: order, term: term, definition: definition, isMemorized: isMemorized))
+            tmpNoteDetails.append(NoteDetail(order: order, term: term, definition: definition, isMemorized: isMemorized))
             note.totalNumber = Int16(order + 1)
             saveContext()
             
@@ -204,7 +205,7 @@ extension NoteDetail {
             note.term[order] = term
             note.definition[order] = definition
 
-            tmpNoteDetails.append(TmpNoteDetail(order: order, term: term, definition: definition, isMemorized: isMemorized))
+            tmpNoteDetails[order] = NoteDetail(order: order, term: term, definition: definition, isMemorized: isMemorized)
             saveContext()
         }
         term = ""
@@ -212,9 +213,9 @@ extension NoteDetail {
     }
     
     private var editButton: some View {
-        if isEditMode == .inactive {
+        if editMode == .inactive {
             return Button(action: {
-                self.isEditMode = .active
+                self.editMode = .active
                 self.selection = Set<UUID>()
             }) {
                 Text("Edit")
@@ -222,7 +223,7 @@ extension NoteDetail {
         }
         else {
             return Button(action: {
-                self.isEditMode = .inactive
+                self.editMode = .inactive
                 self.selection = Set<UUID>()
             }) {
                 Text("Done")
@@ -303,10 +304,10 @@ extension NoteDetail {
 }
 
 
-//struct NoteDetail_Previews: PreviewProvider {
+//struct NoteDetailView_Previews: PreviewProvider {
 //
 //    static var previews: some View {
-//        NoteDetail(note: Note())
+//        NoteDetailView(note: Note())
 //            .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
 //            .previewDevice("iPhone XR")
 //    }
