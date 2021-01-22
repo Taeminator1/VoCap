@@ -12,8 +12,6 @@ struct NoteDetailView: View {
     
     @ObservedObject var note: Note          // @State할 때는, 값이 바뀌어도 갱신이 안 됨,
     
-    @State var tmpNoteDetail = NoteDetail()         // note의 수정을 위한 임시 저장소
-    
     @State var tmpNoteDetails: [NoteDetail] = []
     
     @State var editMode: EditMode = .inactive
@@ -39,7 +37,13 @@ struct NoteDetailView: View {
         .onAppear() { copyNoteDetails() }
         .navigationBarTitle("\(note.title!)", displayMode: .inline)
         .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) { editButton.disabled(isShuffled) }
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(action: { add() }) {
+                    Text("Add")
+                }
+                .disabled(editMode == .active)
+            }
+            ToolbarItem(placement: .navigationBarTrailing) { editButton }
             ToolbarItem(placement: .bottomBar) { if editMode == .inactive { showingTermsButton } }
             ToolbarItem(placement: .bottomBar) { Spacer() }
             ToolbarItem(placement: .bottomBar) { if editMode == .inactive { shuffleButton } }
@@ -50,21 +54,6 @@ struct NoteDetailView: View {
             }
         }
         .environment(\.editMode, self.$editMode)          // 해당 위치에 없으면 editMode 안 먹힘
-        
-        HStack {
-            TextField("term", text: $tmpNoteDetail.term)
-                .modifier(NoteDetailEditorModifier())
-            
-            TextField("definition", text: $tmpNoteDetail.definition)
-                .modifier(NoteDetailEditorModifier())
-            
-            Button(action: { add() }) {
-                Text("Add")
-            }
-            .disabled(tmpNoteDetail.term == "" || tmpNoteDetail.definition == "" ? true : false)
-        }
-        .disabled(isShuffled)
-        .padding()
     }
 }
 
@@ -72,22 +61,29 @@ extension NoteDetailView {
     func noteDetailRow(_ noteDetail: NoteDetail) -> some View {
         HStack {
             ZStack(alignment: .leading) {
-                noteDetailText(noteDetail.term, strokeColor: .blue)
+//                noteDetailText(noteDetail.term, strokeColor: .blue)
+//                noteDetailTextField("term", $note.term[noteDetail.order], strokeColor: .blue).disabled(editMode == .inactive)
+                if editMode == .inactive { noteDetailText(noteDetail.term, strokeColor: .blue) }
+                else { noteDetailTextField("term", $note.term[noteDetail.order], strokeColor: .blue) }
+                
                 noteDetailScreen(noteDetail.order, strokeColor: .blue, isScreen: isTermsScreen, anchor: .leading)
             }
                 
             ZStack(alignment: .trailing) {
-                noteDetailText(noteDetail.definition, strokeColor: .green)
+//                noteDetailText(noteDetail.definition, strokeColor: .green)
+//                noteDetailTextField("definition", $note.definition[noteDetail.order], strokeColor: .green).disabled(editMode == .inactive)
+                if editMode == .inactive { noteDetailText(noteDetail.definition, strokeColor: .green) }
+                else { noteDetailTextField("definition", $note.definition[noteDetail.order], strokeColor: .green) }
+                
                 noteDetailScreen(noteDetail.order, strokeColor: .green, isScreen: isDefsScreen, anchor: .trailing)
             }
             
             Button(action: {
-                if editMode == .inactive { changeMemorizedState(id: noteDetail.id) }
-                else { editNoteDetail(index: noteDetail.order) }         // 선택 하면 해당 row 편집
+                changeMemorizedState(id: noteDetail.id)
             }) {
-//                        if editMode == .inactive {
+                if editMode == .inactive {
                     noteDetail.isMemorized == true ? Image(systemName: "square.fill") : Image(systemName: "square")
-//                        }
+                }
             }
             .buttonStyle(PlainButtonStyle())
         }
@@ -101,12 +97,18 @@ extension NoteDetailView {
             .modifier(NoteDetailListModifier(strokeColor: strokeColor))
     }
     
+    func noteDetailTextField(_ placeholder: String, _ text: Binding<String>, strokeColor: Color) -> some View {
+        TextField(placeholder, text: text)
+            .padding(.horizontal)
+            .modifier(NoteDetailListModifier(strokeColor: strokeColor))
+    }
+    
     func noteDetailScreen(_ order: Int, strokeColor: Color, isScreen: Bool, anchor: UnitPoint) -> some View {
         Rectangle()
             .foregroundColor(strokeColor)
             .frame(width: 5)
             .scaleEffect(x: isScreen && !isScaledArray[order] ? 35 : 1, y: 1, anchor: anchor)
-            .animation(.default)
+//            .animation(.default)
             .onTapGesture{}                 // Scroll 되게 하려면 필요(해당 자리에)
             .modifier(CustomGestureModifier(isPressed: $isScaledArray[order], f: { }))
     }
@@ -127,7 +129,7 @@ extension NoteDetailView {
     }
     
     var shuffleButton: some View {
-        Button(action: { shuffleButtonAction() }) {
+        Button(action: { shuffle() }) {
             isShuffled == true ? Image(systemName: "return") : Image(systemName: "shuffle")
         }
     }
@@ -149,6 +151,8 @@ extension NoteDetailView {
 // MARK: - Other Functions
 private extension NoteDetailView {
     func copyNoteDetails() {
+        tmpNoteDetails = [NoteDetail]()
+        
         for i in 0..<note.term.count {
             tmpNoteDetails.append(NoteDetail(order: i, term: note.term[i], definition: note.definition[i], isMemorized: note.isMemorized[i]))
             
@@ -156,7 +160,7 @@ private extension NoteDetailView {
         }
     }
     
-    func shuffleButtonAction() -> Void {
+    func shuffle() -> Void {
         isShuffled.toggle()
         
         if isShuffled == true {
@@ -181,30 +185,23 @@ extension NoteDetailView {
     }
     
     func add() {
-        if editMode == .inactive {
-            note.term.append(tmpNoteDetail.term)
-            note.definition.append(tmpNoteDetail.definition)
-            note.isMemorized.append(false)
-            
-            tmpNoteDetail.order = note.term.count - 1
-            tmpNoteDetails.append(tmpNoteDetail)
-            saveContext()
-            
-            isScaledArray.append(Bool(true))
-        }
-        else {
-            note.term[tmpNoteDetail.order] = tmpNoteDetail.term
-            note.definition[tmpNoteDetail.order] = tmpNoteDetail.definition
-
-            tmpNoteDetails[tmpNoteDetail.order] = tmpNoteDetail
-            saveContext()
-        }
-        tmpNoteDetail = NoteDetail()
+        note.term.append("")
+        note.definition.append("")
+        note.isMemorized.append(false)
+        
+        tmpNoteDetails.append(NoteDetail(order: note.term.count - 1))
+        saveContext()
+        
+        isScaledArray.append(Bool(false))
     }
     
     private var editButton: some View {
         if editMode == .inactive {
             return Button(action: {
+                isTermsScreen = false
+                isDefsScreen = false
+                if isShuffled { shuffle() }
+                
                 editMode = .active
                 selection = Set<UUID>()
             }) {
@@ -215,7 +212,9 @@ extension NoteDetailView {
             return Button(action: {
                 editMode = .inactive
                 selection = Set<UUID>()
-                tmpNoteDetail = NoteDetail()
+                
+                saveContext()
+                copyNoteDetails()
             }) {
                 Text("Done")
             }
@@ -263,10 +262,6 @@ extension NoteDetailView {
             note.isMemorized[tmpNoteDetails[index].order] = tmpNoteDetails[index].isMemorized
             saveContext()
         }
-    }
-    
-    func editNoteDetail(index: Int) {
-        tmpNoteDetail = tmpNoteDetails[index]
     }
 }
 
