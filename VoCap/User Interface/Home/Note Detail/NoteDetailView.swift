@@ -25,6 +25,9 @@ struct NoteDetailView: View {
     @State var isDefScaled: Bool = false
     @State var isScaledArray: [Bool] = []
     
+    @State var isTextField: Bool = false
+    @State var isEditButton : Bool = true
+    
     var body: some View {
         List(selection: $selection) {
             ForEach(tmpNoteDetails) { noteDetail in
@@ -33,7 +36,8 @@ struct NoteDetailView: View {
             .onDelete(perform: deleteItems)
             .deleteDisabled(isShuffled)             // Shuffle 상태일 때 delete 못하게 함
         }
-        .animation(.default)                    // 해당 자리에 있어야 함
+//        .animation(.default)                    // 해당 자리에 있어야 함
+        .animation(.default)
         .onAppear() { copyNoteDetails() }
         .navigationBarTitle("\(note.title!)", displayMode: .inline)
         .toolbar {
@@ -43,7 +47,7 @@ struct NoteDetailView: View {
                 }
                 .disabled(editMode == .active)
             }
-            ToolbarItem(placement: .navigationBarTrailing) { editButton }
+            ToolbarItem(placement: .navigationBarTrailing) { editButton.disabled(isEditButton == false) }
             ToolbarItem(placement: .bottomBar) { if editMode == .inactive { showingTermsButton } }
             ToolbarItem(placement: .bottomBar) { Spacer() }
             ToolbarItem(placement: .bottomBar) { if editMode == .inactive { shuffleButton } }
@@ -62,20 +66,32 @@ extension NoteDetailView {
         HStack {
             ZStack(alignment: .leading) {
 //                noteDetailText(noteDetail.term, strokeColor: .blue)
-//                noteDetailTextField("term", $note.term[noteDetail.order], strokeColor: .blue).disabled(editMode == .inactive)
-                if editMode == .inactive { noteDetailText(noteDetail.term, strokeColor: .blue) }
-                else { noteDetailTextField("term", $note.term[noteDetail.order], strokeColor: .blue) }
                 
-                noteDetailScreen(noteDetail.order, strokeColor: .blue, isScreen: isTermsScreen, anchor: .leading)
+//                noteDetailTextField("term", $note.term[noteDetail.order], strokeColor: .blue).disabled(editMode == .inactive)        // Animation 느려짐
+                
+//                if editMode == .inactive { noteDetailText(noteDetail.term, strokeColor: .blue) }
+//                else { noteDetailTextField("term", $note.term[noteDetail.order], strokeColor: .blue) }
+                
+                if isTextField == false {
+                    noteDetailText(noteDetail.term, strokeColor: .blue)
+                    noteDetailScreen(noteDetail.order, strokeColor: .blue, isScreen: isTermsScreen, anchor: .leading)
+                }
+                else { noteDetailTextField("term", $note.term[noteDetail.order], strokeColor: .blue) }
             }
                 
             ZStack(alignment: .trailing) {
 //                noteDetailText(noteDetail.definition, strokeColor: .green)
-//                noteDetailTextField("definition", $note.definition[noteDetail.order], strokeColor: .green).disabled(editMode == .inactive)
-                if editMode == .inactive { noteDetailText(noteDetail.definition, strokeColor: .green) }
-                else { noteDetailTextField("definition", $note.definition[noteDetail.order], strokeColor: .green) }
                 
-                noteDetailScreen(noteDetail.order, strokeColor: .green, isScreen: isDefsScreen, anchor: .trailing)
+//                noteDetailTextField("definition", $note.definition[noteDetail.order], strokeColor: .green).disabled(editMode == .inactive)        // Animation 느려짐
+                
+//                if editMode == .inactive { noteDetailText(noteDetail.definition, strokeColor: .green) }
+//                else { noteDetailTextField("definition", $note.definition[noteDetail.order], strokeColor: .green) }
+                
+                if isTextField == false {
+                    noteDetailText(noteDetail.definition, strokeColor: .green)
+                    noteDetailScreen(noteDetail.order, strokeColor: .green, isScreen: isDefsScreen, anchor: .leading)
+                }
+                else { noteDetailTextField("definition", $note.definition[noteDetail.order], strokeColor: .green) }
             }
             
             Button(action: {
@@ -108,7 +124,6 @@ extension NoteDetailView {
             .foregroundColor(strokeColor)
             .frame(width: 5)
             .scaleEffect(x: isScreen && !isScaledArray[order] ? 35 : 1, y: 1, anchor: anchor)
-//            .animation(.default)
             .onTapGesture{}                 // Scroll 되게 하려면 필요(해당 자리에)
             .modifier(CustomGestureModifier(isPressed: $isScaledArray[order], f: { }))
     }
@@ -196,25 +211,42 @@ extension NoteDetailView {
     }
     
     private var editButton: some View {
+        
         if editMode == .inactive {
             return Button(action: {
+                isEditButton = false
                 isTermsScreen = false
                 isDefsScreen = false
                 if isShuffled { shuffle() }
                 
                 editMode = .active
                 selection = Set<UUID>()
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+                    isTextField = true
+                    isEditButton = true
+                }
             }) {
                 Text("Edit")
             }
         }
         else {
             return Button(action: {
+                isEditButton = false
+                isTextField = false
+                
                 editMode = .inactive
                 selection = Set<UUID>()
                 
                 saveContext()
-                copyNoteDetails()
+                
+//                copyNoteDetails()       // animation 때문에 사용 x
+                for i in 0..<note.term.count {
+//                    tmpNoteDetails[i] = NoteDetail(order: i, term: note.term[i], definition: note.definition[i], isMemorized: note.isMemorized[i])      // animation 때문에 사용 x
+                    tmpNoteDetails[i].term = note.term[i]
+                    tmpNoteDetails[i].definition = note.definition[i]
+                }
+                isEditButton = true
             }) {
                 Text("Done")
             }
