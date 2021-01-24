@@ -32,23 +32,21 @@ struct NoteDetailView: View {
         List(selection: $selection) {
             ForEach(tmpNoteDetails) { noteDetail in
                 noteDetailRow(noteDetail)
+                    .modifier(HomeViewNoteRowModifier())
             }
             .onDelete(perform: deleteItems)
             .deleteDisabled(isShuffled)             // Shuffle 상태일 때 delete 못하게 함
         }
-//        .animation(.default)                    // 해당 자리에 있어야 함
         .animation(.default)
         .onAppear() { copyNoteDetails() }
         .navigationBarTitle("\(note.title!)", displayMode: .inline)
         .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button(action: { add() }) {
-                    Text("Add")
-                }
-                .disabled(editMode == .active)
-            }
             ToolbarItem(placement: .navigationBarTrailing) { editButton.disabled(isEditButton == false) }
-            ToolbarItem(placement: .bottomBar) { if editMode == .inactive { showingTermsButton } }
+            
+            ToolbarItem(placement: .bottomBar) {
+                if editMode == .inactive { showingTermsButton }
+                else { addButton }
+            }
             ToolbarItem(placement: .bottomBar) { Spacer() }
             ToolbarItem(placement: .bottomBar) { if editMode == .inactive { shuffleButton } }
             ToolbarItem(placement: .bottomBar) { Spacer() }
@@ -64,34 +62,34 @@ struct NoteDetailView: View {
 extension NoteDetailView {
     func noteDetailRow(_ noteDetail: NoteDetail) -> some View {
         HStack {
-            ZStack(alignment: .leading) {
-//                noteDetailText(noteDetail.term, strokeColor: .blue)
-                
-//                noteDetailTextField("term", $note.term[noteDetail.order], strokeColor: .blue).disabled(editMode == .inactive)        // Animation 느려짐
-                
-//                if editMode == .inactive { noteDetailText(noteDetail.term, strokeColor: .blue) }
-//                else { noteDetailTextField("term", $note.term[noteDetail.order], strokeColor: .blue) }
-                
+            ZStack() {
                 if isTextField == false {
                     noteDetailText(noteDetail.term, strokeColor: .blue)
-                    noteDetailScreen(noteDetail.order, strokeColor: .blue, isScreen: isTermsScreen, anchor: .leading)
+                    GeometryReader { geometry in
+                        HStack {
+                            noteDetailScreen(noteDetail.order, initWidth: 5.0, finalWidth: geometry.size.width + 1, strokeColor: .blue, isScreen: isTermsScreen, anchor: .leading)     // 여기는 + 1 함
+                            Spacer()
+                        }
+                    }
                 }
-                else { noteDetailTextField("term", $note.term[noteDetail.order], strokeColor: .blue) }
+                else {
+                    noteDetailTextField("term", $note.term[noteDetail.order], strokeColor: .blue)
+                }
             }
                 
-            ZStack(alignment: .trailing) {
-//                noteDetailText(noteDetail.definition, strokeColor: .green)
-                
-//                noteDetailTextField("definition", $note.definition[noteDetail.order], strokeColor: .green).disabled(editMode == .inactive)        // Animation 느려짐
-                
-//                if editMode == .inactive { noteDetailText(noteDetail.definition, strokeColor: .green) }
-//                else { noteDetailTextField("definition", $note.definition[noteDetail.order], strokeColor: .green) }
-                
+            ZStack() {
                 if isTextField == false {
                     noteDetailText(noteDetail.definition, strokeColor: .green)
-                    noteDetailScreen(noteDetail.order, strokeColor: .green, isScreen: isDefsScreen, anchor: .leading)
+                    GeometryReader { geometry in
+                        HStack {
+                            Spacer()
+                            noteDetailScreen(noteDetail.order, initWidth: 5.0, finalWidth: geometry.size.width, strokeColor: .green, isScreen: isDefsScreen, anchor: .trailing)     // 여기는 + 1 안함
+                        }
+                    }
                 }
-                else { noteDetailTextField("definition", $note.definition[noteDetail.order], strokeColor: .green) }
+                else {
+                    noteDetailTextField("definition", $note.definition[noteDetail.order], strokeColor: .green)
+                }
             }
             
             Button(action: {
@@ -103,27 +101,32 @@ extension NoteDetailView {
             }
             .buttonStyle(PlainButtonStyle())
         }
-        .listRowInsets(EdgeInsets())
-        .padding(5)
+        .padding(.horizontal)
+        .padding(.vertical, 10.0)
     }
     
     func noteDetailText(_ text: String, strokeColor: Color) -> some View {
         Text(text)
+            .font(.body)
+            .lineLimit(2)
             .padding(.horizontal)
             .modifier(NoteDetailListModifier(strokeColor: strokeColor))
     }
     
     func noteDetailTextField(_ placeholder: String, _ text: Binding<String>, strokeColor: Color) -> some View {
         TextField(placeholder, text: text)
+            .font(.body)      // title2: 22, body: 17
+            .lineLimit(2)
             .padding(.horizontal)
             .modifier(NoteDetailListModifier(strokeColor: strokeColor))
     }
     
-    func noteDetailScreen(_ order: Int, strokeColor: Color, isScreen: Bool, anchor: UnitPoint) -> some View {
+    func noteDetailScreen(_ order: Int, initWidth: CGFloat = 1.0, finalWidth: CGFloat = 1.0, strokeColor: Color, isScreen: Bool, anchor: UnitPoint) -> some View {
+        
         Rectangle()
             .foregroundColor(strokeColor)
-            .frame(width: 5)
-            .scaleEffect(x: isScreen && !isScaledArray[order] ? 35 : 1, y: 1, anchor: anchor)
+            .frame(width: initWidth)
+            .scaleEffect(x: isScreen && !isScaledArray[order] ? finalWidth / initWidth : 1.0, y: 1.0, anchor: anchor)
             .onTapGesture{}                 // Scroll 되게 하려면 필요(해당 자리에)
             .modifier(CustomGestureModifier(isPressed: $isScaledArray[order], f: { }))
     }
@@ -199,6 +202,11 @@ extension NoteDetailView {
         }
     }
     
+    private var addButton: some View {
+        Button(action: { add() }) {
+            Text("Add")
+        }
+    }
     func add() {
         note.term.append("")
         note.definition.append("")
@@ -211,7 +219,6 @@ extension NoteDetailView {
     }
     
     private var editButton: some View {
-        
         if editMode == .inactive {
             return Button(action: {
                 isEditButton = false
@@ -222,7 +229,7 @@ extension NoteDetailView {
                 editMode = .active
                 selection = Set<UUID>()
                 
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {            // for animation
                     isTextField = true
                     isEditButton = true
                 }
@@ -240,9 +247,7 @@ extension NoteDetailView {
                 
                 saveContext()
                 
-//                copyNoteDetails()       // animation 때문에 사용 x
                 for i in 0..<note.term.count {
-//                    tmpNoteDetails[i] = NoteDetail(order: i, term: note.term[i], definition: note.definition[i], isMemorized: note.isMemorized[i])      // animation 때문에 사용 x
                     tmpNoteDetails[i].term = note.term[i]
                     tmpNoteDetails[i].definition = note.definition[i]
                 }

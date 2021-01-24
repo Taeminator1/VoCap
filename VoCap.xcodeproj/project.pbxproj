@@ -33,6 +33,8 @@
 		34D88F4A256D2A68009B10AF /* VoCap.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 34D88F48256D2A68009B10AF /* VoCap.xcdatamodeld */; };
 		34D88F55256D2A68009B10AF /* VoCapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D88F54256D2A68009B10AF /* VoCapTests.swift */; };
 		34D88F60256D2A68009B10AF /* VoCapUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D88F5F256D2A68009B10AF /* VoCapUITests.swift */; };
+		34FE926825BD835200EC7F6C /* XxNoteDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34FE926725BD835200EC7F6C /* XxNoteDetailView.swift */; };
+		34FE926D25BD843D00EC7F6C /* NoteDetailItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34FE926C25BD843D00EC7F6C /* NoteDetailItem.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,6 +87,8 @@
 		34D88F5B256D2A68009B10AF /* VoCapUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VoCapUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		34D88F5F256D2A68009B10AF /* VoCapUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoCapUITests.swift; sourceTree = "<group>"; };
 		34D88F61256D2A68009B10AF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		34FE926725BD835200EC7F6C /* XxNoteDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XxNoteDetailView.swift; sourceTree = "<group>"; };
+		34FE926C25BD843D00EC7F6C /* NoteDetailItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetailItem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -201,6 +205,8 @@
 			children = (
 				3472B67625811CCC00EFA0AB /* NoteDetailView.swift */,
 				34D5B91725A1EC3B0071326A /* NoteDetail.swift */,
+				34FE926725BD835200EC7F6C /* XxNoteDetailView.swift */,
+				34FE926C25BD843D00EC7F6C /* NoteDetailItem.swift */,
 			);
 			path = "Note Detail";
 			sourceTree = "<group>";
@@ -406,6 +412,8 @@
 				344D33F8257F8E5A004DDCCF /* MakeNoteView.swift in Sources */,
 				34D88F3E256D2A65009B10AF /* VoCapApp.swift in Sources */,
 				340491E525779D2C00CD1BD7 /* HomeView.swift in Sources */,
+				34FE926D25BD843D00EC7F6C /* NoteDetailItem.swift in Sources */,
+				34FE926825BD835200EC7F6C /* XxNoteDetailView.swift in Sources */,
 				34152FB7259A08A5007E4953 /* TmpNote.swift in Sources */,
 				3435E5D725AF1B8500539026 /* CustomGestureModifier.swift in Sources */,
 				34A5B63A257E3AC60023D1AC /* NoteRow.swift in Sources */,

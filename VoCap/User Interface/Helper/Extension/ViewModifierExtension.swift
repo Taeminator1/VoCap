@@ -19,7 +19,7 @@ struct HomeViewNoteRowModifier: ViewModifier {
 
 
 // MARK: - NoteRow
-struct NoteRowModifier: ViewModifier {
+struct XxNoteRowModifier: ViewModifier {
     
     @Environment(\.colorScheme) var colorScheme
     let colorIndex: Int
@@ -34,12 +34,49 @@ struct NoteRowModifier: ViewModifier {
     }
     
     func noteRowColor() -> Color {
-        if colorIndex == -1 {       // Add Note Row
+        if colorIndex == rowType.AddNoteRow.rawValue {       // Add Note Row
             return colorScheme == .dark ? Color.white : Color.black
+//            return colorScheme == .dark ? Color.black : Color.white
         }
         else {                      // Note Row
             return myColor.colors[colorIndex]
         }
+    }
+}
+
+struct NoteRowModifier: ViewModifier {
+    let colorIndex: Int
+    let height: CGFloat
+    
+    func body(content: Content) -> some View {
+        content
+            .frame(height: height)
+            .background(myColor.colors[colorIndex])
+            .cornerRadius(10)
+            .shadow(color: .blue, radius: 1, x: 2, y: 2)
+            .padding(.all)
+    }
+}
+
+struct AddNoteRowModifier: ViewModifier {
+    @Environment(\.colorScheme) var colorScheme
+    
+    let colorIndex: Int
+    let height: CGFloat
+    
+    func body(content: Content) -> some View {
+        content
+            .frame(height: height)
+            .overlay(
+                RoundedRectangle(cornerRadius: 10)
+                    .stroke(noteRowColor(), style: StrokeStyle(lineWidth: 2, dash: [10]))
+                    .padding(.all, 1)
+            )
+            .padding(.all)
+    }
+    
+    func noteRowColor() -> Color {
+        return colorScheme == .dark ? Color.white : Color.black
     }
 }
 
@@ -67,6 +104,7 @@ struct NoteDetailListModifier: ViewModifier {
     
     func body(content: Content) -> some View {
         content
+            .frame(idealWidth: .infinity, idealHeight: 45, maxHeight: 45, alignment: .leading)
             .frame(maxWidth: .infinity, maxHeight: 60, alignment: .leading)
             .overlay(
                 RoundedRectangle(cornerRadius: cornerRadius)

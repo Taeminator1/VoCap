@@ -7,6 +7,10 @@
 
 import SwiftUI
 
+enum rowType: Int {
+    case AddNoteRow = -1
+}
+
 struct NoteRow: View {
     var title: String?
     var colorIndex: Int16 = 0
@@ -20,29 +24,26 @@ struct NoteRow: View {
             HStack() {
                 Image(systemName: "square").imageScale(.large)
                 Text(title!)
-                    .font(.system(size: 40))
-                    .fontWeight(.medium)
-                    
+                    .font(.largeTitle)
+                
                 Spacer()
             }
-            .padding([.top, .leading, .trailing])
-            
             Spacer()
             
             HStack() {
                 Spacer()
+                
                 Text("외운 목록 수: \(memorizedNumber) / \(totalNumber)")
+                    .font(.body)
                     .modifier(VisibilityStyle(hidden: $hideNoteDetailsNumber))
             }
-            .padding([.leading, .bottom, .trailing])
         }
-        .modifier(NoteRowModifier(colorIndex: Int(colorIndex)))
+        .padding()
+        .modifier(NoteRowModifier(colorIndex: Int(colorIndex), height: 83))
     }
 }
 
 struct AddNoteRow: View {
-    @Environment(\.colorScheme) var colorScheme
-    
     var body: some View {
         VStack() {
             HStack() {
@@ -50,21 +51,22 @@ struct AddNoteRow: View {
                 
                 Image(systemName: "plus.circle").imageScale(.large)
                 Text("Add Note")
-                    .font(.title)
-                    .fontWeight(.medium)
-                    
+                    .font(.largeTitle)
+
                 Spacer()
             }
         }
-        .modifier(NoteRowModifier(colorIndex: -1))
+        .modifier(AddNoteRowModifier(colorIndex: rowType.AddNoteRow.rawValue, height: 83))
     }
 }
 
 
 // MARK: - Preivew
+
+
 struct NoteRow_Previews: PreviewProvider {
     static var previews: some View {
-        NoteRow(title: "sample", hideNoteDetailsNumber: .constant(false))
+        NoteRow(title: "Example 1", hideNoteDetailsNumber: .constant(false))
             .previewLayout(.sizeThatFits)
         
         AddNoteRow()
