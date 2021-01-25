@@ -81,12 +81,6 @@ struct CustomGestureModifierExample: View {
     }
 }
 
-struct NoEffectButtonStyle: ButtonStyle {
-    func makeBody(configuration: Self.Configuration) -> some View {
-        configuration.label
-    }
-}
-
 
 // https://adampaxton.com/make-a-press-and-hold-fast-forward-button-in-swiftui/
 

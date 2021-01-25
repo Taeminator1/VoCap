@@ -28,34 +28,45 @@ struct NoteDetailView: View {
     @State var isTextField: Bool = false
     @State var isEditButton : Bool = true
     
+    @State private var scrollTarget: Int?
+    
     var body: some View {
-        List(selection: $selection) {
-            ForEach(tmpNoteDetails) { noteDetail in
-                noteDetailRow(noteDetail)
-                    .modifier(HomeViewNoteRowModifier())
+        ScrollViewReader { proxy in
+            List(selection: $selection) {
+                ForEach(tmpNoteDetails) { noteDetail in
+                    noteDetailRow(noteDetail)
+                        .modifier(HomeViewNoteRowModifier())
+                }
+                .onDelete(perform: deleteItems)
+                .deleteDisabled(isShuffled)             // Shuffle 상태일 때 delete 못하게 함
             }
-            .onDelete(perform: deleteItems)
-            .deleteDisabled(isShuffled)             // Shuffle 상태일 때 delete 못하게 함
+            .onChange(of: scrollTarget) { target in
+                if let target = target {
+                    scrollTarget = nil
+//                    withAnimation { proxy.scrollTo(tmpNoteDetails[target].id, anchor: .bottom) }
+                    withAnimation { proxy.scrollTo(tmpNoteDetails[target].id) }     // edit 시, 키보드가 나올 때로 바꾸는 게 좋을 거같음
+                }
+            }
+            .animation(.default)
+            .onAppear() { copyNoteDetails() }
+            .navigationBarTitle("\(note.title!)", displayMode: .inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) { editButton.disabled(isEditButton == false) }
+                
+                ToolbarItem(placement: .bottomBar) {
+                    if editMode == .inactive { showingTermsButton }
+                    else { addButton }
+                }
+                ToolbarItem(placement: .bottomBar) { Spacer() }
+                ToolbarItem(placement: .bottomBar) { if editMode == .inactive { shuffleButton } }
+                ToolbarItem(placement: .bottomBar) { Spacer() }
+                ToolbarItem(placement: .bottomBar) {
+                    if editMode == .inactive { showingDefsButton }
+                    else { deleteButton }
+                }
+            }
+            .environment(\.editMode, self.$editMode)          // 해당 위치에 없으면 editMode 안 먹힘
         }
-        .animation(.default)
-        .onAppear() { copyNoteDetails() }
-        .navigationBarTitle("\(note.title!)", displayMode: .inline)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) { editButton.disabled(isEditButton == false) }
-            
-            ToolbarItem(placement: .bottomBar) {
-                if editMode == .inactive { showingTermsButton }
-                else { addButton }
-            }
-            ToolbarItem(placement: .bottomBar) { Spacer() }
-            ToolbarItem(placement: .bottomBar) { if editMode == .inactive { shuffleButton } }
-            ToolbarItem(placement: .bottomBar) { Spacer() }
-            ToolbarItem(placement: .bottomBar) {
-                if editMode == .inactive { showingDefsButton }
-                else { deleteButton }
-            }
-        }
-        .environment(\.editMode, self.$editMode)          // 해당 위치에 없으면 editMode 안 먹힘
     }
 }
 
@@ -73,7 +84,8 @@ extension NoteDetailView {
                     }
                 }
                 else {
-                    noteDetailTextField("term", $note.term[noteDetail.order], strokeColor: .blue)
+//                    noteDetailTextField("term", $note.term[noteDetail.order], strokeColor: .blue)
+                    noteDetailTextField("term", $note.term[noteDetail.order], noteDetail.order, strokeColor: .blue)
                 }
             }
                 
@@ -88,7 +100,8 @@ extension NoteDetailView {
                     }
                 }
                 else {
-                    noteDetailTextField("definition", $note.definition[noteDetail.order], strokeColor: .green)
+//                    noteDetailTextField("definition", $note.definition[noteDetail.order], strokeColor: .green)
+                    noteDetailTextField("definition", $note.definition[noteDetail.order], noteDetail.order, strokeColor: .green)
                 }
             }
             
@@ -99,7 +112,7 @@ extension NoteDetailView {
                     noteDetail.isMemorized == true ? Image(systemName: "square.fill") : Image(systemName: "square")
                 }
             }
-            .buttonStyle(PlainButtonStyle())
+//            .buttonStyle(PlainButtonStyle())
         }
         .padding(.horizontal)
         .padding(.vertical, 10.0)
@@ -115,6 +128,16 @@ extension NoteDetailView {
     
     func noteDetailTextField(_ placeholder: String, _ text: Binding<String>, strokeColor: Color) -> some View {
         TextField(placeholder, text: text)
+            .autocapitalization(.none)
+            .font(.body)      // title2: 22, body: 17
+            .lineLimit(2)
+            .padding(.horizontal)
+            .modifier(NoteDetailListModifier(strokeColor: strokeColor))
+    }
+    
+    func noteDetailTextField(_ placeholder: String, _ text: Binding<String>, _ order: Int, strokeColor: Color) -> some View {
+        TextField(placeholder, text: text, onEditingChanged: { _ in scrollTarget = order })
+            .autocapitalization(.none)
             .font(.body)      // title2: 22, body: 17
             .lineLimit(2)
             .padding(.horizontal)
@@ -122,7 +145,6 @@ extension NoteDetailView {
     }
     
     func noteDetailScreen(_ order: Int, initWidth: CGFloat = 1.0, finalWidth: CGFloat = 1.0, strokeColor: Color, isScreen: Bool, anchor: UnitPoint) -> some View {
-        
         Rectangle()
             .foregroundColor(strokeColor)
             .frame(width: initWidth)
@@ -216,6 +238,8 @@ extension NoteDetailView {
         saveContext()
         
         isScaledArray.append(Bool(false))
+        
+        scrollTarget = note.term.count - 1
     }
     
     private var editButton: some View {

@@ -56,6 +56,7 @@ struct AddNoteRow: View {
                 Spacer()
             }
         }
+        .padding()
         .modifier(AddNoteRowModifier(colorIndex: rowType.AddNoteRow.rawValue, height: 83))
     }
 }

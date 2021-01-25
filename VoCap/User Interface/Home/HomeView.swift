@@ -54,7 +54,7 @@ struct HomeView: View {
                                 self.isEditNotePresented = true
                             }
                         }) {
-                            VStack(alignment: .leading) {
+                            VStack() {
                                 NoteRow(title: note.title!, colorIndex: note.colorIndex, totalNumber: Int16(note.term.count), memorizedNumber: Int16(countTrues(note.isMemorized)), hideNoteDetailsNumber: $hideNoteDetailsNumber)
                             }
                         }
