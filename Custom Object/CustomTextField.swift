@@ -24,17 +24,30 @@ struct CustomTextField: UIViewRepresentable {
         }
 
         func textFieldDidChangeSelection(_ textField: UITextField) {
+//            print("a")
             text = textField.text ?? ""
+        }
+        
+        func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+//            print("b")
+            textField.resignFirstResponder()
+            return false
+        }
+        
+        func textFieldDidEndEditing(_ textField: UITextField) {
+            textField.resignFirstResponder()
+//            print("c")
         }
     }
 
-    var title: String = ""
+    var title: String = ""              // Placeholder
     @Binding var text: String
     var isFirstResponder: Bool = false
 
     func makeUIView(context: UIViewRepresentableContext<CustomTextField>) -> UITextField {
         let textField = UITextField(frame: .zero)
         textField.placeholder = title
+        textField.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         textField.delegate = context.coordinator
         return textField
     }
@@ -51,3 +64,4 @@ struct CustomTextField: UIViewRepresentable {
         }
     }
 }
+

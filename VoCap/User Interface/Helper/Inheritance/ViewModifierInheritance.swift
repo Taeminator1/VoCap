@@ -105,7 +105,7 @@ struct NoteDetailListModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .frame(idealWidth: .infinity, idealHeight: 45, maxHeight: 45, alignment: .leading)
-            .frame(maxWidth: .infinity, maxHeight: 60, alignment: .leading)
+            .frame(maxWidth: .infinity, maxHeight: 45, alignment: .leading)
             .overlay(
                 RoundedRectangle(cornerRadius: cornerRadius)
                     .stroke(strokeColor, lineWidth: 2)
