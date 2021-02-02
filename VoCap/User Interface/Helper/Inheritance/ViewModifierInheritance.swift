@@ -34,7 +34,7 @@ struct XxNoteRowModifier: ViewModifier {
     }
     
     func noteRowColor() -> Color {
-        if colorIndex == rowType.AddNoteRow.rawValue {       // Add Note Row
+        if colorIndex == RowType.AddNoteRow.rawValue {       // Add Note Row
             return colorScheme == .dark ? Color.white : Color.black
 //            return colorScheme == .dark ? Color.black : Color.white
         }

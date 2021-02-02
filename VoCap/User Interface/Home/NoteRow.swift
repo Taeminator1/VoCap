@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum rowType: Int {
+enum RowType: Int {
     case AddNoteRow = -1
 }
 
@@ -57,7 +57,7 @@ struct AddNoteRow: View {
             }
         }
         .padding()
-        .modifier(AddNoteRowModifier(colorIndex: rowType.AddNoteRow.rawValue, height: 83))
+        .modifier(AddNoteRowModifier(colorIndex: RowType.AddNoteRow.rawValue, height: 83))
     }
 }
 

@@ -7,6 +7,11 @@
 
 import SwiftUI
 
+enum TextFieldType: Int {
+    case Term = 0
+    case Definition = 1
+}
+
 struct NoteDetailView: View {
     @Environment(\.managedObjectContext) private var viewContext
     
@@ -29,6 +34,8 @@ struct NoteDetailView: View {
     @State var isEditButton : Bool = true
     
     @State private var scrollTarget: Int?
+    @State private var selectedCell: Int = -1
+    @State private var numberOfCells: Int = 27
     
     var body: some View {
         ScrollViewReader { proxy in
@@ -85,7 +92,18 @@ extension NoteDetailView {
                 }
                 else {
 //                    noteDetailTextField("term", $note.term[noteDetail.order], strokeColor: .blue)
-                    noteDetailTextField("term", $note.term[noteDetail.order], noteDetail.order, strokeColor: .blue)
+//                    noteDetailTextField("term", $note.term[noteDetail.order], noteDetail.order, strokeColor: .blue)
+                    
+//                    xxNoteDetailTextField("Term", $note.term[noteDetail.order], noteDetail.order, $numberOfCells,  strokeColor: .blue)
+//                        .onTapGesture {
+//                            selectedCell = noteDetail.order
+//                        }
+                    
+                    yyNoteDetailTextField("Term", $note.term[noteDetail.order], noteDetail.order, TextFieldType.Term.rawValue, strokeColor: .blue)
+                        .onTapGesture {
+                            print(TextFieldType.Term.rawValue)
+                            print(noteDetail.order)
+                        }
                 }
             }
                 
@@ -101,7 +119,18 @@ extension NoteDetailView {
                 }
                 else {
 //                    noteDetailTextField("definition", $note.definition[noteDetail.order], strokeColor: .green)
-                    noteDetailTextField("definition", $note.definition[noteDetail.order], noteDetail.order, strokeColor: .green)
+//                    noteDetailTextField("definition", $note.definition[noteDetail.order], noteDetail.order, strokeColor: .green)
+                    
+//                    xxNoteDetailTextField("definition", $note.definition[noteDetail.order], noteDetail.order, $numberOfCells, strokeColor: .green)
+//                        .onTapGesture {
+//                            selectedCell = noteDetail.order
+//                        }
+                    
+                    yyNoteDetailTextField("definition", $note.definition[noteDetail.order], noteDetail.order, TextFieldType.Definition.rawValue, strokeColor: .green)
+                        .onTapGesture {
+                            print(TextFieldType.Definition.rawValue)
+                            print(noteDetail.order)
+                        }
                 }
             }
             
@@ -126,8 +155,8 @@ extension NoteDetailView {
             .modifier(NoteDetailListModifier(strokeColor: strokeColor))
     }
     
-    func noteDetailTextField(_ placeholder: String, _ text: Binding<String>, strokeColor: Color) -> some View {
-        TextField(placeholder, text: text)
+    func noteDetailTextField(_ title: String, _ text: Binding<String>, strokeColor: Color) -> some View {
+        TextField(title, text: text)
             .autocapitalization(.none)
             .font(.body)      // title2: 22, body: 17
             .lineLimit(2)
@@ -135,11 +164,33 @@ extension NoteDetailView {
             .modifier(NoteDetailListModifier(strokeColor: strokeColor))
     }
     
-    func noteDetailTextField(_ placeholder: String, _ text: Binding<String>, _ order: Int, strokeColor: Color) -> some View {
-        TextField(placeholder, text: text, onEditingChanged: { _ in scrollTarget = order })
+    func noteDetailTextField(_ title: String, _ text: Binding<String>, _ order: Int, strokeColor: Color) -> some View {
+        TextField(title, text: text, onEditingChanged: { _ in scrollTarget = order })
             .autocapitalization(.none)
             .font(.body)      // title2: 22, body: 17
             .lineLimit(2)
+            .padding(.horizontal)
+            .modifier(NoteDetailListModifier(strokeColor: strokeColor))
+    }
+    
+    func xxNoteDetailTextField(_ title: String, _ text: Binding<String>, _ order: Int, _ numberOfCells: Binding<Int>, strokeColor: Color) -> some View {
+
+        var responder: Bool {
+            return order == selectedCell
+        }
+        
+        return XxCustomTextField(title: title, text: text, numberOfCells: numberOfCells, selectedCell: $selectedCell, isEnabled: .constant(true), isFirstResponder: responder)
+            .padding(.horizontal)
+            .modifier(NoteDetailListModifier(strokeColor: strokeColor))
+    }
+    
+    func yyNoteDetailTextField(_ title: String, _ text: Binding<String>, _ order: Int, _ textFieldType: Int, strokeColor: Color) -> some View {
+
+        var responder: Bool {
+            return textFieldType == selectedCell
+        }
+        
+        return YyCustomTextField(title: title, text: text, selectedCell: $selectedCell, isEnabled: .constant(true), isFirstResponder: responder)
             .padding(.horizontal)
             .modifier(NoteDetailListModifier(strokeColor: strokeColor))
     }
@@ -248,6 +299,9 @@ extension NoteDetailView {
                 isEditButton = false
                 isTermsScreen = false
                 isDefsScreen = false
+                
+                selectedCell = -1
+                
                 if isShuffled { shuffle() }
                 
                 editMode = .active
@@ -265,6 +319,8 @@ extension NoteDetailView {
             return Button(action: {
                 isEditButton = false
                 isTextField = false
+                
+                selectedCell = -1
                 
                 editMode = .inactive
                 selection = Set<UUID>()
