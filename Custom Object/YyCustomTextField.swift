@@ -17,31 +17,18 @@
 
 import SwiftUI
 
-struct YyTextInputCell: View {
-    @State private var textValue: String = ""
-    @Binding var selectedCell: Int
-    @Binding var isEnabled: Bool
-
-    var index: Int
-    var responder: Bool {
-        return index == selectedCell
-    }
-
-    var body: some View {
-        YyCustomTextField(title: "placeholder", text: $textValue, selectedCell: $selectedCell, isEnabled: $isEnabled, isFirstResponder: responder)
-    }
-}
-
 struct YyCustomTextField: UIViewRepresentable {
     
     class Coordinator: NSObject, UITextFieldDelegate {
 
         @Binding var text: String
-        @Binding var selectedCell: Int
+        @Binding var selectedRow: Int
+        @Binding var selectedCol: Int
 
-        init(text: Binding<String>, selectedCell: Binding<Int>) {
+        init(text: Binding<String>, selectedRow: Binding<Int>, selectedCol: Binding<Int>) {
             _text = text
-            _selectedCell = selectedCell
+            _selectedRow = selectedRow
+            _selectedCol = selectedCol
         }
 
         func textFieldDidChangeSelection(_ textField: UITextField) {
@@ -49,22 +36,30 @@ struct YyCustomTextField: UIViewRepresentable {
                 self.text = textField.text ?? ""
             }
         }
+        
+//        func textFieldDidEndEditing(_ textField: UITextField) {
+//            print("d")
+//            selectedRow = -1
+//            selectedCol = -1
+//        }
     }
 
     var title: String = ""              // Placeholder
     @Binding var text: String
-    @Binding var selectedCell: Int
+    @Binding var selectedRow: Int
+    @Binding var selectedCol: Int
     @Binding var isEnabled: Bool
     
     var isFirstResponder: Bool = false
 
     func makeUIView(context: UIViewRepresentableContext<YyCustomTextField>) -> UITextField {
-        let textField = YyCustomUITextField(selectedCell: $selectedCell)
+        let textField = YyCustomUITextField(selectedRow: $selectedRow, selectedCol: $selectedCol)
         textField.placeholder = title
         textField.delegate = context.coordinator
         textField.textAlignment = .center
         textField.autocapitalizationType = .none
         textField.textAlignment = .left
+        textField.isEnabled = isEnabled
         textField.isUserInteractionEnabled = isEnabled
         textField.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
 
@@ -87,7 +82,7 @@ struct YyCustomTextField: UIViewRepresentable {
     }
 
     func makeCoordinator() -> YyCustomTextField.Coordinator {
-        return Coordinator(text: $text, selectedCell: $selectedCell)
+        return Coordinator(text: $text, selectedRow: $selectedRow, selectedCol: $selectedCol)
     }
 
     func updateUIView(_ uiView: UITextField, context: UIViewRepresentableContext<YyCustomTextField>) {
@@ -101,11 +96,15 @@ struct YyCustomTextField: UIViewRepresentable {
 
 class YyCustomUITextField: UITextField {
     
-    let numberOfCells: Int = 2
-    @Binding var selectedCell: Int
+    let numberOfRows: Int = 0
+    let numberOfCols: Int = 2
+    @Binding var selectedRow: Int
+    @Binding var selectedCol: Int
     
-    init(selectedCell: Binding<Int>) {
-        _selectedCell = selectedCell
+    
+    init(selectedRow: Binding<Int>, selectedCol: Binding<Int>) {
+        _selectedRow = selectedRow
+        _selectedCol = selectedCol
         super.init(frame: .zero)
     }
     
@@ -113,19 +112,33 @@ class YyCustomUITextField: UITextField {
         fatalError("init(coder:) has not been implemented")
     }
     
-    @objc func moveLeft() -> Void {
-        if selectedCell > 0 {
-            self.selectedCell -= 1
+    @objc func moveLeft(button: UIBarButtonItem) -> Void {
+        if selectedCol > 0 {
+            self.selectedCol -= 1
         }
     }
     
     @objc func moveRight(button: UIBarButtonItem) -> Void {
-        if selectedCell < numberOfCells - 1 {
-            self.selectedCell += 1
+        if selectedCol < numberOfCols - 1 {
+            self.selectedCol += 1
+        }
+    }
+    
+    @objc func moveDown(button: UIBarButtonItem) -> Void {
+        if selectedRow < numberOfRows - 1 {
+            self.selectedRow += 1
+        }
+    }
+    
+    @objc func moveUp(button: UIBarButtonItem) -> Void {
+        if selectedRow > 0 {
+            self.selectedRow -= 1
         }
     }
     
     @objc func done(button: UIBarButtonItem) -> Void {
+        selectedRow = -1
+        selectedCol = -1
         self.resignFirstResponder()
     }
 }

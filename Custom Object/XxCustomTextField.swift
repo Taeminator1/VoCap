@@ -42,7 +42,8 @@ struct SwiftUIView: View {
             
             HStack {
                 ForEach(0 ..< self.yyNumberOfCells) { index in
-                    YyTextInputCell(selectedCell: self.$yySelectedCell, isEnabled: .constant(false), index: index)
+                    Text("dd")
+                    XxTextInputCell(numberOfCells: self.$xxNumberOfCells, selectedCell: self.$xxSelectedCell, isEnabled: .constant(false), index: index)
                         .onTapGesture {
                             yySelectedCell = index
                         }

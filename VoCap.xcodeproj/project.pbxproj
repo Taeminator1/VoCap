@@ -36,6 +36,7 @@
 		34D88F4A256D2A68009B10AF /* VoCap.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 34D88F48256D2A68009B10AF /* VoCap.xcdatamodeld */; };
 		34D88F55256D2A68009B10AF /* VoCapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D88F54256D2A68009B10AF /* VoCapTests.swift */; };
 		34D88F60256D2A68009B10AF /* VoCapUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D88F5F256D2A68009B10AF /* VoCapUITests.swift */; };
+		34FA963D25CAAB5900E04619 /* YyNoteDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34FA963C25CAAB5900E04619 /* YyNoteDetailView.swift */; };
 		34FE926825BD835200EC7F6C /* XxNoteDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34FE926725BD835200EC7F6C /* XxNoteDetailView.swift */; };
 		34FE926D25BD843D00EC7F6C /* NoteDetailItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34FE926C25BD843D00EC7F6C /* NoteDetailItem.swift */; };
 /* End PBXBuildFile section */
@@ -93,6 +94,7 @@
 		34D88F5B256D2A68009B10AF /* VoCapUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VoCapUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		34D88F5F256D2A68009B10AF /* VoCapUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoCapUITests.swift; sourceTree = "<group>"; };
 		34D88F61256D2A68009B10AF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		34FA963C25CAAB5900E04619 /* YyNoteDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YyNoteDetailView.swift; sourceTree = "<group>"; };
 		34FE926725BD835200EC7F6C /* XxNoteDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XxNoteDetailView.swift; sourceTree = "<group>"; };
 		34FE926C25BD843D00EC7F6C /* NoteDetailItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetailItem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -224,6 +226,7 @@
 				34D5B91725A1EC3B0071326A /* NoteDetail.swift */,
 				34FE926725BD835200EC7F6C /* XxNoteDetailView.swift */,
 				34FE926C25BD843D00EC7F6C /* NoteDetailItem.swift */,
+				34FA963C25CAAB5900E04619 /* YyNoteDetailView.swift */,
 			);
 			path = "Note Detail";
 			sourceTree = "<group>";
@@ -446,6 +449,7 @@
 				3475A91225B1DC02002BC6DE /* ContentView.swift in Sources */,
 				34C33C6125A02F7E00302560 /* Note+CoreDataClass.swift in Sources */,
 				34BDA91725BDB8590049A0A3 /* ButtonStyleInheritance.swift in Sources */,
+				34FA963D25CAAB5900E04619 /* YyNoteDetailView.swift in Sources */,
 				3404921725779FC800CD1BD7 /* LexicalaFetchData.swift in Sources */,
 				3472B67725811CCC00EFA0AB /* NoteDetailView.swift in Sources */,
 				34D5B91825A1EC3B0071326A /* NoteDetail.swift in Sources */,

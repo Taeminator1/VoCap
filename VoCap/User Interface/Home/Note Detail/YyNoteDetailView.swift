@@ -7,7 +7,12 @@
 
 import SwiftUI
 
-struct NoteDetailView: View {
+enum TextFieldType: Int {
+    case Term = 0
+    case Definition = 1
+}
+
+struct YyNoteDetailView: View {
     @Environment(\.managedObjectContext) private var viewContext
     
     @ObservedObject var note: Note          // @State할 때는, 값이 바뀌어도 갱신이 안 됨,
@@ -30,12 +35,35 @@ struct NoteDetailView: View {
     
     @State private var scrollTarget: Int?
     
+    @State private var selectedRow = -1
+    @State private var selectedCol = -1
+    
+    @State var emptyView: String = ""
+    
     var body: some View {
         ScrollViewReader { proxy in
             List(selection: $selection) {
                 ForEach(tmpNoteDetails) { noteDetail in
-                    noteDetailRow(noteDetail)
-                        .modifier(HomeViewNoteRowModifier())
+                    HStack {
+                        ForEach(0 ..< 2) { col in
+                            noteDetailCell(noteDetail, col)
+                                .onTapGesture {
+                                    selectedRow = noteDetail.order
+                                    selectedCol = col
+                                    scrollTarget = noteDetail.order
+                                }
+                        }
+                        
+                        Button(action: {
+                            changeMemorizedState(id: noteDetail.id)
+                        }) {
+                            if editMode == .inactive {
+                                noteDetail.isMemorized == true ? Image(systemName: "square.fill") : Image(systemName: "square")
+                            }
+                        }
+                    }
+                    .padding()
+                    .modifier(HomeViewNoteRowModifier())
                 }
                 .onDelete(perform: deleteItems)
                 .deleteDisabled(isShuffled)             // Shuffle 상태일 때 delete 못하게 함
@@ -44,7 +72,9 @@ struct NoteDetailView: View {
                 if let target = target {
                     scrollTarget = nil
 //                    withAnimation { proxy.scrollTo(tmpNoteDetails[target].id, anchor: .bottom) }
-                    withAnimation { proxy.scrollTo(tmpNoteDetails[target].id) }     // edit 시, 키보드가 나올 때로 바꾸는 게 좋을 거같음
+                    withAnimation {
+                        proxy.scrollTo(tmpNoteDetails[target].id)
+                    }
                 }
             }
             .animation(.default)
@@ -70,10 +100,35 @@ struct NoteDetailView: View {
     }
 }
 
-extension NoteDetailView {
-    func noteDetailRow(_ noteDetail: NoteDetail) -> some View {
-        HStack {
-            ZStack() {
+extension YyNoteDetailView {
+    func noteDetailCell(_ noteDetail: NoteDetail, _ selectedCol: Int) -> some View {
+        // Can't let UITextField Enabled programmatically
+//        return ZStack {
+//            switch selectedCol {
+//            case 0:
+//                yyNoteDetailTextField("Term", $note.term[noteDetail.order], noteDetail.order, 0, strokeColor: .blue)
+//                GeometryReader { geometry in
+//                    HStack {
+//                        noteDetailScreen(noteDetail.order, initWidth: 5.0, finalWidth: geometry.size.width + 1, strokeColor: .blue, isScreen: isTermsScreen, anchor: .leading)     // 여기는 + 1 함
+//                        Spacer()
+//                    }
+//                }
+//            case 1:
+//                yyNoteDetailTextField("definition", $note.definition[noteDetail.order], noteDetail.order, 1, strokeColor: .green)
+//                GeometryReader { geometry in
+//                    HStack {
+//                        Spacer()
+//                        noteDetailScreen(noteDetail.order, initWidth: 5.0, finalWidth: geometry.size.width, strokeColor: .green, isScreen: isDefsScreen, anchor: .trailing)     // 여기는 + 1 안함
+//                    }
+//                }
+//            default:
+//                Text("Error")
+//            }
+//        }
+        
+        return ZStack {
+            switch selectedCol {
+            case 0:
                 if isTextField == false {
                     noteDetailText(noteDetail.term, strokeColor: .blue)
                     GeometryReader { geometry in
@@ -84,12 +139,9 @@ extension NoteDetailView {
                     }
                 }
                 else {
-//                    noteDetailTextField("term", $note.term[noteDetail.order], strokeColor: .blue)
-                    noteDetailTextField("term", $note.term[noteDetail.order], noteDetail.order, strokeColor: .blue)
+                    yyNoteDetailTextField("Term", $note.term[noteDetail.order], noteDetail.order, 0, strokeColor: .blue)
                 }
-            }
-                
-            ZStack() {
+            case 1:
                 if isTextField == false {
                     noteDetailText(noteDetail.definition, strokeColor: .green)
                     GeometryReader { geometry in
@@ -100,24 +152,17 @@ extension NoteDetailView {
                     }
                 }
                 else {
-//                    noteDetailTextField("definition", $note.definition[noteDetail.order], strokeColor: .green)
-                    noteDetailTextField("definition", $note.definition[noteDetail.order], noteDetail.order, strokeColor: .green)
+                    yyNoteDetailTextField("definition", $note.definition[noteDetail.order], noteDetail.order, 1, strokeColor: .green)
                 }
+                
+            default:
+                Text("Error")
             }
-            
-            Button(action: {
-                changeMemorizedState(id: noteDetail.id)
-            }) {
-                if editMode == .inactive {
-                    noteDetail.isMemorized == true ? Image(systemName: "square.fill") : Image(systemName: "square")
-                }
-            }
-//            .buttonStyle(PlainButtonStyle())
         }
-        .padding(.horizontal)
-        .padding(.vertical, 10.0)
     }
-    
+}
+
+extension YyNoteDetailView {
     func noteDetailText(_ text: String, strokeColor: Color) -> some View {
         Text(text)
             .font(.body)
@@ -126,20 +171,13 @@ extension NoteDetailView {
             .modifier(NoteDetailListModifier(strokeColor: strokeColor))
     }
     
-    func noteDetailTextField(_ placeholder: String, _ text: Binding<String>, strokeColor: Color) -> some View {
-        TextField(placeholder, text: text)
-            .autocapitalization(.none)
-            .font(.body)      // title2: 22, body: 17
-            .lineLimit(2)
-            .padding(.horizontal)
-            .modifier(NoteDetailListModifier(strokeColor: strokeColor))
-    }
-    
-    func noteDetailTextField(_ placeholder: String, _ text: Binding<String>, _ order: Int, strokeColor: Color) -> some View {
-        TextField(placeholder, text: text, onEditingChanged: { _ in scrollTarget = order })
-            .autocapitalization(.none)
-            .font(.body)      // title2: 22, body: 17
-            .lineLimit(2)
+    func yyNoteDetailTextField(_ title: String, _ text: Binding<String>, _ row: Int, _ col: Int, strokeColor: Color) -> some View {
+
+        var responder: Bool {
+            return row == selectedRow && col == selectedCol
+        }
+        
+        return YyCustomTextField(title: title, text: text, selectedRow: $selectedRow, selectedCol: $selectedCol, isEnabled: $isTextField, isFirstResponder: responder)
             .padding(.horizontal)
             .modifier(NoteDetailListModifier(strokeColor: strokeColor))
     }
@@ -155,7 +193,7 @@ extension NoteDetailView {
 }
 
 // MARK: - Tool Bar Items
-extension NoteDetailView {
+extension YyNoteDetailView {
     var showingTermsButton: some View {
         Button(action: {
                 if isDefsScreen == true {
@@ -189,7 +227,7 @@ extension NoteDetailView {
 
 
 // MARK: - Other Functions
-private extension NoteDetailView {
+private extension YyNoteDetailView {
     func copyNoteDetails() {
         tmpNoteDetails = [NoteDetail]()
         
@@ -214,7 +252,7 @@ private extension NoteDetailView {
 
 
 // MARK: - Modify NoteDetails
-extension NoteDetailView {
+extension YyNoteDetailView {
     func saveContext() {
         do {
             try viewContext.save()
@@ -240,6 +278,11 @@ extension NoteDetailView {
         isScaledArray.append(Bool(false))
         
         scrollTarget = note.term.count - 1
+        
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {            // for animation
+//            selectedRow = note.term.count - 1
+//            selectedCol = 0
+//        }
     }
     
     private var editButton: some View {
@@ -248,6 +291,10 @@ extension NoteDetailView {
                 isEditButton = false
                 isTermsScreen = false
                 isDefsScreen = false
+                
+                selectedRow = -1
+                selectedCol = -1
+                
                 if isShuffled { shuffle() }
                 
                 editMode = .active
@@ -265,6 +312,9 @@ extension NoteDetailView {
             return Button(action: {
                 isEditButton = false
                 isTextField = false
+                
+                selectedRow = -1
+                selectedCol = -1
                 
                 editMode = .inactive
                 selection = Set<UUID>()
