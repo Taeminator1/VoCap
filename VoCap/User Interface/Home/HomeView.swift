@@ -115,11 +115,6 @@ private extension HomeView {
         NavigationLink(destination: SearchView()) {
             Image(systemName: "magnifyingglass").imageScale(.large)
         }
-//        Button(action: {
-//            hideNoteDetailsNumber.toggle()
-//        }) {
-//            Text("aa")
-//        }
     }
     
     private func editItems(title: String, colorIndex: Int16, memo: String) {
@@ -198,16 +193,18 @@ private extension HomeView {
         if start == destination { return }
         
         if start < destination {
-            for i in start..<destination {
+            for i in (start + 1)..<destination {
                 notes[i].order -= 1
             }
+            notes[start].order = Int16(destination - 1)
         }
         else {
             for i in destination..<start {
                 notes[i].order += 1
             }
+            notes[start].order = Int16(destination)
         }
-        notes[start].order = Int16(destination - 1)
+        
     }
     
     func countTrues(_ arr: [Bool]) -> Int {
