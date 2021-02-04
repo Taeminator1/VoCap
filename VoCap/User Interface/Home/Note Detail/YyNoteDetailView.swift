@@ -38,6 +38,8 @@ struct YyNoteDetailView: View {
     @State private var selectedRow = -1
     @State private var selectedCol = -1
     
+    @State var closeKeyboard: Bool = true
+    
     var body: some View {
         ScrollViewReader { proxy in
             List(selection: $selection) {
@@ -47,7 +49,7 @@ struct YyNoteDetailView: View {
                             noteDetailCell(noteDetail, col)
                                 .onTapGesture {
                                     selectedRow = noteDetail.order
-                                    selectedCol = col
+                                    selectedCol = col           // 여기 있으면 Keyboard 뒤에 View가 안 없어지는 경우 생김
                                     if isTextField { scrollTarget = noteDetail.order }
                                 }
                         }
@@ -151,7 +153,7 @@ extension YyNoteDetailView {
             return row == selectedRow && col == selectedCol
         }
         
-        return YyCustomTextField(title: title, text: text, selectedRow: $selectedRow, selectedCol: $selectedCol, isEnabled: $isTextField, isFirstResponder: responder)
+        return YyCustomTextField(title: title, text: text, selectedRow: $selectedRow, selectedCol: $selectedCol, isEnabled: $isTextField, closeKeyboard: $closeKeyboard, isFirstResponder: responder)
             .padding(.horizontal)
             .modifier(NoteDetailListModifier(strokeColor: strokeColor))
     }
@@ -268,6 +270,7 @@ extension YyNoteDetailView {
                 
                 selectedRow = -1
                 selectedCol = -1
+                closeKeyboard = false
                 
                 if isShuffled { shuffle() }
                 
@@ -287,11 +290,13 @@ extension YyNoteDetailView {
                 isEditButton = false
                 isTextField = false
                 
-                selectedRow = -1
-                selectedCol = -1
-                
                 editMode = .inactive
                 selection = Set<UUID>()
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {            // 없으면 Keyboard 뒤 배경 안 사라짐
+                    closeKeyboard = true
+                    isEditButton = true
+                }
                 
                 saveContext()
                 
@@ -299,7 +304,7 @@ extension YyNoteDetailView {
                     tmpNoteDetails[i].term = note.term[i]
                     tmpNoteDetails[i].definition = note.definition[i]
                 }
-                isEditButton = true
+                
             }) {
                 Text("Done")
             }

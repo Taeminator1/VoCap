@@ -24,11 +24,13 @@ struct YyCustomTextField: UIViewRepresentable {
         @Binding var text: String
         @Binding var selectedRow: Int
         @Binding var selectedCol: Int
+        @Binding var closeKeyboard: Bool
 
-        init(text: Binding<String>, selectedRow: Binding<Int>, selectedCol: Binding<Int>) {
+        init(text: Binding<String>, selectedRow: Binding<Int>, selectedCol: Binding<Int>, closeKeyboard: Binding<Bool>) {
             _text = text
             _selectedRow = selectedRow
             _selectedCol = selectedCol
+            _closeKeyboard = closeKeyboard
         }
 
         func textFieldDidChangeSelection(_ textField: UITextField) {
@@ -49,6 +51,7 @@ struct YyCustomTextField: UIViewRepresentable {
     @Binding var selectedRow: Int
     @Binding var selectedCol: Int
     @Binding var isEnabled: Bool
+    @Binding var closeKeyboard: Bool
     
     var isFirstResponder: Bool = false
 
@@ -62,6 +65,7 @@ struct YyCustomTextField: UIViewRepresentable {
         textField.isEnabled = isEnabled
         textField.isUserInteractionEnabled = isEnabled
         textField.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+//        textField.keyboardAppearance = UIKeyboardAppearance.dark
 
         let toolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 44))
         
@@ -82,13 +86,17 @@ struct YyCustomTextField: UIViewRepresentable {
     }
 
     func makeCoordinator() -> YyCustomTextField.Coordinator {
-        return Coordinator(text: $text, selectedRow: $selectedRow, selectedCol: $selectedCol)
+        return Coordinator(text: $text, selectedRow: $selectedRow, selectedCol: $selectedCol, closeKeyboard: $closeKeyboard)
     }
 
     func updateUIView(_ uiView: UITextField, context: UIViewRepresentableContext<YyCustomTextField>) {
         uiView.text = text
         if isFirstResponder {
             uiView.becomeFirstResponder()
+        }
+        
+        if closeKeyboard {
+            uiView.resignFirstResponder()
         }
     }
 }
