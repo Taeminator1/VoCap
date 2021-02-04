@@ -38,8 +38,6 @@ struct YyNoteDetailView: View {
     @State private var selectedRow = -1
     @State private var selectedCol = -1
     
-    @State var emptyView: String = ""
-    
     var body: some View {
         ScrollViewReader { proxy in
             List(selection: $selection) {
@@ -50,7 +48,7 @@ struct YyNoteDetailView: View {
                                 .onTapGesture {
                                     selectedRow = noteDetail.order
                                     selectedCol = col
-                                    scrollTarget = noteDetail.order
+                                    if isTextField { scrollTarget = noteDetail.order }
                                 }
                         }
                         
@@ -102,30 +100,6 @@ struct YyNoteDetailView: View {
 
 extension YyNoteDetailView {
     func noteDetailCell(_ noteDetail: NoteDetail, _ selectedCol: Int) -> some View {
-        // Can't let UITextField Enabled programmatically
-//        return ZStack {
-//            switch selectedCol {
-//            case 0:
-//                yyNoteDetailTextField("Term", $note.term[noteDetail.order], noteDetail.order, 0, strokeColor: .blue)
-//                GeometryReader { geometry in
-//                    HStack {
-//                        noteDetailScreen(noteDetail.order, initWidth: 5.0, finalWidth: geometry.size.width + 1, strokeColor: .blue, isScreen: isTermsScreen, anchor: .leading)     // 여기는 + 1 함
-//                        Spacer()
-//                    }
-//                }
-//            case 1:
-//                yyNoteDetailTextField("definition", $note.definition[noteDetail.order], noteDetail.order, 1, strokeColor: .green)
-//                GeometryReader { geometry in
-//                    HStack {
-//                        Spacer()
-//                        noteDetailScreen(noteDetail.order, initWidth: 5.0, finalWidth: geometry.size.width, strokeColor: .green, isScreen: isDefsScreen, anchor: .trailing)     // 여기는 + 1 안함
-//                    }
-//                }
-//            default:
-//                Text("Error")
-//            }
-//        }
-        
         return ZStack {
             switch selectedCol {
             case 0:
