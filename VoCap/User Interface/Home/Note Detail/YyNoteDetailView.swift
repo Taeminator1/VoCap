@@ -39,8 +39,10 @@ struct YyNoteDetailView: View {
     @State private var selectedCol = -1
     
     @State var closeKeyboard: Bool = true
+    @State var listFrame: CGFloat = 0.0
     
     var body: some View {
+        GeometryReader { geometry in
         ScrollViewReader { proxy in
             List(selection: $selection) {
                 ForEach(tmpNoteDetails) { noteDetail in
@@ -68,6 +70,7 @@ struct YyNoteDetailView: View {
                 .onDelete(perform: deleteItems)
                 .deleteDisabled(isShuffled)             // Shuffle 상태일 때 delete 못하게 함
             }
+            .frame(height: listFrame)
             .onChange(of: scrollTarget) { target in
                 if let target = target {
                     scrollTarget = nil
@@ -78,9 +81,19 @@ struct YyNoteDetailView: View {
                 }
             }
             .animation(.default)
-            .onAppear() { copyNoteDetails() }
+            .onAppear() {
+                copyNoteDetails()
+                listFrame = geometry.size.height > geometry.size.width ? geometry.size.height : geometry.size.width
+            }
             .navigationBarTitle("\(note.title!)", displayMode: .inline)
             .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        print(listFrame)
+                    }) {
+                        Text("Test")
+                    }
+                }
                 ToolbarItem(placement: .navigationBarTrailing) { editButton.disabled(isEditButton == false) }
                 
                 ToolbarItem(placement: .bottomBar) {
@@ -97,6 +110,7 @@ struct YyNoteDetailView: View {
             }
             .environment(\.editMode, self.$editMode)          // 해당 위치에 없으면 editMode 안 먹힘
         }
+    }
     }
 }
 
