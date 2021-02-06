@@ -17,10 +17,10 @@ struct HomeView: View {
     private var notes: FetchedResults<Note>
     
     @State private var isAddNotePresented: Bool = false
-    @State private var isEditNotePresented: Bool = false
+    @State private var isEditNotePresented: Bool = true         // 처음 실행할 때 MakeNoteView의 isEditNotePresented를 true로 변경해서 sheet를 띄우고 닫아야(NavigationView.onAppear()) 처음에 Edit시 note 가리키지 못하는 현상 막을 수 있음
     @State private var isEditMode: EditMode = .inactive
     @State private var noteRowSelection: UUID?
-    @State private var noteRowOrder: Int = 0
+    @State private var noteRowOrder: Int!
     
     @State private var showUtility: Bool = false
     @State private var showSettings: Bool = false
@@ -74,12 +74,16 @@ struct HomeView: View {
             .listStyle(PlainListStyle())                        // 안해주면 Add Note 누를 때, title bar button 초기 색이 하얗게 됨
             .navigationBarTitle("VoCap", displayMode: .inline)
             .sheet(isPresented: $isEditNotePresented) {
-                let tmpNote = TmpNote(note: notes[noteRowOrder])
-                MakeNoteView(note: tmpNote, dNote: tmpNote, isAddNotePresented: $isAddNotePresented, isEditNotePresented: $isEditNotePresented) { title, colorIndex, memo in
-                    self.editItems(title: title, colorIndex: colorIndex, memo: memo)
-                    self.isEditNotePresented = false
-                    self.isEditNotePresented = false
+                
+                if let order = noteRowOrder {
+                    let tmpNote = TmpNote(note: notes[order])
+                    MakeNoteView(note: tmpNote, dNote: tmpNote, isAddNotePresented: $isAddNotePresented, isEditNotePresented: $isEditNotePresented) { title, colorIndex, memo in
+                        self.editItems(title: title, colorIndex: colorIndex, memo: memo)
+                        self.isEditNotePresented = false
+                        self.isEditNotePresented = false
+                    }
                 }
+                
             }
             .background(NavigationLink(destination: UtilityView(), isActive: $showUtility) { EmptyView() })
             .background(NavigationLink(destination: SettingsView(), isActive: $showSettings) { EmptyView() })
@@ -105,6 +109,10 @@ struct HomeView: View {
             .environment(\.editMode, self.$isEditMode)          // 없으면 Edit 오류 생김(해당 위치에 있어야 함)
         }
         .navigationViewStyle(StackNavigationViewStyle())                // 없으면 View전환할 때마다 Tool Bar 로딩되는데 시간이 걸림
+        .onAppear() {
+            print("NavigationView onAppear")
+            isEditNotePresented = false
+        }
     }
 }
 
@@ -118,9 +126,9 @@ private extension HomeView {
     }
     
     private func editItems(title: String, colorIndex: Int16, memo: String) {
-        notes[noteRowOrder].title = title
-        notes[noteRowOrder].colorIndex = colorIndex
-        notes[noteRowOrder].memo = memo
+        notes[noteRowOrder!].title = title
+        notes[noteRowOrder!].colorIndex = colorIndex
+        notes[noteRowOrder!].memo = memo
         
         saveContext()
     }
