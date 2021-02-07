@@ -109,10 +109,7 @@ struct HomeView: View {
             .environment(\.editMode, self.$isEditMode)          // 없으면 Edit 오류 생김(해당 위치에 있어야 함)
         }
         .navigationViewStyle(StackNavigationViewStyle())                // 없으면 View전환할 때마다 Tool Bar 로딩되는데 시간이 걸림
-        .onAppear() {
-            print("NavigationView onAppear")
-            isEditNotePresented = false
-        }
+        .onAppear() { isEditNotePresented = false }
     }
 }
 

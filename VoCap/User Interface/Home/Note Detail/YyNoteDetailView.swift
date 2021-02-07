@@ -23,8 +23,9 @@ struct YyNoteDetailView: View {
     @State var selection = Set<UUID>()
     
     @State var isTermsScreen: Bool = false
-    @State var isDefsScreen: Bool = false
+    @State var isHidingNoteDetails: Bool = false
     @State var isShuffled: Bool = false
+    @State var isDefsScreen: Bool = false
     
     @State var isTermScaled: Bool = false
     @State var isDefScaled: Bool = false
@@ -43,78 +44,96 @@ struct YyNoteDetailView: View {
     
     var body: some View {
         GeometryReader { geometry in
-        ScrollViewReader { proxy in
-            List(selection: $selection) {
-                ForEach(tmpNoteDetails) { noteDetail in
-                    HStack {
-                        ForEach(0 ..< 2) { col in
-                            noteDetailCell(noteDetail, col)
-                                .onTapGesture {
-                                    selectedRow = noteDetail.order
-                                    selectedCol = col           // 여기 있으면 Keyboard 뒤에 View가 안 없어지는 경우 생김
-                                    if isTextField { scrollTarget = noteDetail.order }
-                                }
+            ScrollViewReader { proxy in
+                List(selection: $selection) {
+                    ForEach(tmpNoteDetails) { noteDetail in
+                        noteDetailRow(noteDetail)
+                    }
+                    .onDelete(perform: deleteItems)
+                    .deleteDisabled(isShuffled)             // Shuffle 상태일 때 delete 못하게 함
+                }
+                .frame(height: listFrame)
+                .onChange(of: scrollTarget) { target in
+                    if let target = target {
+                        scrollTarget = nil
+    //                    withAnimation { proxy.scrollTo(tmpNoteDetails[target].id, anchor: .bottom) }
+                        withAnimation {
+                            proxy.scrollTo(tmpNoteDetails[target].id)
                         }
-                        
+                    }
+                }
+                .animation(.default)
+                .onAppear() {
+                    copyNoteDetails()
+                    listFrame = geometry.size.height > geometry.size.width ? geometry.size.height : geometry.size.width
+                }
+                .navigationBarTitle("\(note.title!)", displayMode: .inline)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
                         Button(action: {
-                            changeMemorizedState(id: noteDetail.id)
-                        }) {
-                            if editMode == .inactive {
-                                noteDetail.isMemorized == true ? Image(systemName: "square.fill") : Image(systemName: "square")
+                            if listFrame == 500 {
+                                listFrame = 700
                             }
+                            else {
+                                listFrame = 500
+                            }
+                            print(listFrame)
+                        }) {
+                            Text("Test")
                         }
                     }
-                    .padding()
-                    .modifier(HomeViewNoteRowModifier())
-                }
-                .onDelete(perform: deleteItems)
-                .deleteDisabled(isShuffled)             // Shuffle 상태일 때 delete 못하게 함
-            }
-            .frame(height: listFrame)
-            .onChange(of: scrollTarget) { target in
-                if let target = target {
-                    scrollTarget = nil
-//                    withAnimation { proxy.scrollTo(tmpNoteDetails[target].id, anchor: .bottom) }
-                    withAnimation {
-                        proxy.scrollTo(tmpNoteDetails[target].id)
+                    ToolbarItem(placement: .navigationBarTrailing) { editButton.disabled(isEditButton == false) }
+                    
+                    ToolbarItem(placement: .bottomBar) {
+                        if editMode == .inactive { showingTermsButton }
+                        else { addButton }
+                    }
+                    ToolbarItem(placement: .bottomBar) { Spacer() }
+                    ToolbarItem(placement: .bottomBar) { if editMode == .inactive { hidingMemorizedNoteDetails } }
+                    ToolbarItem(placement: .bottomBar) { Spacer() }
+                    ToolbarItem(placement: .bottomBar) { if editMode == .inactive { shuffleButton } }
+                    ToolbarItem(placement: .bottomBar) { Spacer() }
+                    ToolbarItem(placement: .bottomBar) {
+                        if editMode == .inactive { showingDefsButton }
+                        else { deleteButton }
                     }
                 }
+                .environment(\.editMode, self.$editMode)          // 해당 위치에 없으면 editMode 안 먹힘
             }
-            .animation(.default)
-            .onAppear() {
-                copyNoteDetails()
-                listFrame = geometry.size.height > geometry.size.width ? geometry.size.height : geometry.size.width
-            }
-            .navigationBarTitle("\(note.title!)", displayMode: .inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        print(listFrame)
-                    }) {
-                        Text("Test")
-                    }
-                }
-                ToolbarItem(placement: .navigationBarTrailing) { editButton.disabled(isEditButton == false) }
-                
-                ToolbarItem(placement: .bottomBar) {
-                    if editMode == .inactive { showingTermsButton }
-                    else { addButton }
-                }
-                ToolbarItem(placement: .bottomBar) { Spacer() }
-                ToolbarItem(placement: .bottomBar) { if editMode == .inactive { shuffleButton } }
-                ToolbarItem(placement: .bottomBar) { Spacer() }
-                ToolbarItem(placement: .bottomBar) {
-                    if editMode == .inactive { showingDefsButton }
-                    else { deleteButton }
-                }
-            }
-            .environment(\.editMode, self.$editMode)          // 해당 위치에 없으면 editMode 안 먹힘
         }
-    }
     }
 }
 
 extension YyNoteDetailView {
+    @ViewBuilder        // 없으면 Function declares an opaque return type ... error 발생
+    func noteDetailRow(_ noteDetail: NoteDetail) -> some View {
+        if noteDetail.isMemorized && isHidingNoteDetails {
+            EmptyView()
+        }
+        else {
+            HStack {
+                ForEach(0 ..< 2) { col in
+                    noteDetailCell(noteDetail, col)
+                        .onTapGesture {
+                            selectedRow = noteDetail.order
+                            selectedCol = col           // 여기 있으면 Keyboard 뒤에 View가 안 없어지는 경우 생김
+                            if isTextField { scrollTarget = noteDetail.order }
+                        }
+                }
+                
+                Button(action: {
+                    changeMemorizedState(id: noteDetail.id)
+                }) {
+                    if editMode == .inactive {
+                        noteDetail.isMemorized == true ? Image(systemName: "square.fill") : Image(systemName: "square")
+                    }
+                }
+            }
+            .padding()
+            .modifier(HomeViewNoteRowModifier())
+        }
+    }
+    
     func noteDetailCell(_ noteDetail: NoteDetail, _ selectedCol: Int) -> some View {
         return ZStack {
             switch selectedCol {
@@ -191,8 +210,15 @@ extension YyNoteDetailView {
                     isDefScaled.toggle()
                 }
                 isTermsScreen.toggle()
-                isTermScaled.toggle() }) {
+                isTermScaled.toggle()
+        }) {
             isTermsScreen == true ? Image(systemName: "arrow.left") : Image(systemName: "arrow.right")
+        }
+    }
+    
+    var hidingMemorizedNoteDetails: some View {
+        Button(action: { isHidingNoteDetails.toggle() }) {
+            isHidingNoteDetails == true ? Image(systemName: "eye") : Image(systemName: "eye.slash")
         }
     }
     
@@ -209,7 +235,8 @@ extension YyNoteDetailView {
                     isTermScaled.toggle()
                 }
                 isDefsScreen.toggle()
-                isDefScaled.toggle() }) {
+                isDefScaled.toggle()
+        }) {
             isDefsScreen == true ? Image(systemName: "arrow.right") : Image(systemName: "arrow.left")
         }
     }
@@ -281,6 +308,7 @@ extension YyNoteDetailView {
                 isEditButton = false
                 isTermsScreen = false
                 isDefsScreen = false
+                isHidingNoteDetails = false
                 
                 selectedRow = -1
                 selectedCol = -1
