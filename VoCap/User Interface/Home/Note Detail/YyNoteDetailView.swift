@@ -33,6 +33,7 @@ struct YyNoteDetailView: View {
     
     @State var isTextField: Bool = false
     @State var isEditButton : Bool = true
+    @State var isAddButton: Bool = true
     
     @State private var scrollTarget: Int?
     
@@ -52,14 +53,12 @@ struct YyNoteDetailView: View {
                     .onDelete(perform: deleteItems)
                     .deleteDisabled(isShuffled)             // Shuffle 상태일 때 delete 못하게 함
                 }
-                .frame(height: listFrame)
+//                .frame(height: listFrame)
                 .onChange(of: scrollTarget) { target in
                     if let target = target {
                         scrollTarget = nil
-    //                    withAnimation { proxy.scrollTo(tmpNoteDetails[target].id, anchor: .bottom) }
-                        withAnimation {
-                            proxy.scrollTo(tmpNoteDetails[target].id)
-                        }
+//                        withAnimation { proxy.scrollTo(tmpNoteDetails[target].id, anchor: .bottom) }
+                        withAnimation { proxy.scrollTo(tmpNoteDetails[target].id) }
                     }
                 }
                 .animation(.default)
@@ -86,7 +85,7 @@ struct YyNoteDetailView: View {
                     
                     ToolbarItem(placement: .bottomBar) {
                         if editMode == .inactive { showingTermsButton }
-                        else { addButton }
+                        else { addButton.disabled(isAddButton == false) }
                     }
                     ToolbarItem(placement: .bottomBar) { Spacer() }
                     ToolbarItem(placement: .bottomBar) { if editMode == .inactive { hidingMemorizedNoteDetails } }
@@ -280,10 +279,19 @@ extension YyNoteDetailView {
     }
     
     private var addButton: some View {
-        Button(action: { add() }) {
+        Button(action: {
+            isAddButton = false
+            
+            if note.term.count < 500 { add() }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                isAddButton = true
+            }
+        }) {
             Text("Add")
         }
     }
+    
     func add() {
         note.term.append("")
         note.definition.append("")
@@ -296,7 +304,7 @@ extension YyNoteDetailView {
         
         scrollTarget = note.term.count - 1
         
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {            // for animation
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {            // for animation
 //            selectedRow = note.term.count - 1
 //            selectedCol = 0
 //        }
