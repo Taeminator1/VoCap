@@ -56,7 +56,7 @@ struct YyCustomTextField: UIViewRepresentable {
     var isFirstResponder: Bool = false
 
     func makeUIView(context: UIViewRepresentableContext<YyCustomTextField>) -> UITextField {
-        let textField = YyCustomUITextField(selectedRow: $selectedRow, selectedCol: $selectedCol)
+        let textField = YyCustomUITextField(selectedRow: $selectedRow, selectedCol: $selectedCol, closeKeyboard: $closeKeyboard)
         textField.placeholder = title
         textField.delegate = context.coordinator
         textField.textAlignment = .center
@@ -97,6 +97,7 @@ struct YyCustomTextField: UIViewRepresentable {
         
         if closeKeyboard {
             uiView.resignFirstResponder()
+            closeKeyboard = false
         }
     }
 }
@@ -108,11 +109,13 @@ class YyCustomUITextField: UITextField {
     let numberOfCols: Int = 2
     @Binding var selectedRow: Int
     @Binding var selectedCol: Int
+    @Binding var closeKeyboard: Bool
     
     
-    init(selectedRow: Binding<Int>, selectedCol: Binding<Int>) {
+    init(selectedRow: Binding<Int>, selectedCol: Binding<Int>, closeKeyboard: Binding<Bool>) {
         _selectedRow = selectedRow
         _selectedCol = selectedCol
+        _closeKeyboard = closeKeyboard
         super.init(frame: .zero)
     }
     
@@ -145,8 +148,9 @@ class YyCustomUITextField: UITextField {
     }
     
     @objc func done(button: UIBarButtonItem) -> Void {
+//        self.resignFirstResponder()
         selectedRow = -1
         selectedCol = -1
-        self.resignFirstResponder()
+        closeKeyboard = true
     }
 }

@@ -70,13 +70,9 @@ struct YyNoteDetailView: View {
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Button(action: {
-                            if listFrame == 500 {
-                                listFrame = 700
-                            }
-                            else {
-                                listFrame = 500
-                            }
-                            print(listFrame)
+//                            print("R: \(selectedRow)")
+//                            print("C: \(selectedCol)")
+                            print(closeKeyboard)
                         }) {
                             Text("Test")
                         }
@@ -293,14 +289,16 @@ extension YyNoteDetailView {
     }
     
     func add() {
+//        for i in 0..<50 {
         note.term.append("")
         note.definition.append("")
         note.isMemorized.append(false)
         
         tmpNoteDetails.append(NoteDetail(order: note.term.count - 1))
         saveContext()
-        
+    
         isScaledArray.append(Bool(false))
+//        }
         
         scrollTarget = note.term.count - 1
         
