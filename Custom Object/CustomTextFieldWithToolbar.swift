@@ -1,5 +1,5 @@
 //
-//  XxCustomTextField.swift
+//  CustomTextFieldWithToolbar.swift
 //  VoCap
 //
 //  Created by 윤태민 on 1/31/21.
@@ -17,7 +17,7 @@
 
 import SwiftUI
 
-struct YyCustomTextField: UIViewRepresentable {
+struct CustomTextFieldWithToolbar: UIViewRepresentable {
     
     class Coordinator: NSObject, UITextFieldDelegate {
 
@@ -38,12 +38,6 @@ struct YyCustomTextField: UIViewRepresentable {
                 self.text = textField.text ?? ""
             }
         }
-        
-//        func textFieldDidEndEditing(_ textField: UITextField) {
-//            print("d")
-//            selectedRow = -1
-//            selectedCol = -1
-//        }
     }
 
     var title: String = ""              // Placeholder
@@ -56,22 +50,19 @@ struct YyCustomTextField: UIViewRepresentable {
     
     var isFirstResponder: Bool = false
 
-    func makeUIView(context: UIViewRepresentableContext<YyCustomTextField>) -> UITextField {
-        let textField = YyCustomUITextField(selectedRow: $selectedRow, selectedCol: $selectedCol, closeKeyboard: $closeKeyboard)
+    func makeUIView(context: UIViewRepresentableContext<CustomTextFieldWithToolbar>) -> UITextField {
+        let textField = CustomUITextField(selectedRow: $selectedRow, selectedCol: $selectedCol, closeKeyboard: $closeKeyboard)
         textField.placeholder = title
         textField.delegate = context.coordinator
         textField.autocapitalizationType = .none
         textField.textAlignment = .left
         textField.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-//        textField.keyboardAppearance = UIKeyboardAppearance.dark
 
-        let toolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 44))
+        let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 44))
         
         let moveLeftButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(textField.moveLeft))
         
         let moveRightButton = UIBarButtonItem(image: UIImage(systemName: "chevron.right"), style: .plain, target: self, action: #selector(textField.moveRight(button:)))
-        
-        let moveLeftRightButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left.slash.chevron.right"), style: .plain, target: self, action: #selector(textField.moveLeftRight(button:)))
         
         let space = UIBarButtonItem(title: " ")
         
@@ -79,31 +70,24 @@ struct YyCustomTextField: UIViewRepresentable {
         
         let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(textField.done(button:)))
         
-        print("\(col)")
-        
         switch col {
         case 0:
-            toolBar.setItems([moveRightButton, flexible, doneButton], animated: true)
-            textField.inputAccessoryView = toolBar
+            toolbar.setItems([moveRightButton, flexible, doneButton], animated: true)
         case 1:
-            toolBar.setItems([moveLeftButton, flexible, doneButton], animated: true)
-            textField.inputAccessoryView = toolBar
+            toolbar.setItems([moveLeftButton, flexible, doneButton], animated: true)
         default:
-            toolBar.setItems([moveLeftButton, space, moveRightButton, flexible, doneButton], animated: true)
-            textField.inputAccessoryView = toolBar
+            toolbar.setItems([moveLeftButton, space, moveRightButton, flexible, doneButton], animated: true)
         }
-        
-//        toolBar.setItems([moveLeftRightButton, flexible, doneButton], animated: true)
-//        textField.inputAccessoryView = toolBar
+        textField.inputAccessoryView = toolbar
         
         return textField
     }
 
-    func makeCoordinator() -> YyCustomTextField.Coordinator {
+    func makeCoordinator() -> CustomTextFieldWithToolbar.Coordinator {
         return Coordinator(text: $text, selectedRow: $selectedRow, selectedCol: $selectedCol, closeKeyboard: $closeKeyboard)
     }
 
-    func updateUIView(_ uiView: UITextField, context: UIViewRepresentableContext<YyCustomTextField>) {
+    func updateUIView(_ uiView: UITextField, context: UIViewRepresentableContext<CustomTextFieldWithToolbar>) {
         uiView.text = text
         if isFirstResponder {
             uiView.becomeFirstResponder()
@@ -117,7 +101,7 @@ struct YyCustomTextField: UIViewRepresentable {
 }
 
 
-class YyCustomUITextField: UITextField {
+class CustomUITextField: UITextField {
     
     let numberOfRows: Int = 0
     let numberOfCols: Int = 2
@@ -147,11 +131,6 @@ class YyCustomUITextField: UITextField {
         if selectedCol < numberOfCols - 1 {
             self.selectedCol += 1
         }
-    }
-    
-    @objc func moveLeftRight(button: UIBarButtonItem) -> Void {
-        if selectedCol == 0     { selectedCol = 1 }
-        else                    { selectedCol = 0 }
     }
     
     @objc func moveDown(button: UIBarButtonItem) -> Void {

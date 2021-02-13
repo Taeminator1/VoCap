@@ -7,6 +7,11 @@
 
 import SwiftUI
 
+enum TextFieldType: Int {
+    case Term = 0
+    case Definition = 1
+}
+
 struct NoteDetailView: View {
     @Environment(\.managedObjectContext) private var viewContext
     
@@ -18,8 +23,9 @@ struct NoteDetailView: View {
     @State var selection = Set<UUID>()
     
     @State var isTermsScreen: Bool = false
-    @State var isDefsScreen: Bool = false
+    @State var isHidingNoteDetails: Bool = false
     @State var isShuffled: Bool = false
+    @State var isDefsScreen: Bool = false
     
     @State var isTermScaled: Bool = false
     @State var isDefScaled: Bool = false
@@ -27,53 +33,108 @@ struct NoteDetailView: View {
     
     @State var isTextField: Bool = false
     @State var isEditButton : Bool = true
+    @State var isAddButton: Bool = true
     
     @State private var scrollTarget: Int?
     
+    @State private var selectedRow = -1
+    @State private var selectedCol = -1
+    
+    @State var closeKeyboard: Bool = true
+    @State var listFrame: CGFloat = 0.0
+    
     var body: some View {
-        ScrollViewReader { proxy in
-            List(selection: $selection) {
-                ForEach(tmpNoteDetails) { noteDetail in
-                    noteDetailRow(noteDetail)
-                        .modifier(HomeViewNoteRowModifier())
+        GeometryReader { geometry in
+            ScrollViewReader { proxy in
+                List(selection: $selection) {
+                    ForEach(tmpNoteDetails) { noteDetail in
+                        noteDetailRow(noteDetail)
+                    }
+                    .onDelete(perform: deleteItems)
+                    .deleteDisabled(isShuffled)             // Shuffle 상태일 때 delete 못하게 함
                 }
-                .onDelete(perform: deleteItems)
-                .deleteDisabled(isShuffled)             // Shuffle 상태일 때 delete 못하게 함
+//                .frame(height: listFrame)
+                .onChange(of: scrollTarget) { target in
+                    if let target = target {
+                        scrollTarget = nil
+//                        withAnimation { proxy.scrollTo(tmpNoteDetails[target].id, anchor: .bottom) }
+                        withAnimation { proxy.scrollTo(tmpNoteDetails[target].id) }
+                    }
+                }
+                .animation(.default)
+                .onAppear() {
+                    copyNoteDetails()
+                    listFrame = geometry.size.height > geometry.size.width ? geometry.size.height : geometry.size.width
+                }
+                .onDisappear() {
+                    print("onDisappear")
+                }
+                .navigationBarTitle("\(note.title!)", displayMode: .inline)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button(action: {
+                            
+                        }) {
+                            Text("Test")
+                        }
+                    }
+                    
+                    ToolbarItem(placement: .navigationBarTrailing) { editButton.disabled(isEditButton == false) }
+                    
+                    ToolbarItem(placement: .bottomBar) {
+                        if editMode == .inactive { showingTermsButton }
+                        else { addButton.disabled(isAddButton == false) }
+                    }
+                    ToolbarItem(placement: .bottomBar) { Spacer() }
+                    ToolbarItem(placement: .bottomBar) { if editMode == .inactive { hidingMemorizedNoteDetails } }
+                    ToolbarItem(placement: .bottomBar) { Spacer() }
+                    ToolbarItem(placement: .bottomBar) { if editMode == .inactive { shuffleButton } }
+                    ToolbarItem(placement: .bottomBar) { Spacer() }
+                    ToolbarItem(placement: .bottomBar) {
+                        if editMode == .inactive { showingDefsButton }
+                        else { deleteButton }
+                    }
+                }
+                .environment(\.editMode, self.$editMode)          // 해당 위치에 없으면 editMode 안 먹힘
             }
-            .onChange(of: scrollTarget) { target in
-                if let target = target {
-                    scrollTarget = nil
-//                    withAnimation { proxy.scrollTo(tmpNoteDetails[target].id, anchor: .bottom) }
-                    withAnimation { proxy.scrollTo(tmpNoteDetails[target].id) }     // edit 시, 키보드가 나올 때로 바꾸는 게 좋을 거같음
-                }
-            }
-            .animation(.default)
-            .onAppear() { copyNoteDetails() }
-            .navigationBarTitle("\(note.title!)", displayMode: .inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) { editButton.disabled(isEditButton == false) }
-                
-                ToolbarItem(placement: .bottomBar) {
-                    if editMode == .inactive { showingTermsButton }
-                    else { addButton }
-                }
-                ToolbarItem(placement: .bottomBar) { Spacer() }
-                ToolbarItem(placement: .bottomBar) { if editMode == .inactive { shuffleButton } }
-                ToolbarItem(placement: .bottomBar) { Spacer() }
-                ToolbarItem(placement: .bottomBar) {
-                    if editMode == .inactive { showingDefsButton }
-                    else { deleteButton }
-                }
-            }
-            .environment(\.editMode, self.$editMode)          // 해당 위치에 없으면 editMode 안 먹힘
         }
     }
 }
 
 extension NoteDetailView {
+    @ViewBuilder        // 없으면 Function declares an opaque return type ... error 발생
     func noteDetailRow(_ noteDetail: NoteDetail) -> some View {
-        HStack {
-            ZStack() {
+        if noteDetail.isMemorized && isHidingNoteDetails {
+            EmptyView()
+        }
+        else {
+            HStack {
+                ForEach(0 ..< 2) { col in
+                    noteDetailCell(noteDetail, col)
+                        .onTapGesture {
+                            selectedRow = noteDetail.order
+                            selectedCol = col           // 여기 있으면 Keyboard 뒤에 View가 안 없어지는 경우 생김
+                            if isTextField { scrollTarget = noteDetail.order }
+                        }
+                }
+                
+                Button(action: {
+                    changeMemorizedState(id: noteDetail.id)
+                }) {
+                    if editMode == .inactive {
+                        noteDetail.isMemorized == true ? Image(systemName: "square.fill") : Image(systemName: "square")
+                    }
+                }
+            }
+            .padding()
+            .modifier(HomeViewNoteRowModifier())
+        }
+    }
+    
+    func noteDetailCell(_ noteDetail: NoteDetail, _ selectedCol: Int) -> some View {
+        return ZStack {
+            switch selectedCol {
+            case 0:
                 if isTextField == false {
                     noteDetailText(noteDetail.term, strokeColor: .blue)
                     GeometryReader { geometry in
@@ -84,12 +145,9 @@ extension NoteDetailView {
                     }
                 }
                 else {
-//                    noteDetailTextField("term", $note.term[noteDetail.order], strokeColor: .blue)
-                    noteDetailTextField("term", $note.term[noteDetail.order], noteDetail.order, strokeColor: .blue)
+                    NoteDetailTextField("Term", $note.term[noteDetail.order], noteDetail.order, 0, strokeColor: .blue)
                 }
-            }
-                
-            ZStack() {
+            case 1:
                 if isTextField == false {
                     noteDetailText(noteDetail.definition, strokeColor: .green)
                     GeometryReader { geometry in
@@ -100,24 +158,17 @@ extension NoteDetailView {
                     }
                 }
                 else {
-//                    noteDetailTextField("definition", $note.definition[noteDetail.order], strokeColor: .green)
-                    noteDetailTextField("definition", $note.definition[noteDetail.order], noteDetail.order, strokeColor: .green)
+                    NoteDetailTextField("definition", $note.definition[noteDetail.order], noteDetail.order, 1, strokeColor: .green)
                 }
+                
+            default:
+                Text("Error")
             }
-            
-            Button(action: {
-                changeMemorizedState(id: noteDetail.id)
-            }) {
-                if editMode == .inactive {
-                    noteDetail.isMemorized == true ? Image(systemName: "square.fill") : Image(systemName: "square")
-                }
-            }
-//            .buttonStyle(PlainButtonStyle())
         }
-        .padding(.horizontal)
-        .padding(.vertical, 10.0)
     }
-    
+}
+
+extension NoteDetailView {
     func noteDetailText(_ text: String, strokeColor: Color) -> some View {
         Text(text)
             .font(.body)
@@ -126,20 +177,13 @@ extension NoteDetailView {
             .modifier(NoteDetailListModifier(strokeColor: strokeColor))
     }
     
-    func noteDetailTextField(_ placeholder: String, _ text: Binding<String>, strokeColor: Color) -> some View {
-        TextField(placeholder, text: text)
-            .autocapitalization(.none)
-            .font(.body)      // title2: 22, body: 17
-            .lineLimit(2)
-            .padding(.horizontal)
-            .modifier(NoteDetailListModifier(strokeColor: strokeColor))
-    }
-    
-    func noteDetailTextField(_ placeholder: String, _ text: Binding<String>, _ order: Int, strokeColor: Color) -> some View {
-        TextField(placeholder, text: text, onEditingChanged: { _ in scrollTarget = order })
-            .autocapitalization(.none)
-            .font(.body)      // title2: 22, body: 17
-            .lineLimit(2)
+    func NoteDetailTextField(_ title: String, _ text: Binding<String>, _ row: Int, _ col: Int, strokeColor: Color) -> some View {
+
+        var responder: Bool {
+            return row == selectedRow && col == selectedCol
+        }
+        
+        return CustomTextFieldWithToolbar(title: title, text: text, selectedRow: $selectedRow, selectedCol: $selectedCol, isEnabled: $isTextField, closeKeyboard: $closeKeyboard, col: col, isFirstResponder: responder)
             .padding(.horizontal)
             .modifier(NoteDetailListModifier(strokeColor: strokeColor))
     }
@@ -163,8 +207,15 @@ extension NoteDetailView {
                     isDefScaled.toggle()
                 }
                 isTermsScreen.toggle()
-                isTermScaled.toggle() }) {
+                isTermScaled.toggle()
+        }) {
             isTermsScreen == true ? Image(systemName: "arrow.left") : Image(systemName: "arrow.right")
+        }
+    }
+    
+    var hidingMemorizedNoteDetails: some View {
+        Button(action: { isHidingNoteDetails.toggle() }) {
+            isHidingNoteDetails == true ? Image(systemName: "eye") : Image(systemName: "eye.slash")
         }
     }
     
@@ -181,7 +232,8 @@ extension NoteDetailView {
                     isTermScaled.toggle()
                 }
                 isDefsScreen.toggle()
-                isDefScaled.toggle() }) {
+                isDefScaled.toggle()
+        }) {
             isDefsScreen == true ? Image(systemName: "arrow.right") : Image(systemName: "arrow.left")
         }
     }
@@ -225,19 +277,30 @@ extension NoteDetailView {
     }
     
     private var addButton: some View {
-        Button(action: { add() }) {
+        Button(action: {
+            isAddButton = false
+            
+            if note.term.count < 500 { add() }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                isAddButton = true
+            }
+        }) {
             Text("Add")
         }
     }
+    
     func add() {
+//        for i in 0..<50 {
         note.term.append("")
         note.definition.append("")
         note.isMemorized.append(false)
         
         tmpNoteDetails.append(NoteDetail(order: note.term.count - 1))
         saveContext()
-        
+    
         isScaledArray.append(Bool(false))
+//        }
         
         scrollTarget = note.term.count - 1
     }
@@ -248,6 +311,12 @@ extension NoteDetailView {
                 isEditButton = false
                 isTermsScreen = false
                 isDefsScreen = false
+                isHidingNoteDetails = false
+                
+                selectedRow = -1
+                selectedCol = -1
+                closeKeyboard = false
+                
                 if isShuffled { shuffle() }
                 
                 editMode = .active
@@ -269,13 +338,18 @@ extension NoteDetailView {
                 editMode = .inactive
                 selection = Set<UUID>()
                 
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {            // 없으면 Keyboard 뒤 배경 안 사라짐
+                    closeKeyboard = true
+                    isEditButton = true
+                }
+                
                 saveContext()
                 
                 for i in 0..<note.term.count {
                     tmpNoteDetails[i].term = note.term[i]
                     tmpNoteDetails[i].definition = note.definition[i]
                 }
-                isEditButton = true
+                
             }) {
                 Text("Done")
             }
