@@ -66,13 +66,18 @@ struct YyNoteDetailView: View {
                     copyNoteDetails()
                     listFrame = geometry.size.height > geometry.size.width ? geometry.size.height : geometry.size.width
                 }
+                .onDisappear() {
+                    print("onDisappear")
+                }
                 .navigationBarTitle("\(note.title!)", displayMode: .inline)
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Button(action: {
-//                            print("R: \(selectedRow)")
-//                            print("C: \(selectedCol)")
-                            print(closeKeyboard)
+                            print("R: \(selectedRow)")
+                            print("C: \(selectedCol)")
+//                            print(closeKeyboard)
+                            if selectedCol == 1 { selectedCol = 0}
+                            else                { selectedCol = 1}
                         }) {
                             Text("Test")
                         }
@@ -181,7 +186,7 @@ extension YyNoteDetailView {
             return row == selectedRow && col == selectedCol
         }
         
-        return YyCustomTextField(title: title, text: text, selectedRow: $selectedRow, selectedCol: $selectedCol, isEnabled: $isTextField, closeKeyboard: $closeKeyboard, isFirstResponder: responder)
+        return YyCustomTextField(title: title, text: text, selectedRow: $selectedRow, selectedCol: $selectedCol, isEnabled: $isTextField, closeKeyboard: $closeKeyboard, col: col, isFirstResponder: responder)
             .padding(.horizontal)
             .modifier(NoteDetailListModifier(strokeColor: strokeColor))
     }

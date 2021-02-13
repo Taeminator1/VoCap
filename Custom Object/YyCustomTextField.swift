@@ -52,6 +52,7 @@ struct YyCustomTextField: UIViewRepresentable {
     @Binding var selectedCol: Int
     @Binding var isEnabled: Bool
     @Binding var closeKeyboard: Bool
+    let col: Int
     
     var isFirstResponder: Bool = false
 
@@ -59,11 +60,8 @@ struct YyCustomTextField: UIViewRepresentable {
         let textField = YyCustomUITextField(selectedRow: $selectedRow, selectedCol: $selectedCol, closeKeyboard: $closeKeyboard)
         textField.placeholder = title
         textField.delegate = context.coordinator
-        textField.textAlignment = .center
         textField.autocapitalizationType = .none
         textField.textAlignment = .left
-        textField.isEnabled = isEnabled
-        textField.isUserInteractionEnabled = isEnabled
         textField.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
 //        textField.keyboardAppearance = UIKeyboardAppearance.dark
 
@@ -71,16 +69,32 @@ struct YyCustomTextField: UIViewRepresentable {
         
         let moveLeftButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(textField.moveLeft))
         
-        let space = UIBarButtonItem(title: " ")
-        
         let moveRightButton = UIBarButtonItem(image: UIImage(systemName: "chevron.right"), style: .plain, target: self, action: #selector(textField.moveRight(button:)))
+        
+        let moveLeftRightButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left.slash.chevron.right"), style: .plain, target: self, action: #selector(textField.moveLeftRight(button:)))
+        
+        let space = UIBarButtonItem(title: " ")
         
         let flexible = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         
         let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(textField.done(button:)))
         
-        toolBar.setItems([moveLeftButton, space, moveRightButton, flexible, doneButton], animated: true)
-        textField.inputAccessoryView = toolBar
+        print("\(col)")
+        
+        switch col {
+        case 0:
+            toolBar.setItems([moveRightButton, flexible, doneButton], animated: true)
+            textField.inputAccessoryView = toolBar
+        case 1:
+            toolBar.setItems([moveLeftButton, flexible, doneButton], animated: true)
+            textField.inputAccessoryView = toolBar
+        default:
+            toolBar.setItems([moveLeftButton, space, moveRightButton, flexible, doneButton], animated: true)
+            textField.inputAccessoryView = toolBar
+        }
+        
+//        toolBar.setItems([moveLeftRightButton, flexible, doneButton], animated: true)
+//        textField.inputAccessoryView = toolBar
         
         return textField
     }
@@ -133,6 +147,11 @@ class YyCustomUITextField: UITextField {
         if selectedCol < numberOfCols - 1 {
             self.selectedCol += 1
         }
+    }
+    
+    @objc func moveLeftRight(button: UIBarButtonItem) -> Void {
+        if selectedCol == 0     { selectedCol = 1 }
+        else                    { selectedCol = 0 }
     }
     
     @objc func moveDown(button: UIBarButtonItem) -> Void {
