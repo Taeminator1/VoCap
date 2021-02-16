@@ -9,6 +9,8 @@ import SwiftUI
 import CoreData
 
 struct HomeView: View {
+    let persistenceController = PersistenceController.shared
+    
     @Environment(\.managedObjectContext) private var viewContext
 
     @FetchRequest(
@@ -23,7 +25,9 @@ struct HomeView: View {
     @State private var noteRowOrder: Int!
     
     @State private var showUtility: Bool = false
-    @State private var showSettings: Bool = false
+    @State private var showTest: Bool = false
+    
+    @State private var isSettingsPresented: Bool = false
     
     @State var hideNoteDetailsNumber: Bool = false
     
@@ -34,11 +38,7 @@ struct HomeView: View {
                 .disabled(isEditMode == .inactive ? false : true)
                 .sheet(isPresented: $isAddNotePresented) {
                     let tmpNote = TmpNote()
-//                    MakeNoteView(note: tmpNote, dNote: tmpNote, isAddNotePresented: $isAddNotePresented, isEditNotePresented: $isEditNotePresented) { title, colorIndex, memo in
-//                        self.addNote(title: title, colorIndex: colorIndex, memo: memo)
-//                        self.isAddNotePresented = false
-//                        self.isEditNotePresented = false
-//                    }
+                    
                     XxMakeNoteView(note: tmpNote, dNote: tmpNote, isAddNotePresented: $isAddNotePresented, isEditNotePresented: $isEditNotePresented) { title, colorIndex, isWidget, isAutoCheck, memo in
                         self.addNote(title, colorIndex, isWidget, isAutoCheck, memo)
                         self.isAddNotePresented = false
@@ -79,24 +79,18 @@ struct HomeView: View {
             .listStyle(PlainListStyle())                        // 안해주면 Add Note 누를 때, title bar button 초기 색이 하얗게 됨
             .navigationBarTitle("VoCap", displayMode: .inline)
             .sheet(isPresented: $isEditNotePresented) {
-                
                 if let order = noteRowOrder {
                     let tmpNote = TmpNote(note: notes[order])
-//                    MakeNoteView(note: tmpNote, dNote: tmpNote, isAddNotePresented: $isAddNotePresented, isEditNotePresented: $isEditNotePresented) { title, colorIndex, memo in
-//                        self.editItems(title: title, colorIndex: colorIndex, memo: memo)
-//                        self.isEditNotePresented = false
-//                        self.isEditNotePresented = false
-//                    }
+                   
                     XxMakeNoteView(note: tmpNote, dNote: tmpNote, isAddNotePresented: $isAddNotePresented, isEditNotePresented: $isEditNotePresented) { title, colorIndex, isWidget, isAutoCheck, memo in
                         self.editItems(title, colorIndex, isWidget, isAutoCheck, memo)
                         self.isEditNotePresented = false
                         self.isEditNotePresented = false
                     }
                 }
-                
             }
             .background(NavigationLink(destination: UtilityView(), isActive: $showUtility) { EmptyView() })
-            .background(NavigationLink(destination: SettingsView(), isActive: $showSettings) { EmptyView() })
+            .background(NavigationLink(destination: TestView(), isActive: $showTest) { TestView() })
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) { leadingItem }
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -109,17 +103,22 @@ struct HomeView: View {
                                 hideNoteDetailsNumber = true
                             }
                         }
-                        
                 }
                 
                 ToolbarItem(placement: .bottomBar) { bottom1Item }
                 ToolbarItem(placement: .bottomBar) { Spacer() }
                 ToolbarItem(placement: .bottomBar) { bottom2Item }
+                ToolbarItem(placement: .bottomBar) { Spacer() }
+                ToolbarItem(placement: .bottomBar) { bottom3Item.disabled(isEditMode != .inactive) }
             }
             .environment(\.editMode, self.$isEditMode)          // 없으면 Edit 오류 생김(해당 위치에 있어야 함)
         }
         .navigationViewStyle(StackNavigationViewStyle())                // 없으면 View전환할 때마다 Tool Bar 로딩되는데 시간이 걸림
         .onAppear() { isEditNotePresented = false }
+        .sheet(isPresented: $isSettingsPresented) {
+            SettingsView(isSettingsPresented: $isSettingsPresented)
+                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+        }
     }
 }
 
@@ -152,12 +151,18 @@ private extension HomeView {
     
     var bottom1Item: some View {
         Button(action: { showUtility = true }) {
-            Image(systemName: "plus.circle").imageScale(.large)
+            Image(systemName: "1.circle").imageScale(.large)
         }
     }
     
     var bottom2Item: some View {
-        Button(action: { showSettings = true }) {
+        Button(action: { showTest = true }) {
+            Image(systemName: "2.circle").imageScale(.large)
+        }
+    }
+    
+    var bottom3Item: some View {
+        Button(action: { isSettingsPresented = true }) {
             Image(systemName: "gearshape").imageScale(.large)
         }
     }

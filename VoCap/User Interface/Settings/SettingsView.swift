@@ -6,54 +6,117 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct SettingsView: View {
-    @State private var term: String = "kind"
-    @State private var definition: String = "??"
+
+    @Environment(\.managedObjectContext) private var viewContext
+
+    @FetchRequest(
+        sortDescriptors: [NSSortDescriptor(keyPath: \Note.order, ascending: true)],
+        animation: .default)
+    private var notes: FetchedResults<Note>
+    
+    @Binding var isSettingsPresented: Bool
+    
+    @State private var showingEraseSheet: Bool = false
     
     var body: some View {
-        VStack {
-            HStack {
-                TextField("Term", text: $term)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .autocapitalization(.none)
-                Button(action: { getDefinitions() }) {
-                    Text("Search")
-                }
+        NavigationView {
+            List {
+                others
+                initialization
             }
-            TextField("Term", text: $definition)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
+            .listStyle(GroupedListStyle())
+            .environment(\.horizontalSizeClass, .regular)               // 이건 뭐지?
+            .navigationBarTitle("Settings", displayMode: .inline)
+            .actionSheet(isPresented: $showingEraseSheet) {
+                ActionSheet(title: Text("This will delete all data, returning them to defaults."), message: .none,
+                            buttons: [
+                                .destructive(Text("Erase All Data"), action: { deleteAllData() }),
+                                .cancel(Text("Cancel"))]
+                )
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) { leadingItem }
+                ToolbarItem(placement: .navigationBarTrailing) { trailingItem }
+            }
         }
-        .padding()
+    }
+}
+
+// MARK: - Tool Bar Items
+private extension SettingsView {
+    
+    var leadingItem: some View {
+        Button(action: { }) {
+            Text("")
+        }
     }
     
-    func getDefinitions() {
-        definition = ""
-        let passwordEntries = LexicalaFetchData(source: "password", text: term)
+    var trailingItem: some View {
+        Button(action: { isSettingsPresented = false }) {
+            Text("Done")
+        }
+    }
+}
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
-            if let results = passwordEntries.lexicalaEntries!.results {
-                for result in results {
-                    if let id = result.id {
-                        let passwordEntry = LexicalaFetchData(entryID: id)
-                        
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
-                            if let results = passwordEntry.lexicalaEntry!.senses {
-                                for result in results {
-                                    definition += result.translations!["ko"]!.text!
-                                    definition += ", "
-                                }
-                            }
-                        }
-                    }
-                }
+// MARK: - View of List
+private extension SettingsView {
+    var others: some View {
+        Section() {
+            NavigationLink(destination: Text("NavigationLink of tips")) {
+                Text("Tips")
             }
+            
+            NavigationLink(destination: Text("NavigationLink of contact")) {
+                Text("Contact with VoCap")
+            }
+        }
+    }
+    
+    var initialization: some View {
+        Section() {
+            Button(action: { showingEraseSheet = true }) {
+                Text("Erase All Data")
+            }
+        }
+    }
+}
+
+// MARK: - Modify notes
+private extension SettingsView {
+    private func deleteAllData() {
+        
+//        // 오류 발생
+//        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Note")
+//        let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+//
+//        do {
+//            try viewContext.execute(batchDeleteRequest)
+//        } catch {
+//            // Error Handling
+//        }
+        
+        for i in 0..<notes.count {
+            viewContext.delete(notes[i])
+        }
+        saveContext()
+    }
+    
+    func saveContext() {
+        do {
+            try viewContext.save()
+        } catch {
+            let nsError = error as NSError
+            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
         }
     }
 }
 
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
-        SettingsView()
+        SettingsView(isSettingsPresented: .constant(true))
+            .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
     }
 }

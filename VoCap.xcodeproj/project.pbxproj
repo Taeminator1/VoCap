@@ -35,6 +35,7 @@
 		34D88F55256D2A68009B10AF /* VoCapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D88F54256D2A68009B10AF /* VoCapTests.swift */; };
 		34D88F60256D2A68009B10AF /* VoCapUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D88F5F256D2A68009B10AF /* VoCapUITests.swift */; };
 		34E5B30025DBE08A00CB6D17 /* XxMakeNoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34E5B2FF25DBE08A00CB6D17 /* XxMakeNoteView.swift */; };
+		34E5B35325DC179300CB6D17 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34E5B35225DC179300CB6D17 /* TestView.swift */; };
 		34FA963D25CAAB5900E04619 /* NoteDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34FA963C25CAAB5900E04619 /* NoteDetailView.swift */; };
 		34FE926D25BD843D00EC7F6C /* NoteDetailItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34FE926C25BD843D00EC7F6C /* NoteDetailItem.swift */; };
 /* End PBXBuildFile section */
@@ -91,6 +92,7 @@
 		34D88F5F256D2A68009B10AF /* VoCapUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoCapUITests.swift; sourceTree = "<group>"; };
 		34D88F61256D2A68009B10AF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		34E5B2FF25DBE08A00CB6D17 /* XxMakeNoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XxMakeNoteView.swift; sourceTree = "<group>"; };
+		34E5B35225DC179300CB6D17 /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 		34FA963C25CAAB5900E04619 /* NoteDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetailView.swift; sourceTree = "<group>"; };
 		34FE926C25BD843D00EC7F6C /* NoteDetailItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetailItem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -125,6 +127,7 @@
 			children = (
 				340491DF25779CEB00CD1BD7 /* Home */,
 				340491E125779CF500CD1BD7 /* Utility */,
+				34E5B35125DC177800CB6D17 /* Test */,
 				340491E225779CFD00CD1BD7 /* Settings */,
 				34A95A3525823EB700592FA7 /* Helper */,
 			);
@@ -290,6 +293,14 @@
 			path = VoCapUITests;
 			sourceTree = "<group>";
 		};
+		34E5B35125DC177800CB6D17 /* Test */ = {
+			isa = PBXGroup;
+			children = (
+				34E5B35225DC179300CB6D17 /* TestView.swift */,
+			);
+			path = Test;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -443,6 +454,7 @@
 				34C33C6125A02F7E00302560 /* Note+CoreDataClass.swift in Sources */,
 				34BDA91725BDB8590049A0A3 /* ButtonStyleInheritance.swift in Sources */,
 				34FA963D25CAAB5900E04619 /* NoteDetailView.swift in Sources */,
+				34E5B35325DC179300CB6D17 /* TestView.swift in Sources */,
 				3404921725779FC800CD1BD7 /* LexicalaFetchData.swift in Sources */,
 				34D5B91825A1EC3B0071326A /* NoteDetail.swift in Sources */,
 			);

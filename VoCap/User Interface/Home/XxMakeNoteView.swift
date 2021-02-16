@@ -93,14 +93,6 @@ private extension XxMakeNoteView {
     
     var basicInfo: some View {
         Section() {
-            
-//            if isAddNotePresented == true {         // 조건문으로 안하면 Add시, Discard Changes일 때, 키패드가 두 번 띄어지는 오류 발생
-//                CustomTextField(title: "Title", text: $note.title, isFirstResponder: true)
-//            }
-//            else {
-//                TextField("Title", text: $note.title)
-//            }
-            
             CustomTextField(title: "Title", text: $note.title, isFirstResponder: isAddNotePresented)
             
             // Group List에서 이상
