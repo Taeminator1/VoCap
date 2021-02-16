@@ -16,10 +16,10 @@ struct TmpNote {
     
     init() {
         self.colorIndex = Int.random(in: 0..<myColor.colors.count)       // Int16으로 선언하면 Picker에서 오류 발생
-        self.isAutoCheck = false
+        self.isAutoCheck = true
         self.isWidget = false
         self.memo = ""
-        self.title = self.memo
+        self.title = ""
     }
     
     init(note: Note) {

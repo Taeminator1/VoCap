@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct MakeNoteView: View {
+struct XxMakeNoteView: View {
     
     @State var note = TmpNote()
     @State var dNote = TmpNote()            // duplicated Note
@@ -19,13 +19,14 @@ struct MakeNoteView: View {
     @State private var shwoingAutoCheckAlert: Bool = false
     @State private var showingCancelSheet: Bool = false
     
-    let onComplete: (String, Int16, String) -> Void
+    // title, colorIndex, isWidget, isAutoCheck, memo
+    let onComplete: (String, Int16, Bool, Bool, String) -> Void
     
     var body: some View {
         NavigationView {
             List {
                 basicInfo
-                toggleConfig
+//                toggleConfig
                 others
             }
             .listStyle(GroupedListStyle())
@@ -52,24 +53,23 @@ struct MakeNoteView: View {
 
 
 // MARK: - Tool Bar Items
-private extension MakeNoteView {
+private extension XxMakeNoteView {
     
     var leadingItem: some View {
         Button(action: cancel) {
             Text("Cancel")
         }
-        
     }
 
     @ViewBuilder            // for conditionally view
     var trailingItem: some View {
         if isAddNotePresented == true {
-            Button(action: { onComplete(note.title, Int16(note.colorIndex), note.memo) }) {
+            Button(action: { onComplete(note.title, Int16(note.colorIndex), note.isWidget, note.isAutoCheck, note.memo) }) {
                 Text("Done")
             }
         }
         else {
-            Button(action: { onComplete(note.title, Int16(note.colorIndex), note.memo) }) {
+            Button(action: { onComplete(note.title, Int16(note.colorIndex), note.isWidget, note.isAutoCheck, note.memo) }) {
                 Text("Save")
             }
             .disabled(note.isEqual(dNote))
@@ -89,7 +89,7 @@ private extension MakeNoteView {
 }
 
 // MARK: - View of List
-private extension MakeNoteView {
+private extension XxMakeNoteView {
     
     var basicInfo: some View {
         Section() {
@@ -126,7 +126,6 @@ private extension MakeNoteView {
                     Alert(title: Text("Widget Info"))
                 }
 
-
                 Spacer()
 
                 Toggle(isOn: $note.isWidget) {
@@ -162,8 +161,8 @@ private extension MakeNoteView {
 }
 
 
-struct MakeNoteView_Previews: PreviewProvider {
+struct XxMakeNoteView_Previews: PreviewProvider {
     static var previews: some View {
-        MakeNoteView(isAddNotePresented: .constant(true), isEditNotePresented: .constant(false)) { _,_,_ in }
+        XxMakeNoteView(isAddNotePresented: .constant(true), isEditNotePresented: .constant(false)) { _,_,_,_,_ in }
     }
 }

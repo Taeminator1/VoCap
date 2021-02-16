@@ -34,8 +34,13 @@ struct HomeView: View {
                 .disabled(isEditMode == .inactive ? false : true)
                 .sheet(isPresented: $isAddNotePresented) {
                     let tmpNote = TmpNote()
-                    MakeNoteView(note: tmpNote, dNote: tmpNote, isAddNotePresented: $isAddNotePresented, isEditNotePresented: $isEditNotePresented) { title, colorIndex, memo in
-                        self.addNote(title: title, colorIndex: colorIndex, memo: memo)
+//                    MakeNoteView(note: tmpNote, dNote: tmpNote, isAddNotePresented: $isAddNotePresented, isEditNotePresented: $isEditNotePresented) { title, colorIndex, memo in
+//                        self.addNote(title: title, colorIndex: colorIndex, memo: memo)
+//                        self.isAddNotePresented = false
+//                        self.isEditNotePresented = false
+//                    }
+                    XxMakeNoteView(note: tmpNote, dNote: tmpNote, isAddNotePresented: $isAddNotePresented, isEditNotePresented: $isEditNotePresented) { title, colorIndex, isWidget, isAutoCheck, memo in
+                        self.addNote(title, colorIndex, isWidget, isAutoCheck, memo)
                         self.isAddNotePresented = false
                         self.isEditNotePresented = false
                     }
@@ -77,8 +82,13 @@ struct HomeView: View {
                 
                 if let order = noteRowOrder {
                     let tmpNote = TmpNote(note: notes[order])
-                    MakeNoteView(note: tmpNote, dNote: tmpNote, isAddNotePresented: $isAddNotePresented, isEditNotePresented: $isEditNotePresented) { title, colorIndex, memo in
-                        self.editItems(title: title, colorIndex: colorIndex, memo: memo)
+//                    MakeNoteView(note: tmpNote, dNote: tmpNote, isAddNotePresented: $isAddNotePresented, isEditNotePresented: $isEditNotePresented) { title, colorIndex, memo in
+//                        self.editItems(title: title, colorIndex: colorIndex, memo: memo)
+//                        self.isEditNotePresented = false
+//                        self.isEditNotePresented = false
+//                    }
+                    XxMakeNoteView(note: tmpNote, dNote: tmpNote, isAddNotePresented: $isAddNotePresented, isEditNotePresented: $isEditNotePresented) { title, colorIndex, isWidget, isAutoCheck, memo in
+                        self.editItems(title, colorIndex, isWidget, isAutoCheck, memo)
                         self.isEditNotePresented = false
                         self.isEditNotePresented = false
                     }
@@ -130,6 +140,16 @@ private extension HomeView {
         saveContext()
     }
     
+    private func editItems(_ title: String, _ colorIndex: Int16, _ isWidget: Bool, _ isAutoCheck: Bool, _ memo: String) {
+        notes[noteRowOrder!].title = title
+        notes[noteRowOrder!].colorIndex = colorIndex
+        notes[noteRowOrder!].isWidget = isWidget
+        notes[noteRowOrder!].isAutoCheck = isAutoCheck
+        notes[noteRowOrder!].memo = memo
+        
+        saveContext()
+    }
+    
     var bottom1Item: some View {
         Button(action: { showUtility = true }) {
             Image(systemName: "plus.circle").imageScale(.large)
@@ -151,6 +171,22 @@ private extension HomeView {
             newNote.id = UUID()
             newNote.title = title
             newNote.colorIndex = colorIndex
+            newNote.memo = memo
+
+            saveContext()
+            makeOrder()             // 간단하게 바꿔도 될 듯
+            saveContext()
+        }
+    }
+    
+    private func addNote(_ title: String, _ colorIndex: Int16, _ isWidget: Bool, _ isAutoCheck: Bool, _ memo: String) {
+        withAnimation {
+            let newNote = Note(context: viewContext)
+            newNote.id = UUID()
+            newNote.title = title
+            newNote.colorIndex = colorIndex
+            newNote.isWidget = isWidget
+            newNote.isAutoCheck = isAutoCheck
             newNote.memo = memo
 
             saveContext()

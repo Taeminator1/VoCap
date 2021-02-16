@@ -34,6 +34,7 @@
 		34D88F4A256D2A68009B10AF /* VoCap.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 34D88F48256D2A68009B10AF /* VoCap.xcdatamodeld */; };
 		34D88F55256D2A68009B10AF /* VoCapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D88F54256D2A68009B10AF /* VoCapTests.swift */; };
 		34D88F60256D2A68009B10AF /* VoCapUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D88F5F256D2A68009B10AF /* VoCapUITests.swift */; };
+		34E5B30025DBE08A00CB6D17 /* XxMakeNoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34E5B2FF25DBE08A00CB6D17 /* XxMakeNoteView.swift */; };
 		34FA963D25CAAB5900E04619 /* NoteDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34FA963C25CAAB5900E04619 /* NoteDetailView.swift */; };
 		34FE926D25BD843D00EC7F6C /* NoteDetailItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34FE926C25BD843D00EC7F6C /* NoteDetailItem.swift */; };
 /* End PBXBuildFile section */
@@ -89,6 +90,7 @@
 		34D88F5B256D2A68009B10AF /* VoCapUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VoCapUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		34D88F5F256D2A68009B10AF /* VoCapUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoCapUITests.swift; sourceTree = "<group>"; };
 		34D88F61256D2A68009B10AF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		34E5B2FF25DBE08A00CB6D17 /* XxMakeNoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XxMakeNoteView.swift; sourceTree = "<group>"; };
 		34FA963C25CAAB5900E04619 /* NoteDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetailView.swift; sourceTree = "<group>"; };
 		34FE926C25BD843D00EC7F6C /* NoteDetailItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetailItem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -135,6 +137,7 @@
 				340491E425779D2C00CD1BD7 /* HomeView.swift */,
 				345A97D82577AE85009323E4 /* SearchView.swift */,
 				344D33F7257F8E5A004DDCCF /* MakeNoteView.swift */,
+				34E5B2FF25DBE08A00CB6D17 /* XxMakeNoteView.swift */,
 				34152FB6259A08A5007E4953 /* TmpNote.swift */,
 				34A5B639257E3AC60023D1AC /* NoteRow.swift */,
 				34D5B91625A1EBF80071326A /* Note Detail */,
@@ -422,6 +425,7 @@
 				340491F225779D4300CD1BD7 /* SettingsView.swift in Sources */,
 				340491ED25779D3600CD1BD7 /* UtilityView.swift in Sources */,
 				344D33F8257F8E5A004DDCCF /* MakeNoteView.swift in Sources */,
+				34E5B30025DBE08A00CB6D17 /* XxMakeNoteView.swift in Sources */,
 				34D88F3E256D2A65009B10AF /* VoCapApp.swift in Sources */,
 				34BDA92A25BDB91C0049A0A3 /* CustomGestureModifier.swift in Sources */,
 				340491E525779D2C00CD1BD7 /* HomeView.swift in Sources */,

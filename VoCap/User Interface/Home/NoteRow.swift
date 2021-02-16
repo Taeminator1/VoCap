@@ -22,7 +22,9 @@ struct NoteRow: View {
     var body: some View {
         VStack() {
             HStack() {
-                Image(systemName: "square").imageScale(.large)
+                if totalNumber != 0 && totalNumber == memorizedNumber   { Image(systemName: "checkmark.circle.fill") }
+                else                                                    { Image(systemName: "circle") }
+                
                 Text(title!)
                     .font(.largeTitle)
                 
