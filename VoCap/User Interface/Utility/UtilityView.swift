@@ -15,7 +15,6 @@ struct UtilityView: View {
         VStack {
             Text("Utility")
                 
-            
 //            Text("Home View")
 //            Button(action: { test1() }) {
 //                Text("get entries")

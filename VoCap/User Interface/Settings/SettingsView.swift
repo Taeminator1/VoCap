@@ -69,7 +69,7 @@ private extension SettingsView {
                 Text("Tips")
             }
             
-            NavigationLink(destination: Text("NavigationLink of contact")) {
+            NavigationLink(destination: ContactUsView()) {
                 Text("Contact with VoCap")
             }
         }

@@ -29,7 +29,7 @@ struct XxMakeNoteView: View {
 //                toggleConfig
                 others
             }
-            .listStyle(GroupedListStyle())
+            .listStyle(InsetGroupedListStyle())
             .environment(\.horizontalSizeClass, .regular)               // 이건 뭐지?
             .navigationBarTitle(isAddNotePresented == true ? "Add Note" : "Edit Note", displayMode: .inline)
             .actionSheet(isPresented: $showingCancelSheet) {
