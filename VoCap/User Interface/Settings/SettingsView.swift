@@ -19,12 +19,14 @@ struct SettingsView: View {
     
     @Binding var isSettingsPresented: Bool
     
+    @State private var isContactUsPresented: Bool = false
     @State private var showingEraseSheet: Bool = false
     
     var body: some View {
         NavigationView {
             List {
                 others
+                contactUs
                 initialization
             }
             .listStyle(GroupedListStyle())
@@ -68,9 +70,16 @@ private extension SettingsView {
             NavigationLink(destination: Text("NavigationLink of tips")) {
                 Text("Tips")
             }
-            
-            NavigationLink(destination: ContactUsView()) {
+        }
+    }
+    
+    var contactUs: some View {
+        Section() {
+            Button(action: { isContactUsPresented = true }) {
                 Text("Contact with VoCap")
+            }
+            .sheet(isPresented: $isContactUsPresented) {
+                ContactUsView(isContactUsPresented: $isContactUsPresented)
             }
         }
     }

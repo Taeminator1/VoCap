@@ -33,8 +33,7 @@ struct XxMakeNoteView: View {
             .environment(\.horizontalSizeClass, .regular)               // 이건 뭐지?
             .navigationBarTitle(isAddNotePresented == true ? "Add Note" : "Edit Note", displayMode: .inline)
             .actionSheet(isPresented: $showingCancelSheet) {
-    //            "Are you sure you want to discard this new note?"
-                ActionSheet(title: Text("Are you sure you want to discard your changes?"), message: .none,
+                ActionSheet(title: actionSheetTitle, message: .none,
                             buttons: [
                                 .destructive(Text("Discard Changes"), action: {
                                                 showingCancelSheet = false
@@ -48,6 +47,18 @@ struct XxMakeNoteView: View {
                 ToolbarItem(placement: .navigationBarTrailing) { trailingItem }
             }
         }
+//        .allowAutoDismiss(false, $showingCancelSheet)
+        .allowAutoDismiss($showingCancelSheet) {
+            return note.isEqual(dNote)
+        }
+    }
+    
+    var actionSheetTitle: Text {
+        var title: String = "Are you sure you want to discard "
+        if isAddNotePresented   { title += "this new note?" }
+        else                    { title += "your changes?" }
+        
+        return Text(title)
     }
 }
 
