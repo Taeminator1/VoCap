@@ -30,6 +30,7 @@ struct SettingsView: View {
                 initialization
             }
             .listStyle(GroupedListStyle())
+//            .listStyle(InsetGroupedListStyle())
             .environment(\.horizontalSizeClass, .regular)               // 이건 뭐지?
             .navigationBarTitle("Settings", displayMode: .inline)
             .actionSheet(isPresented: $showingEraseSheet) {
@@ -44,6 +45,7 @@ struct SettingsView: View {
                 ToolbarItem(placement: .navigationBarTrailing) { trailingItem }
             }
         }
+        .navigationViewStyle(StackNavigationViewStyle())
     }
 }
 

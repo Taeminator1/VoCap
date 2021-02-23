@@ -25,12 +25,12 @@ struct ContactUsView: View {
     @State var alertMessage: String = ""
     @State var sendingEmail: Bool = false
     
-    let textLimit: Int = 1000
+    let textLimit: Int = 200
     
     var body: some View {
         NavigationView {
-            List {
-                optionalUserInfo
+            List {                
+                userInfo
                     .disabled(sendingEmail == true)
                 content
                     .disabled(sendingEmail == true)
@@ -119,7 +119,7 @@ private extension ContactUsView {
         sendOperation?.start { (error) -> Void in
             if (error != nil) {
                 NSLog("Error sending email: \(String(describing: error))")
-                alertMessage = "Fail"
+                alertMessage = "Error"
                 showingAlert = true
             } else {
                 print(builder.htmlBody!)
@@ -133,27 +133,30 @@ private extension ContactUsView {
 
 // MARK: - View of List
 private extension ContactUsView {
-    var optionalUserInfo: some View {
-        Section(header: Text("Optional User Info")) {
-            HStack {
-                Text("Email for reply: ")
-                TextField("vocap2021@gmail.com", text: $emailForReply)
-                    .keyboardType(.emailAddress)
-            }
-            
-            HStack {
-                Text("Country: ")
-                TextField("Korea", text: $country)
-            }
-            
-            HStack {
-                Text("Language: ")
+    var userInfo: some View {
+        Section(
+            header: Text("User Info(Optional)")
+                .padding(.top)) {
                 HStack {
-                    TextField("source", text: $sourceLanguage)
+                    Text("Email for reply: ")
+                    TextField("vocap@vocap.com", text: $emailForReply)
+                        .keyboardType(.emailAddress)
+                        .autocapitalization(.none)
+            }
+            
+            HStack {
+                Text("Region: ")
+                TextField("Country", text: $country)
+            }
+            
+            HStack {
+                Text("Language")
+                HStack {
+                    TextField("Source", text: $sourceLanguage)
                         .multilineTextAlignment(.center)
-//                    Image(systemName: "arrow.forward")
-                    Text("to")
-                    TextField("target", text: $targetLanguage)
+                    Image(systemName: "arrow.forward")
+//                    Text("to")
+                    TextField("Target", text: $targetLanguage)
                         .multilineTextAlignment(.center)
                 }
             }
@@ -164,13 +167,15 @@ private extension ContactUsView {
         Section(
             header: Text("Contents"),
             footer: HStack {
-                TextField("", value: $contentsCount, formatter: NumberFormatter())
-                    .multilineTextAlignment(.trailing)
-                Text("/")
-                Text("\(textLimit)")
+//                TextField("", value: $contentsCount, formatter: NumberFormatter())
+//                    .multilineTextAlignment(.trailing)
+//                Text("/")
+//                Text("\(textLimit)")
+                Spacer()
+                Text("\(textLimit - contentsCount)")
             }) {
             TextEditor(text: $contents)
-                .frame(height: 200)
+                .frame(height: 150)
                 .onChange(of: contents) { value in
                     contentsCount = contents.count
                 }
@@ -188,14 +193,16 @@ private extension ContactUsView {
 // MARK: - Others
 private extension ContactUsView {
     var sendEmailResultAlert: Alert {
-        if alertMessage == "Fail" {
+        if alertMessage == "Success" {
             return Alert(title: Text(alertMessage),
-                         message: nil,
-                         primaryButton: .default(Text("Try Again"), action: { sendingEmail = false }),
-                         secondaryButton: .default(Text("Cancel"), action: { isContactUsPresented = false }))
+                         message: Text("Thank you for contacting us. We will review your submission soon. "),
+                         dismissButton: .default(Text("Done"), action: { isContactUsPresented = false }))
         }
         else {
-            return Alert(title: Text(alertMessage), message: nil, dismissButton: .default(Text("OK"), action: { isContactUsPresented = false }))
+            return Alert(title: Text(alertMessage),
+                         message: Text("Something went wrong. Please check your network status and try again. "),
+                         primaryButton: .default(Text("Cancel"), action: { isContactUsPresented = false }),
+                         secondaryButton: .default(Text("Go Back"), action: { sendingEmail = false }))
         }
     }
 }
