@@ -66,27 +66,29 @@ struct NoteDetailView: View {
                     copyNoteDetails()
                     listFrame = geometry.size.height > geometry.size.width ? geometry.size.height : geometry.size.width
                 }
-                .onDisappear() {
-                    print("onDisappear")
-                }
                 .navigationBarTitle("\(note.title!)", displayMode: .inline)
                 .toolbar {
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Button(action: {
-                            
-                        }) {
-                            Text("Test")
+                    ToolbarItem(placement: .navigationBarLeading) { Button(action: { }) { Text("Test") }}
+                    
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        if editMode == .inactive {
+                            Menu {
+                                addButton.disabled(isAddButton == false)
+                                xXaddButton.disabled(isAddButton == false)
+                                editButton.disabled(isEditButton == false)
+                                hideMemorizedButton
+                                testButton
+                            }
+                            label: {
+                                Label("", systemImage: "ellipsis.circle").imageScale(.large)
+                            }
+                        }
+                        else {
+                            doneButton
                         }
                     }
                     
-                    ToolbarItem(placement: .navigationBarTrailing) { editButton.disabled(isEditButton == false) }
-                    
-                    ToolbarItem(placement: .bottomBar) {
-                        if editMode == .inactive { showingTermsButton }
-                        else { addButton.disabled(isAddButton == false) }
-                    }
-                    ToolbarItem(placement: .bottomBar) { Spacer() }
-                    ToolbarItem(placement: .bottomBar) { if editMode == .inactive { hidingMemorizedNoteDetails } }
+                    ToolbarItem(placement: .bottomBar) { if editMode == .inactive { showingTermsButton } }
                     ToolbarItem(placement: .bottomBar) { Spacer() }
                     ToolbarItem(placement: .bottomBar) { if editMode == .inactive { shuffleButton } }
                     ToolbarItem(placement: .bottomBar) { Spacer() }
@@ -98,6 +100,120 @@ struct NoteDetailView: View {
                 .environment(\.editMode, self.$editMode)          // 해당 위치에 없으면 editMode 안 먹힘
             }
         }
+    }
+}
+
+// MARK: - Menu
+extension NoteDetailView {
+    var xXaddButton: some View {
+        Button(action: {
+//            showingAddItemAlert = true
+        }) {
+            Label("Add Items", systemImage: "plus")
+        }
+    }
+    
+    var addItemAlert: Alert {
+        return Alert(title: Text("Add Item"),
+                     message: Text("abc efg hijk lmn opqrs"),
+                     primaryButton: .default(Text("Done"), action: { print("Done") }),
+                     secondaryButton: .default(Text("Next"), action: { print("Next") }))
+    }
+    
+    private var addButton: some View {
+        Button(action: {
+            isAddButton = false
+            
+            if note.term.count < 500 { add() }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                isAddButton = true
+            }
+        }) {
+            Label("Add Item", systemImage: "plus")
+        }
+    }
+  
+    var editButton: some View {
+        Button(action: {
+            isEditButton = false
+            isTermsScreen = false
+            isDefsScreen = false
+            isHidingNoteDetails = false
+            
+            selectedRow = -1
+            selectedCol = -1
+            closeKeyboard = false
+            
+            if isShuffled { shuffle() }
+            
+            editMode = .active
+            selection = Set<UUID>()
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {            // for animation
+                isTextField = true
+                isEditButton = true
+            }
+        }) {
+            Label("Edit item", systemImage: "pencil")
+        }
+    }
+    
+    var doneButton: some View {
+        Button(action: {
+            isEditButton = false
+            isTextField = false
+            
+            editMode = .inactive
+            selection = Set<UUID>()
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {            // 없으면 Keyboard 뒤 배경 안 사라짐
+                closeKeyboard = true
+                isEditButton = true
+            }
+            
+            saveContext()
+            
+            for i in 0..<note.term.count {
+                tmpNoteDetails[i].term = note.term[i]
+                tmpNoteDetails[i].definition = note.definition[i]
+            }
+            
+        }) {
+            Text("Done")
+        }
+    }
+    
+    
+    var hideMemorizedButton: some View {
+        Button(action: { isHidingNoteDetails.toggle() }) {
+            isHidingNoteDetails == true ? Label("Show Memorized", systemImage: "eye") : Label("Hide Memorized", systemImage: "eye.slash")
+        }
+    }
+    
+    
+    
+    var testButton: some View {
+        Button(action: {
+            print("Test")
+        }) {
+            Label("Dictionary Settings", systemImage: "book")
+        }
+    }
+    
+    func add() {
+//        for i in 0..<50 {
+        note.term.append("")
+        note.definition.append("")
+        note.isMemorized.append(false)
+        
+        tmpNoteDetails.append(NoteDetail(order: note.term.count - 1))
+        saveContext()
+    
+        isScaledArray.append(Bool(false))
+//        }
+        
+        scrollTarget = note.term.count - 1
     }
 }
 
@@ -213,12 +329,6 @@ extension NoteDetailView {
         }
     }
     
-    var hidingMemorizedNoteDetails: some View {
-        Button(action: { isHidingNoteDetails.toggle() }) {
-            isHidingNoteDetails == true ? Image(systemName: "eye") : Image(systemName: "eye.slash")
-        }
-    }
-    
     var shuffleButton: some View {
         Button(action: { shuffle() }) {
             isShuffled == true ? Image(systemName: "return") : Image(systemName: "shuffle")
@@ -273,86 +383,6 @@ extension NoteDetailView {
         } catch {
             let nsError = error as NSError
             fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-        }
-    }
-    
-    private var addButton: some View {
-        Button(action: {
-            isAddButton = false
-            
-            if note.term.count < 500 { add() }
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                isAddButton = true
-            }
-        }) {
-            Text("Add")
-        }
-    }
-    
-    func add() {
-//        for i in 0..<50 {
-        note.term.append("")
-        note.definition.append("")
-        note.isMemorized.append(false)
-        
-        tmpNoteDetails.append(NoteDetail(order: note.term.count - 1))
-        saveContext()
-    
-        isScaledArray.append(Bool(false))
-//        }
-        
-        scrollTarget = note.term.count - 1
-    }
-    
-    private var editButton: some View {
-        if editMode == .inactive {
-            return Button(action: {
-                isEditButton = false
-                isTermsScreen = false
-                isDefsScreen = false
-                isHidingNoteDetails = false
-                
-                selectedRow = -1
-                selectedCol = -1
-                closeKeyboard = false
-                
-                if isShuffled { shuffle() }
-                
-                editMode = .active
-                selection = Set<UUID>()
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {            // for animation
-                    isTextField = true
-                    isEditButton = true
-                }
-            }) {
-                Text("Edit")
-            }
-        }
-        else {
-            return Button(action: {
-                isEditButton = false
-                isTextField = false
-                
-                editMode = .inactive
-                selection = Set<UUID>()
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {            // 없으면 Keyboard 뒤 배경 안 사라짐
-                    closeKeyboard = true
-                    isEditButton = true
-                }
-                
-                saveContext()
-                
-                for i in 0..<note.term.count {
-                    tmpNoteDetails[i].term = note.term[i]
-                    tmpNoteDetails[i].definition = note.definition[i]
-                }
-                
-            }) {
-                Text("Done")
-            }
         }
     }
     
