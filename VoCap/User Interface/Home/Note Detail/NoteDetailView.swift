@@ -34,6 +34,7 @@ struct NoteDetailView: View {
     @State var isTextField: Bool = false
     @State var isEditButton : Bool = true
     @State var isAddButton: Bool = true
+    @State private var showingAddItemAlert: Bool = false
     
     @State private var scrollTarget: Int?
     
@@ -42,6 +43,8 @@ struct NoteDetailView: View {
     
     @State var closeKeyboard: Bool = true
     @State var listFrame: CGFloat = 0.0
+    
+    let limitedNumberOfItems: Int = 500
     
     var body: some View {
         GeometryReader { geometry in
@@ -53,6 +56,10 @@ struct NoteDetailView: View {
                     .onDelete(perform: deleteItems)
                     .deleteDisabled(isShuffled)             // Shuffle 상태일 때 delete 못하게 함
                 }
+                .alert(isPresented: $showingAddItemAlert, TextAlert(title: "Add Item", message: "Enter term and definition to memorize. ", action: { term, definition  in
+                    if let term = term, let definition = definition { print("t: \(term), d: \(definition)") }
+                    else { print("cancel") }
+                }))
 //                .frame(height: listFrame)
                 .onChange(of: scrollTarget) { target in
                     if let target = target {
@@ -79,9 +86,7 @@ struct NoteDetailView: View {
                                 hideMemorizedButton
                                 testButton
                             }
-                            label: {
-                                Label("", systemImage: "ellipsis.circle").imageScale(.large)
-                            }
+                            label: { Label("", systemImage: "ellipsis.circle").imageScale(.large) }
                         }
                         else {
                             doneButton
@@ -107,7 +112,7 @@ struct NoteDetailView: View {
 extension NoteDetailView {
     var xXaddButton: some View {
         Button(action: {
-//            showingAddItemAlert = true
+            showingAddItemAlert = true
         }) {
             Label("Add Items", systemImage: "plus")
         }
@@ -124,7 +129,7 @@ extension NoteDetailView {
         Button(action: {
             isAddButton = false
             
-            if note.term.count < 500 { add() }
+            if note.term.count < limitedNumberOfItems { add() }
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 isAddButton = true

@@ -38,6 +38,7 @@
 		34D88F60256D2A68009B10AF /* VoCapUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D88F5F256D2A68009B10AF /* VoCapUITests.swift */; };
 		34E5B30025DBE08A00CB6D17 /* XxMakeNoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34E5B2FF25DBE08A00CB6D17 /* XxMakeNoteView.swift */; };
 		34E5B35325DC179300CB6D17 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34E5B35225DC179300CB6D17 /* TestView.swift */; };
+		34F990A925ED417D00E3710A /* XxCustomTextAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34F990A825ED417D00E3710A /* XxCustomTextAlert.swift */; };
 		34FA963D25CAAB5900E04619 /* NoteDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34FA963C25CAAB5900E04619 /* NoteDetailView.swift */; };
 		34FE926D25BD843D00EC7F6C /* NoteDetailItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34FE926C25BD843D00EC7F6C /* NoteDetailItem.swift */; };
 		9A2B9D465AA8008092048A5A /* Pods_VoCap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D566AC9AAF2CC2A0B5B4B9B3 /* Pods_VoCap.framework */; };
@@ -99,6 +100,7 @@
 		34D88F61256D2A68009B10AF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		34E5B2FF25DBE08A00CB6D17 /* XxMakeNoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XxMakeNoteView.swift; sourceTree = "<group>"; };
 		34E5B35225DC179300CB6D17 /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
+		34F990A825ED417D00E3710A /* XxCustomTextAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XxCustomTextAlert.swift; sourceTree = "<group>"; };
 		34FA963C25CAAB5900E04619 /* NoteDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetailView.swift; sourceTree = "<group>"; };
 		34FE926C25BD843D00EC7F6C /* NoteDetailItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetailItem.swift; sourceTree = "<group>"; };
 		406059946C82FB478F2E26E3 /* Pods-VoCap.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VoCap.release.xcconfig"; path = "Target Support Files/Pods-VoCap/Pods-VoCap.release.xcconfig"; sourceTree = "<group>"; };
@@ -200,6 +202,7 @@
 				3445EBEC25C9851B00D16915 /* CustomTextFieldWithToolbar.swift */,
 				34BDA92925BDB91C0049A0A3 /* CustomGestureModifier.swift */,
 				3459D8F825DE8764002A9817 /* CustomSheetDismiss.swift */,
+				34F990A825ED417D00E3710A /* XxCustomTextAlert.swift */,
 			);
 			path = "Custom Object";
 			sourceTree = "<group>";
@@ -506,6 +509,7 @@
 				3490ED8125A48EE400DB1B2F /* ViewModifierInheritance.swift in Sources */,
 				345A97D92577AE85009323E4 /* SearchView.swift in Sources */,
 				34A5B649257E522A0023D1AC /* ColorExtension.swift in Sources */,
+				34F990A925ED417D00E3710A /* XxCustomTextAlert.swift in Sources */,
 				34C33C6225A02F7E00302560 /* Note+CoreDataProperties.swift in Sources */,
 				3404B4C6258784890021CDAE /* CustomTextField.swift in Sources */,
 				34D88F4A256D2A68009B10AF /* VoCap.xcdatamodeld in Sources */,
