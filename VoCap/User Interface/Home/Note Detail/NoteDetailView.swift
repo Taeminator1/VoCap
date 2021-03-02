@@ -44,7 +44,17 @@ struct NoteDetailView: View {
     @State var closeKeyboard: Bool = true
     @State var listFrame: CGFloat = 0.0
     
-    let limitedNumberOfItems: Int = 500
+    let limitedNumberOfItems: Int = 600
+    
+    @Binding var isDisabled: Bool
+    
+    let alertController = UIAlertController(title: "Alert", message: "Please enter text", preferredStyle: .alert)
+
+    // Create an OK Button
+    let okAction = UIAlertAction(title: "OK", style: .default) { (_) in
+        // Print "OK Tapped" to the screen when the user taps OK
+        print("OK Tapped")
+    }
     
     var body: some View {
         GeometryReader { geometry in
@@ -56,9 +66,26 @@ struct NoteDetailView: View {
                     .onDelete(perform: deleteItems)
                     .deleteDisabled(isShuffled)             // Shuffle 상태일 때 delete 못하게 함
                 }
+                .animation(.default)
                 .alert(isPresented: $showingAddItemAlert, TextAlert(title: "Add Item", message: "Enter term and definition to memorize. ", action: { term, definition  in
-                    if let term = term, let definition = definition { print("t: \(term), d: \(definition)") }
-                    else { print("cancel") }
+                    if let term = term, let definition = definition {
+                        print("Next")
+                        if term != "" && definition != "" && note.term.count < limitedNumberOfItems {
+                            add(term, definition)
+                            
+//                            DispatchQueue.main.async {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {         // 딜레이 안 주면 추가한 목록이 안 보임
+                                scrollTarget = note.term.count - 1
+                            }
+                            showingAddItemAlert = true
+                        }
+                        else {
+                            print("Cancel")
+                        }
+                    }
+                    else {
+                        print("Cancel")
+                    }
                 }))
 //                .frame(height: listFrame)
                 .onChange(of: scrollTarget) { target in
@@ -68,23 +95,25 @@ struct NoteDetailView: View {
                         withAnimation { proxy.scrollTo(tmpNoteDetails[target].id) }
                     }
                 }
-                .animation(.default)
+//                .animation(.default)
                 .onAppear() {
                     copyNoteDetails()
                     listFrame = geometry.size.height > geometry.size.width ? geometry.size.height : geometry.size.width
                 }
                 .navigationBarTitle("\(note.title!)", displayMode: .inline)
                 .toolbar {
-                    ToolbarItem(placement: .navigationBarLeading) { Button(action: { }) { Text("Test") }}
+                    ToolbarItem(placement: .navigationBarLeading) { Button(action: {
+                        isDisabled.toggle()
+                    }) { Text("Test") }}
                     
                     ToolbarItem(placement: .navigationBarTrailing) {
                         if editMode == .inactive {
                             Menu {
-                                addButton.disabled(isAddButton == false)
+//                                addButton.disabled(isAddButton == false)
                                 xXaddButton.disabled(isAddButton == false)
                                 editButton.disabled(isEditButton == false)
                                 hideMemorizedButton
-                                testButton
+//                                testButton
                             }
                             label: { Label("", systemImage: "ellipsis.circle").imageScale(.large) }
                         }
@@ -116,13 +145,6 @@ extension NoteDetailView {
         }) {
             Label("Add Items", systemImage: "plus")
         }
-    }
-    
-    var addItemAlert: Alert {
-        return Alert(title: Text("Add Item"),
-                     message: Text("abc efg hijk lmn opqrs"),
-                     primaryButton: .default(Text("Done"), action: { print("Done") }),
-                     secondaryButton: .default(Text("Next"), action: { print("Next") }))
     }
     
     private var addButton: some View {
@@ -207,7 +229,7 @@ extension NoteDetailView {
     }
     
     func add() {
-//        for i in 0..<50 {
+//        for i in 0..<500 {
         note.term.append("")
         note.definition.append("")
         note.isMemorized.append(false)
@@ -219,6 +241,22 @@ extension NoteDetailView {
 //        }
         
         scrollTarget = note.term.count - 1
+    }
+    
+    func add(_ term: String, _ definitino: String) {
+//        for i in 0..<50 {
+        note.term.append(term)
+        note.definition.append(definitino)
+        note.isMemorized.append(false)
+        
+//        tmpNoteDetails.append(NoteDetail(order: note.term.count - 1))
+//        tmpNoteDetails.append(NoteDetail(order: note.term.count - 1, term: note.term, definition: note.definition))
+        let index = note.term.count - 1
+        tmpNoteDetails.append(NoteDetail(order: index, term: note.term[index], definition: note.definition[index]))
+        saveContext()
+    
+        isScaledArray.append(Bool(false))
+//        }
     }
 }
 

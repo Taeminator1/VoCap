@@ -6,6 +6,7 @@
 //
 
 //  https://swiftuirecipes.com/blog/swiftui-alert-with-textfield
+//  https://gist.github.com/TheCodedSelf/c4f3984dd9fcc015b3ab2f9f60f8ad51
 //  Modified by Taeminator1
 
 import SwiftUI
@@ -14,46 +15,66 @@ public struct TextAlert {
     public var title: String // Title of the dialog
     public var message: String // Dialog message
     public var placeholder: String = "" // Placeholder text for the TextField
-    public var accept: String = "OK" // The left-most button label
+    public var next: String = "Next" // The left-most button label
     public var cancel: String? = "Cancel" // The optional cancel (right-most) button label
     public var secondaryActionTitle: String? = nil // The optional center button label
-    public var keyboardType: UIKeyboardType = .default // Keyboard tzpe of the TextField
     public var action: (String?, String?) -> Void // Triggers when either of the two buttons closes the dialog
     public var secondaryAction: (() -> Void)? = nil // Triggers when the optional center button is tapped
 }
 
+
 extension UIAlertController {
     convenience init(alert: TextAlert) {
         self.init(title: alert.title, message: alert.message, preferredStyle: .alert)
-    
    
-        addTextField {
-            $0.placeholder = alert.placeholder
-            $0.keyboardType = alert.keyboardType
-        }
-    
-        addTextField {
-            $0.placeholder = alert.placeholder
-            $0.keyboardType = alert.keyboardType
-        }
-    
         if let cancel = alert.cancel {
             addAction(UIAlertAction(title: cancel, style: .cancel) { _ in
                 alert.action(nil, nil)
             })
         }
-    
+        
+        var termCount = 0
+        var definitionCount = 0
+        
+        var next = UIAlertAction(title: alert.next, style: .default) { _ in }
+        next.isEnabled = false
+        
+        addTextField { textField in
+            textField.placeholder = "Term"
+
+            NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification, object: textField, queue: OperationQueue.main, using: {_ in
+                termCount = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines).count ?? 0
+                
+                next.isEnabled = termCount > 0 && definitionCount > 0
+            })
+        }
+        
+        addTextField { textField in
+            textField.placeholder = "Definition"
+
+            NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification, object: textField, queue: OperationQueue.main, using: {_ in
+                definitionCount = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines).count ?? 0
+                
+                next.isEnabled = termCount > 0 && definitionCount > 0
+            })
+        }
+
+        let termTextField = self.textFields?[0]
+        let defTextField = self.textFields?[1]
+        next = UIAlertAction(title: alert.next, style: .default) { _ in
+            alert.action(termTextField?.text, defTextField?.text)
+        }
+        next.isEnabled = false
+        addAction(next)
+
         if let secondaryActionTitle = alert.secondaryActionTitle {
             addAction(UIAlertAction(title: secondaryActionTitle, style: .default, handler: { _ in
                 alert.secondaryAction?()
             }))
         }
-   
-        let termTextField = self.textFields?[0]
-        let defTextField = self.textFields?[1]
-        addAction(UIAlertAction(title: alert.accept, style: .default) { _ in
-            alert.action(termTextField?.text, defTextField?.text)
-        })
+        
+        preferredAction = next                  // disable 이여도 action 동작하게 됨
+        
     }
 }
 
@@ -78,7 +99,9 @@ struct AlertWrapper<Content: View>: UIViewControllerRepresentable {
     }
 
     func updateUIViewController(_ uiViewController: UIHostingController<Content>, context: UIViewControllerRepresentableContext<AlertWrapper>) {
+        
         uiViewController.rootView = content
+        
         if isPresented && uiViewController.presentedViewController == nil {
             var alert = self.alert
             alert.action = {
@@ -88,6 +111,7 @@ struct AlertWrapper<Content: View>: UIViewControllerRepresentable {
             context.coordinator.alertController = UIAlertController(alert: alert)
             uiViewController.present(context.coordinator.alertController!, animated: true)
         }
+        
         if !isPresented && uiViewController.presentedViewController == context.coordinator.alertController {
             uiViewController.dismiss(animated: true)
         }
@@ -109,11 +133,12 @@ struct CustomAlert1: View {
         }
         .alert(isPresented: $showDialog, TextAlert(title: "Title", message: "Message", action: { term, definition in
             if let term = term, let definition = definition {
+                print("Next")
                 print(term)
                 print(definition)
             }
             else {
-                print("cancel")
+                print("Cancel")
             }
         }))
     }
@@ -124,3 +149,43 @@ struct CustomAlert1_Previews: PreviewProvider {
         CustomAlert1()
     }
 }
+
+
+
+
+
+
+
+
+
+
+//// Create an alert controller
+//let alertController = UIAlertController(title: "Alert", message: "Please enter text", preferredStyle: .alert)
+//
+//// Create an OK Button
+//let okAction = UIAlertAction(title: "OK", style: .default) { (_) in
+//    // Print "OK Tapped" to the screen when the user taps OK
+//    print("OK Tapped")
+//}
+//
+//// Add the OK Button to the Alert Controller
+//alertController.addAction(okAction)
+//
+//
+//// Add a text field to the alert controller
+//alertController.addTextField { (textField) in
+//
+//    // Observe the UITextFieldTextDidChange notification to be notified in the below block when text is changed
+//    NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification, object: textField, queue: OperationQueue.main, using:
+//        {_ in
+//            // Being in this block means that something fired the UITextFieldTextDidChange notification.
+//
+//            // Access the textField object from alertController.addTextField(configurationHandler:) above and get the character count of its non whitespace characters
+//            let textCount = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines).count ?? 0
+//            let textIsNotEmpty = textCount > 0
+//
+//            // If the text contains non whitespace characters, enable the OK Button
+//            okAction.isEnabled = textIsNotEmpty
+//
+//    })
+//}

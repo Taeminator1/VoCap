@@ -31,6 +31,8 @@ struct HomeView: View {
     
     @State var hideNoteDetailsNumber: Bool = false
     
+    @State var isDisabled: Bool = false
+    
     var body: some View {
         NavigationView {
             List {
@@ -64,7 +66,7 @@ struct HomeView: View {
                             }
                         }
                         
-                        NavigationLink(destination: NoteDetailView(note: note), tag: note.id!, selection: $noteRowSelection) {
+                        NavigationLink(destination: NoteDetailView(note: note, isDisabled: $isDisabled), tag: note.id!, selection: $noteRowSelection) {
                             EmptyView()
                         }
                         .frame(width: 0).hidden()
@@ -119,6 +121,8 @@ struct HomeView: View {
             SettingsView(isSettingsPresented: $isSettingsPresented)
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
+//        .disabled(isDisabled)
+//        .overlay(Rectangle())
     }
 }
 
