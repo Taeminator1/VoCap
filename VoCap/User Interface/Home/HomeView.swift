@@ -34,95 +34,111 @@ struct HomeView: View {
     @State var isDisabled: Bool = false
     
     var body: some View {
-        NavigationView {
-            List {
-                Button(action: { self.isAddNotePresented = true }) { AddNoteRow() }
-                .disabled(isEditMode == .inactive ? false : true)
-                .sheet(isPresented: $isAddNotePresented) {
-                    let tmpNote = TmpNote()
-                    
-                    XxMakeNoteView(note: tmpNote, dNote: tmpNote, isAddNotePresented: $isAddNotePresented, isEditNotePresented: $isEditNotePresented) { title, colorIndex, isWidget, isAutoCheck, memo in
-                        self.addNote(title, colorIndex, isWidget, isAutoCheck, memo)
-                        self.isAddNotePresented = false
-                        self.isEditNotePresented = false
-                    }
-                }
-                .modifier(HomeViewNoteRowModifier())
-                .buttonStyle(BorderlessButtonStyle())
-                
-                ForEach(notes) { note in
-                    HStack {
-                        Button(action: {
-                            if isEditMode == .inactive || isEditMode == .transient {    // When Edit Button has been not pressed
-                                self.noteRowSelection = note.id                         // 왜 noteRowSelection에 !붙일 때랑 안 붙일 때 다르지?
-                            }
-                            else {                                                      // When Edit Button has been pressed by user
-                                self.noteRowOrder = Int(note.order)
-                                self.isEditNotePresented = true
-                            }
-                        }) {
-                            VStack() {
-                                NoteRow(title: note.title!, colorIndex: note.colorIndex, totalNumber: Int16(note.term.count), memorizedNumber: Int16(countTrues(note.isMemorized)), hideNoteDetailsNumber: $hideNoteDetailsNumber)
-                            }
-                        }
+        ZStack {
+            NavigationView {
+                List {
+                    Button(action: { self.isAddNotePresented = true }) { AddNoteRow() }
+                    .disabled(isEditMode == .inactive ? false : true)
+                    .sheet(isPresented: $isAddNotePresented) {
+                        let tmpNote = TmpNote()
                         
-                        NavigationLink(destination: NoteDetailView(note: note, isDisabled: $isDisabled), tag: note.id!, selection: $noteRowSelection) {
-                            EmptyView()
+                        XxMakeNoteView(note: tmpNote, dNote: tmpNote, isAddNotePresented: $isAddNotePresented, isEditNotePresented: $isEditNotePresented) { title, colorIndex, isWidget, isAutoCheck, memo in
+                            self.addNote(title, colorIndex, isWidget, isAutoCheck, memo)
+                            self.isAddNotePresented = false
+                            self.isEditNotePresented = false
                         }
-                        .frame(width: 0).hidden()
                     }
                     .modifier(HomeViewNoteRowModifier())
-                    .buttonStyle(PlainButtonStyle())            // .active 상태 일대 버튼 눌릴 수 있도록 함
+                    .buttonStyle(BorderlessButtonStyle())
+                    
+                    ForEach(notes) { note in
+                        HStack {
+                            Button(action: {
+                                if isEditMode == .inactive || isEditMode == .transient {    // When Edit Button has been not pressed
+                                    self.noteRowSelection = note.id                         // 왜 noteRowSelection에 !붙일 때랑 안 붙일 때 다르지?
+                                }
+                                else {                                                      // When Edit Button has been pressed by user
+                                    self.noteRowOrder = Int(note.order)
+                                    self.isEditNotePresented = true
+                                }
+                            }) {
+                                VStack() {
+                                    NoteRow(title: note.title!, colorIndex: note.colorIndex, totalNumber: Int16(note.term.count), memorizedNumber: Int16(countTrues(note.isMemorized)), hideNoteDetailsNumber: $hideNoteDetailsNumber)
+                                }
+                            }
+                            
+                            NavigationLink(destination: NoteDetailView(note: note, isDisabled: $isDisabled), tag: note.id!, selection: $noteRowSelection) {
+                                EmptyView()
+                            }
+                            .frame(width: 0).hidden()
+                        }
+                        .modifier(HomeViewNoteRowModifier())
+                        .buttonStyle(PlainButtonStyle())            // .active 상태 일대 버튼 눌릴 수 있도록 함
+                    }
+                    .onDelete(perform: deleteItems)
+                    .onMove(perform: moveItems)
                 }
-                .onDelete(perform: deleteItems)
-                .onMove(perform: moveItems)
-            }
-            .animation(.default)                    // 해당 자리에 있어야 함
-            .listStyle(PlainListStyle())                        // 안해주면 Add Note 누를 때, title bar button 초기 색이 하얗게 됨
-            .navigationBarTitle("VoCap", displayMode: .inline)
-            .sheet(isPresented: $isEditNotePresented) {
-                if let order = noteRowOrder {
-                    let tmpNote = TmpNote(note: notes[order])
-                   
-                    XxMakeNoteView(note: tmpNote, dNote: tmpNote, isAddNotePresented: $isAddNotePresented, isEditNotePresented: $isEditNotePresented) { title, colorIndex, isWidget, isAutoCheck, memo in
-                        self.editItems(title, colorIndex, isWidget, isAutoCheck, memo)
-                        self.isEditNotePresented = false
-                        self.isEditNotePresented = false
+    //            .ignoresSafeArea(.keyboard)
+                .animation(.default)                    // 해당 자리에 있어야 함
+                .listStyle(PlainListStyle())                        // 안해주면 Add Note 누를 때, title bar button 초기 색이 하얗게 됨
+                .navigationBarTitle("VoCap", displayMode: .inline)
+                .sheet(isPresented: $isEditNotePresented) {
+                    if let order = noteRowOrder {
+                        let tmpNote = TmpNote(note: notes[order])
+                       
+                        XxMakeNoteView(note: tmpNote, dNote: tmpNote, isAddNotePresented: $isAddNotePresented, isEditNotePresented: $isEditNotePresented) { title, colorIndex, isWidget, isAutoCheck, memo in
+                            self.editItems(title, colorIndex, isWidget, isAutoCheck, memo)
+                            self.isEditNotePresented = false
+                            self.isEditNotePresented = false
+                        }
                     }
                 }
-            }
-            .background(NavigationLink(destination: UtilityView(), isActive: $showUtility) { EmptyView() })
-            .background(NavigationLink(destination: TestView(), isActive: $showTest) { TestView() })
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) { leadingItem }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                        .onAppear() {
-                            if isEditMode == .inactive || isEditMode == .transient {    // When Edit Button has been not pressed
-                                hideNoteDetailsNumber = false
+                .background(NavigationLink(destination: UtilityView(), isActive: $showUtility) { EmptyView() })
+                .background(NavigationLink(destination: TestView(), isActive: $showTest) { TestView() })
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) { leadingItem }
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        EditButton()
+                            .onAppear() {
+                                if isEditMode == .inactive || isEditMode == .transient {    // When Edit Button has been not pressed
+                                    hideNoteDetailsNumber = false
+                                }
+                                else {                                                      // When Edit Button has been pressed by user
+                                    hideNoteDetailsNumber = true
+                                }
                             }
-                            else {                                                      // When Edit Button has been pressed by user
-                                hideNoteDetailsNumber = true
-                            }
-                        }
+                    }
+                    
+                    ToolbarItem(placement: .bottomBar) { bottom1Item }
+                    ToolbarItem(placement: .bottomBar) { Spacer() }
+                    ToolbarItem(placement: .bottomBar) { bottom2Item }
+                    ToolbarItem(placement: .bottomBar) { Spacer() }
+                    ToolbarItem(placement: .bottomBar) { bottom3Item.disabled(isEditMode != .inactive) }
                 }
-                
-                ToolbarItem(placement: .bottomBar) { bottom1Item }
-                ToolbarItem(placement: .bottomBar) { Spacer() }
-                ToolbarItem(placement: .bottomBar) { bottom2Item }
-                ToolbarItem(placement: .bottomBar) { Spacer() }
-                ToolbarItem(placement: .bottomBar) { bottom3Item.disabled(isEditMode != .inactive) }
+                .environment(\.editMode, self.$isEditMode)          // 없으면 Edit 오류 생김(해당 위치에 있어야 함)
             }
-            .environment(\.editMode, self.$isEditMode)          // 없으면 Edit 오류 생김(해당 위치에 있어야 함)
+            .navigationViewStyle(StackNavigationViewStyle())                // 없으면 View전환할 때마다 Tool Bar 로딩되는데 시간이 걸림
+            .onAppear() { isEditNotePresented = false }
+            .sheet(isPresented: $isSettingsPresented) {
+                SettingsView(isSettingsPresented: $isSettingsPresented)
+                    .environment(\.managedObjectContext, persistenceController.container.viewContext)
+            }
+//            .popup(isPresented: $isDisabled, style: .dimmed) {
+//                Rectangle()
+//            }
+            
+            if isDisabled {
+                Rectangle()
+                    .fill(Color.black.opacity(0.4))
+                    .ignoresSafeArea()
+                    .overlay(
+                        Button(action: { isDisabled.toggle() }) {
+                            HowToGlanceView()
+                        }
+                    )
+            }
         }
-        .navigationViewStyle(StackNavigationViewStyle())                // 없으면 View전환할 때마다 Tool Bar 로딩되는데 시간이 걸림
-        .onAppear() { isEditNotePresented = false }
-        .sheet(isPresented: $isSettingsPresented) {
-            SettingsView(isSettingsPresented: $isSettingsPresented)
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
-        }
-//        .disabled(isDisabled)
-//        .overlay(Rectangle())
+        
     }
 }
 

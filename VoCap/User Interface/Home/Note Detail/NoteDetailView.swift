@@ -102,9 +102,15 @@ struct NoteDetailView: View {
                 }
                 .navigationBarTitle("\(note.title!)", displayMode: .inline)
                 .toolbar {
-                    ToolbarItem(placement: .navigationBarLeading) { Button(action: {
-                        isDisabled.toggle()
-                    }) { Text("Test") }}
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button(action: {
+                            withAnimation {
+                                isDisabled.toggle()
+                            }
+                        }) {
+                            Text("Test")
+                        }
+                    }
                     
                     ToolbarItem(placement: .navigationBarTrailing) {
                         if editMode == .inactive {
@@ -134,6 +140,9 @@ struct NoteDetailView: View {
                 .environment(\.editMode, self.$editMode)          // 해당 위치에 없으면 editMode 안 먹힘
             }
         }
+//        .popup(isPresented: $isDisabled, style: .none) {
+//            Rectangle()
+//        }
     }
 }
 
@@ -229,16 +238,16 @@ extension NoteDetailView {
     }
     
     func add() {
-//        for i in 0..<500 {
-        note.term.append("")
-        note.definition.append("")
-        note.isMemorized.append(false)
+        for i in 0..<500 {
+            note.term.append("\(i)")
+            note.definition.append("\(i)")
+            note.isMemorized.append(false)
+            
+            tmpNoteDetails.append(NoteDetail(order: note.term.count - 1))
+            saveContext()
         
-        tmpNoteDetails.append(NoteDetail(order: note.term.count - 1))
-        saveContext()
-    
-        isScaledArray.append(Bool(false))
-//        }
+            isScaledArray.append(Bool(false))
+        }
         
         scrollTarget = note.term.count - 1
     }
@@ -324,6 +333,7 @@ extension NoteDetailView {
                 Text("Error")
             }
         }
+//        .ignoresSafeArea(.keyboard)
     }
 }
 

@@ -16,6 +16,7 @@
 		34152FB7259A08A5007E4953 /* TmpNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34152FB6259A08A5007E4953 /* TmpNote.swift */; };
 		3445EBED25C9851B00D16915 /* CustomTextFieldWithToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3445EBEC25C9851B00D16915 /* CustomTextFieldWithToolbar.swift */; };
 		344D33F8257F8E5A004DDCCF /* MakeNoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 344D33F7257F8E5A004DDCCF /* MakeNoteView.swift */; };
+		34505B2E25EFB05B0029AC9F /* HowToGlanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34505B2D25EFB05B0029AC9F /* HowToGlanceView.swift */; };
 		3459D8F925DE8764002A9817 /* CustomSheetDismiss.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3459D8F825DE8764002A9817 /* CustomSheetDismiss.swift */; };
 		345A97CE2577A8DA009323E4 /* LexicalaEntries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 345A97CD2577A8DA009323E4 /* LexicalaEntries.swift */; };
 		345A97D92577AE85009323E4 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 345A97D82577AE85009323E4 /* SearchView.swift */; };
@@ -71,6 +72,7 @@
 		34152FB6259A08A5007E4953 /* TmpNote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TmpNote.swift; sourceTree = "<group>"; };
 		3445EBEC25C9851B00D16915 /* CustomTextFieldWithToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextFieldWithToolbar.swift; sourceTree = "<group>"; };
 		344D33F7257F8E5A004DDCCF /* MakeNoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeNoteView.swift; sourceTree = "<group>"; };
+		34505B2D25EFB05B0029AC9F /* HowToGlanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToGlanceView.swift; sourceTree = "<group>"; };
 		3459D8F825DE8764002A9817 /* CustomSheetDismiss.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSheetDismiss.swift; sourceTree = "<group>"; };
 		345A97CD2577A8DA009323E4 /* LexicalaEntries.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LexicalaEntries.swift; sourceTree = "<group>"; };
 		345A97D82577AE85009323E4 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
@@ -137,6 +139,7 @@
 		340491D625779CC200CD1BD7 /* User Interface */ = {
 			isa = PBXGroup;
 			children = (
+				34505B2425EFB0220029AC9F /* Tips */,
 				340491DF25779CEB00CD1BD7 /* Home */,
 				340491E125779CF500CD1BD7 /* Utility */,
 				34E5B35125DC177800CB6D17 /* Test */,
@@ -205,6 +208,14 @@
 				34F990A825ED417D00E3710A /* XxCustomTextAlert.swift */,
 			);
 			path = "Custom Object";
+			sourceTree = "<group>";
+		};
+		34505B2425EFB0220029AC9F /* Tips */ = {
+			isa = PBXGroup;
+			children = (
+				34505B2D25EFB05B0029AC9F /* HowToGlanceView.swift */,
+			);
+			path = Tips;
 			sourceTree = "<group>";
 		};
 		34A5B647257E52190023D1AC /* Extension */ = {
@@ -497,6 +508,7 @@
 				3404921225779FAD00CD1BD7 /* LexicalaEntry.swift in Sources */,
 				340491F225779D4300CD1BD7 /* SettingsView.swift in Sources */,
 				340491ED25779D3600CD1BD7 /* UtilityView.swift in Sources */,
+				34505B2E25EFB05B0029AC9F /* HowToGlanceView.swift in Sources */,
 				344D33F8257F8E5A004DDCCF /* MakeNoteView.swift in Sources */,
 				34E5B30025DBE08A00CB6D17 /* XxMakeNoteView.swift in Sources */,
 				34D88F3E256D2A65009B10AF /* VoCapApp.swift in Sources */,

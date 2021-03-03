@@ -23,7 +23,7 @@ struct ContactUsView: View {
     @State private var showingCancelSheet: Bool = false
     @State private var showingAlert: Bool = false
     @State var alertMessage: String = ""
-    @State var sendingEmail: Bool = false
+    @State var isSendingEmail: Bool = false
     
     let textLimit: Int = 200
     
@@ -31,9 +31,9 @@ struct ContactUsView: View {
         NavigationView {
             List {                
                 userInfo
-                    .disabled(sendingEmail == true)
+                    .disabled(isSendingEmail == true)
                 content
-                    .disabled(sendingEmail == true)
+                    .disabled(isSendingEmail == true)
             }
             .listStyle(InsetGroupedListStyle())
             .navigationBarTitle("Contact Us", displayMode: .inline)
@@ -48,8 +48,8 @@ struct ContactUsView: View {
             }
             .alert(isPresented: $showingAlert) { sendEmailResultAlert }
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) { leadingItem }
-                ToolbarItem(placement: .navigationBarTrailing) { trailingItem.disabled(contents == "" || sendingEmail == true) }
+                ToolbarItem(placement: .navigationBarLeading) { leadingItem.disabled(isSendingEmail) }
+                ToolbarItem(placement: .navigationBarTrailing) { trailingItem.disabled(contents == "" || isSendingEmail) }
             }
             .allowAutoDismiss($showingCancelSheet) {
                 return emailForReply == "" && country == "" && sourceLanguage == "" && targetLanguage == "" && contents == ""
@@ -82,7 +82,7 @@ private extension ContactUsView {
     }
     
     func sendEmail() -> Void {
-        sendingEmail = true
+        isSendingEmail = true
         let smtpSession = MCOSMTPSession()
         smtpSession.hostname = "smtp.gmail.com"
         smtpSession.username = "vocap2021@gmail.com"
@@ -202,7 +202,7 @@ private extension ContactUsView {
             return Alert(title: Text(alertMessage),
                          message: Text("Something went wrong. Please check your network status and try again. "),
                          primaryButton: .default(Text("Cancel"), action: { isContactUsPresented = false }),
-                         secondaryButton: .default(Text("Go Back"), action: { sendingEmail = false }))
+                         secondaryButton: .default(Text("Go Back"), action: { isSendingEmail = false }))
         }
     }
 }
