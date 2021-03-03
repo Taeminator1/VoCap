@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -14,6 +14,8 @@
 		3404921725779FC800CD1BD7 /* LexicalaFetchData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3404921625779FC800CD1BD7 /* LexicalaFetchData.swift */; };
 		3404B4C6258784890021CDAE /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3404B4C5258784890021CDAE /* CustomTextField.swift */; };
 		34152FB7259A08A5007E4953 /* TmpNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34152FB6259A08A5007E4953 /* TmpNote.swift */; };
+		3423403525EFC47000A04176 /* GifView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3423403425EFC47000A04176 /* GifView.swift */; };
+		3423403D25EFD3B500A04176 /* HowToGlance.gif in Resources */ = {isa = PBXBuildFile; fileRef = 3423403C25EFD3B400A04176 /* HowToGlance.gif */; };
 		3445EBED25C9851B00D16915 /* CustomTextFieldWithToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3445EBEC25C9851B00D16915 /* CustomTextFieldWithToolbar.swift */; };
 		344D33F8257F8E5A004DDCCF /* MakeNoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 344D33F7257F8E5A004DDCCF /* MakeNoteView.swift */; };
 		34505B2E25EFB05B0029AC9F /* HowToGlanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34505B2D25EFB05B0029AC9F /* HowToGlanceView.swift */; };
@@ -70,6 +72,8 @@
 		3404921625779FC800CD1BD7 /* LexicalaFetchData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LexicalaFetchData.swift; sourceTree = "<group>"; };
 		3404B4C5258784890021CDAE /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		34152FB6259A08A5007E4953 /* TmpNote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TmpNote.swift; sourceTree = "<group>"; };
+		3423403425EFC47000A04176 /* GifView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GifView.swift; sourceTree = "<group>"; };
+		3423403C25EFD3B400A04176 /* HowToGlance.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = HowToGlance.gif; sourceTree = "<group>"; };
 		3445EBEC25C9851B00D16915 /* CustomTextFieldWithToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextFieldWithToolbar.swift; sourceTree = "<group>"; };
 		344D33F7257F8E5A004DDCCF /* MakeNoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeNoteView.swift; sourceTree = "<group>"; };
 		34505B2D25EFB05B0029AC9F /* HowToGlanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToGlanceView.swift; sourceTree = "<group>"; };
@@ -213,7 +217,9 @@
 		34505B2425EFB0220029AC9F /* Tips */ = {
 			isa = PBXGroup;
 			children = (
+				3423403425EFC47000A04176 /* GifView.swift */,
 				34505B2D25EFB05B0029AC9F /* HowToGlanceView.swift */,
+				3423403C25EFD3B400A04176 /* HowToGlance.gif */,
 			);
 			path = Tips;
 			sourceTree = "<group>";
@@ -358,6 +364,7 @@
 				34D88F36256D2A65009B10AF /* Sources */,
 				34D88F37256D2A65009B10AF /* Frameworks */,
 				34D88F38256D2A65009B10AF /* Resources */,
+				14A104633895C89D1F1FBD42 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -453,6 +460,7 @@
 			files = (
 				34D88F45256D2A68009B10AF /* Preview Assets.xcassets in Resources */,
 				34D88F42256D2A68009B10AF /* Assets.xcassets in Resources */,
+				3423403D25EFD3B500A04176 /* HowToGlance.gif in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -473,6 +481,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		14A104633895C89D1F1FBD42 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-VoCap/Pods-VoCap-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-VoCap/Pods-VoCap-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-VoCap/Pods-VoCap-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		600677D5F4F3DC92604BD125 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -527,6 +552,7 @@
 				34D88F4A256D2A68009B10AF /* VoCap.xcdatamodeld in Sources */,
 				345A97CE2577A8DA009323E4 /* LexicalaEntries.swift in Sources */,
 				3475A91225B1DC02002BC6DE /* ContentView.swift in Sources */,
+				3423403525EFC47000A04176 /* GifView.swift in Sources */,
 				34C33C6125A02F7E00302560 /* Note+CoreDataClass.swift in Sources */,
 				34BDA91725BDB8590049A0A3 /* ButtonStyleInheritance.swift in Sources */,
 				34FA963D25CAAB5900E04619 /* NoteDetailView.swift in Sources */,

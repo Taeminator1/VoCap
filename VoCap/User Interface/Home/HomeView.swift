@@ -73,7 +73,7 @@ struct HomeView: View {
                             .frame(width: 0).hidden()
                         }
                         .modifier(HomeViewNoteRowModifier())
-                        .buttonStyle(PlainButtonStyle())            // .active 상태 일대 버튼 눌릴 수 있도록 함
+                        .buttonStyle(PlainButtonStyle())            // .active 상태 일 때 버튼 눌릴 수 있도록 함
                     }
                     .onDelete(perform: deleteItems)
                     .onMove(perform: moveItems)
@@ -135,6 +135,7 @@ struct HomeView: View {
                         Button(action: { isDisabled.toggle() }) {
                             HowToGlanceView()
                         }
+                        .buttonStyle(PlainButtonStyle())
                     )
             }
         }
