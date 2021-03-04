@@ -42,7 +42,7 @@ struct NoteDetailView: View {
     @State private var selectedCol = -1
     
     @State var closeKeyboard: Bool = true
-//    @State var listFrame: CGFloat = 0.0
+    @State var listFrame: CGFloat = 0.0
     
     let limitedNumberOfItems: Int = 600
     
@@ -98,7 +98,7 @@ struct NoteDetailView: View {
 //                .animation(.default)
                 .onAppear() {
                     copyNoteDetails()
-//                    listFrame = geometry.size.height > geometry.size.width ? geometry.size.height : geometry.size.width
+                    listFrame = geometry.size.height > geometry.size.width ? geometry.size.height : geometry.size.width             // 없으면 .bottomBar 없어짐...
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                         if note.term.count == 0 {
