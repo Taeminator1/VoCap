@@ -29,7 +29,7 @@ struct ContactUsView: View {
     
     var body: some View {
         NavigationView {
-            List {                
+            List {
                 userInfo
                     .disabled(isSendingEmail == true)
                 content
@@ -51,7 +51,10 @@ struct ContactUsView: View {
                 ToolbarItem(placement: .navigationBarLeading) { leadingItem.disabled(isSendingEmail) }
                 ToolbarItem(placement: .navigationBarTrailing) { trailingItem.disabled(contents == "" || isSendingEmail) }
             }
-            .allowAutoDismiss($showingCancelSheet) {
+//            .allowAutoDismiss($showingCancelSheet) {
+//                return emailForReply == "" && country == "" && sourceLanguage == "" && targetLanguage == "" && contents == ""
+//            }
+            .allowAutoDismiss($showingCancelSheet, $isSendingEmail) {
                 return emailForReply == "" && country == "" && sourceLanguage == "" && targetLanguage == "" && contents == ""
             }
         }

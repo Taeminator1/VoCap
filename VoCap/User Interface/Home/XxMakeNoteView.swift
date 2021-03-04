@@ -48,7 +48,7 @@ struct XxMakeNoteView: View {
             }
         }
 //        .allowAutoDismiss(false, $showingCancelSheet)
-        .allowAutoDismiss($showingCancelSheet) {
+        .allowAutoDismiss($showingCancelSheet, .constant(false)) {
             return note.isEqual(dNote)
         }
     }

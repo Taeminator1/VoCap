@@ -19,9 +19,10 @@ import SwiftUI
 struct MbModalHackView: UIViewControllerRepresentable {
     var dismissable: () -> Bool = { false }
     @Binding var showingCancelSheet: Bool
+    @Binding var isSending: Bool
     
     func makeUIViewController(context: UIViewControllerRepresentableContext<MbModalHackView>) -> UIViewController {
-        MbModalViewController(dismissable: self.dismissable, showingCancelSheet: $showingCancelSheet)
+        MbModalViewController(dismissable: self.dismissable, showingCancelSheet: $showingCancelSheet, isSending: $isSending)
     }
     
     func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
@@ -33,10 +34,12 @@ extension MbModalHackView {
     private final class MbModalViewController: UIViewController, UIAdaptivePresentationControllerDelegate {
         let dismissable: () -> Bool
         @Binding var showingCancelSheet: Bool
+        @Binding var isSending: Bool
         
-        init(dismissable: @escaping () -> Bool, showingCancelSheet: Binding<Bool>) {
+        init(dismissable: @escaping () -> Bool, showingCancelSheet: Binding<Bool>, isSending: Binding<Bool>) {
             self.dismissable = dismissable
             _showingCancelSheet = showingCancelSheet
+            _isSending = isSending
             super.init(nibName: nil, bundle: nil)
         }
         
@@ -56,7 +59,14 @@ extension MbModalHackView {
         
         func presentationControllerDidAttemptToDismiss(_ presentationController: UIPresentationController) {
             print("presentationControllerDidAttemptToDismiss")
-            showingCancelSheet = true
+            
+            if isSending == true {
+                showingCancelSheet = false
+            }
+            else {
+                showingCancelSheet = true
+            }
+//            showingCancelSheet = true
         }
         
         // set delegate to the presentation of the root parent
@@ -101,14 +111,19 @@ extension View {
 //            .background(MbModalHackView(dismissable: dismissable, showingCancelSheet: showingCancelSheet))
 //    }
     
-    public func allowAutoDismiss(_ showingCancelSheet: Binding<Bool>, _ dismissable: @escaping () -> Bool) -> some View {
-        self
-            .background(MbModalHackView(dismissable: dismissable, showingCancelSheet: showingCancelSheet))
-    }
+//    public func allowAutoDismiss(_ showingCancelSheet: Binding<Bool>, _ dismissable: @escaping () -> Bool) -> some View {
+//        self
+//            .background(MbModalHackView(dismissable: dismissable, showingCancelSheet: showingCancelSheet))
+//    }
+//
+//    public func allowAutoDismiss(_ dismissable: Bool, _ showingCancelSheet: Binding<Bool>) -> some View {
+//        self
+//            .background(MbModalHackView(dismissable: { dismissable }, showingCancelSheet: showingCancelSheet))
+//    }
     
-    public func allowAutoDismiss(_ dismissable: Bool, _ showingCancelSheet: Binding<Bool>) -> some View {
+    public func allowAutoDismiss(_ showingCancelSheet: Binding<Bool>, _ isSending: Binding<Bool>, _ dismissable: @escaping () -> Bool) -> some View {
         self
-            .background(MbModalHackView(dismissable: { dismissable }, showingCancelSheet: showingCancelSheet))
+            .background(MbModalHackView(dismissable: dismissable, showingCancelSheet: showingCancelSheet, isSending: isSending))
     }
 }
 
@@ -127,13 +142,15 @@ extension View {
 //        }
 //        .sheet(isPresented: $presenting) {
 //            ModalContent()
-//                .allowAutoDismiss { false }
-//                // or
-//                // .allowAutoDismiss(false)
+////                .allowAutoDismiss { false }     or
+////                 .allowAutoDismiss(false)
+//                .allowAutoDismiss($presenting, .constant(false)) {
+//                    false                   // true: can swipe down sheet, false: can't swipe down sheet
+//                }
 //        }
 //    }
 //}
-
+//
 //struct ModalContent: View {
 //    @Environment(\.presentationMode) private var presentationMode
 //
