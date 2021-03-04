@@ -101,11 +101,12 @@ struct NoteDetailListModifier: ViewModifier {
 
     var strokeColor: Color
     let cornerRadius: CGFloat = 5
+    let width: CGFloat = .infinity
+    let height: CGFloat = 45
     
     func body(content: Content) -> some View {
         content
-            .frame(idealWidth: .infinity, idealHeight: 45, maxHeight: 45, alignment: .leading)
-            .frame(maxWidth: .infinity, maxHeight: 45, alignment: .leading)
+            .frame(idealWidth: width, maxWidth: width, idealHeight: height, maxHeight: height, alignment: .leading)
             .overlay(
                 RoundedRectangle(cornerRadius: cornerRadius)
                     .stroke(strokeColor, lineWidth: 2)

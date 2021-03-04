@@ -29,8 +29,8 @@ struct SettingsView: View {
                 contactUs
                 initialization
             }
-            .listStyle(GroupedListStyle())
-//            .listStyle(InsetGroupedListStyle())
+//            .listStyle(GroupedListStyle())
+            .listStyle(InsetGroupedListStyle())
             .environment(\.horizontalSizeClass, .regular)               // 이건 뭐지?
             .navigationBarTitle("Settings", displayMode: .inline)
             .actionSheet(isPresented: $showingEraseSheet) {

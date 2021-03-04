@@ -49,12 +49,6 @@ struct NoteDetailView: View {
     @Binding var isDisabled: Bool
     
     let alertController = UIAlertController(title: "Alert", message: "Please enter text", preferredStyle: .alert)
-
-    // Create an OK Button
-    let okAction = UIAlertAction(title: "OK", style: .default) { (_) in
-        // Print "OK Tapped" to the screen when the user taps OK
-        print("OK Tapped")
-    }
     
     var body: some View {
         GeometryReader { geometry in
@@ -97,6 +91,8 @@ struct NoteDetailView: View {
                 }
 //                .animation(.default)
                 .onAppear() {
+                    UITableView.appearance().showsVerticalScrollIndicator = false
+                    
                     copyNoteDetails()
                     listFrame = geometry.size.height > geometry.size.width ? geometry.size.height : geometry.size.width             // 없으면 .bottomBar 없어짐...
                     
@@ -295,9 +291,9 @@ extension NoteDetailView {
                 Button(action: {
                     changeMemorizedState(id: noteDetail.id)
                 }) {
-                    if editMode == .inactive {
-                        noteDetail.isMemorized == true ? Image(systemName: "square.fill") : Image(systemName: "square")
-                    }
+//                    if editMode == .inactive {
+                        noteDetail.isMemorized == true ? Image(systemName: "square.fill").imageScale(.large) : Image(systemName: "square").imageScale(.large)
+//                    }
                 }
             }
             .padding()
@@ -347,6 +343,7 @@ extension NoteDetailView {
     func noteDetailText(_ text: String, strokeColor: Color) -> some View {
         Text(text)
             .font(.body)
+            .minimumScaleFactor(0.8)
             .lineLimit(2)
             .padding(.horizontal)
             .modifier(NoteDetailListModifier(strokeColor: strokeColor))

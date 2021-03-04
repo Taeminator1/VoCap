@@ -96,7 +96,7 @@ struct HomeView: View {
                 .background(NavigationLink(destination: UtilityView(), isActive: $showUtility) { EmptyView() })
                 .background(NavigationLink(destination: TestView(), isActive: $showTest) { TestView() })
                 .toolbar {
-                    ToolbarItem(placement: .navigationBarLeading) { leadingItem }
+//                    ToolbarItem(placement: .navigationBarLeading) { leadingItem }
                     ToolbarItem(placement: .navigationBarTrailing) {
                         EditButton()
                             .onAppear() {
@@ -109,9 +109,9 @@ struct HomeView: View {
                             }
                     }
                     
-                    ToolbarItem(placement: .bottomBar) { bottom1Item }
-                    ToolbarItem(placement: .bottomBar) { Spacer() }
-                    ToolbarItem(placement: .bottomBar) { bottom2Item }
+//                    ToolbarItem(placement: .bottomBar) { bottom1Item }
+//                    ToolbarItem(placement: .bottomBar) { Spacer() }
+//                    ToolbarItem(placement: .bottomBar) { bottom2Item }
                     ToolbarItem(placement: .bottomBar) { Spacer() }
                     ToolbarItem(placement: .bottomBar) { bottom3Item.disabled(isEditMode != .inactive) }
                 }
