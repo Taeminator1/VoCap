@@ -32,6 +32,7 @@ struct HomeView: View {
     @State var hideNoteDetailsNumber: Bool = false
     
     @State var isDisabled: Bool = false
+    @State var isHowToGlance: Bool = UserDefaults.standard.bool(forKey: "Tap")
     
     var body: some View {
         ZStack {
@@ -120,19 +121,20 @@ struct HomeView: View {
             .navigationViewStyle(StackNavigationViewStyle())                // 없으면 View전환할 때마다 Tool Bar 로딩되는데 시간이 걸림
             .onAppear() { isEditNotePresented = false }
             .sheet(isPresented: $isSettingsPresented) {
-                SettingsView(isSettingsPresented: $isSettingsPresented)
+                SettingsView(isSettingsPresented: $isSettingsPresented, isHowToGlance: $isHowToGlance)
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
             }
-//            .popup(isPresented: $isDisabled, style: .dimmed) {
-//                Rectangle()
-//            }
             
-            if isDisabled {
+            if isDisabled && isHowToGlance {
                 Rectangle()
                     .fill(Color.black.opacity(0.4))
                     .ignoresSafeArea()
                     .overlay(
-                        Button(action: { isDisabled.toggle() }) {
+                        Button(action: {
+                            isDisabled.toggle()
+                            isHowToGlance.toggle()
+                            UserDefaults.standard.set(self.isHowToGlance, forKey: "Tap")
+                        }) {
                             HowToGlanceView()
                         }
                         .buttonStyle(PlainButtonStyle())

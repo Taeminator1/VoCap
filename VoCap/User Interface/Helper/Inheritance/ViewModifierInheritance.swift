@@ -99,19 +99,21 @@ struct VisibilityStyle: ViewModifier {
 // MARK: - NoteDetail
 struct NoteDetailListModifier: ViewModifier {
 
+    var bodyColor: Color = Color.clear
     var strokeColor: Color
     let cornerRadius: CGFloat = 5
     let width: CGFloat = .infinity
     let height: CGFloat = 45
+    let lineWidth: CGFloat = 0
     
     func body(content: Content) -> some View {
         content
             .frame(idealWidth: width, maxWidth: width, idealHeight: height, maxHeight: height, alignment: .leading)
             .overlay(
                 RoundedRectangle(cornerRadius: cornerRadius)
-                    .stroke(strokeColor, lineWidth: 2)
+                    .stroke(strokeColor, lineWidth: lineWidth)
             )
-            .background(Color.gray)
+            .background(bodyColor)
             .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
     }
 }

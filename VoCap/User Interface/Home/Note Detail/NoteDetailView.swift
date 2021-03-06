@@ -61,13 +61,16 @@ struct NoteDetailView: View {
                     .deleteDisabled(isShuffled)             // Shuffle 상태일 때 delete 못하게 함
                 }
                 .animation(.default)
-                .alert(isPresented: $showingAddItemAlert, TextAlert(title: "Add Item", message: "Enter term and definition to memorize. ", action: { term, definition  in
+//                .alert(isPresented: $showingAddItemAlert, TextAlert(title: "Title", message: "Message", action: { result in
+//                              if let text = result { print("\(text)") }
+//                              else { print("else") }
+//                }))
+                .alert(isPresented: $showingAddItemAlert, XxTextAlert(title: "Add Item", message: "Enter term and definition to memorize. ", action: { term, definition  in
                     if let term = term, let definition = definition {
                         print("Next")
                         if term != "" && definition != "" && note.term.count < limitedNumberOfItems {
                             add(term, definition)
-                            
-//                            DispatchQueue.main.async {
+
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {         // 딜레이 안 주면 추가한 목록이 안 보임
                                 scrollTarget = note.term.count - 1
                             }
@@ -89,7 +92,6 @@ struct NoteDetailView: View {
                         withAnimation { proxy.scrollTo(tmpNoteDetails[target].id) }
                     }
                 }
-//                .animation(.default)
                 .onAppear() {
                     UITableView.appearance().showsVerticalScrollIndicator = false
                     
@@ -101,6 +103,9 @@ struct NoteDetailView: View {
                             showingAddItemAlert = true
                         }
                     }
+                }
+                .onDisappear() {
+                    isDisabled = false
                 }
                 .navigationBarTitle("\(note.title!)", displayMode: .inline)
                 .toolbar {
@@ -142,9 +147,6 @@ struct NoteDetailView: View {
                 .environment(\.editMode, self.$editMode)          // 해당 위치에 없으면 editMode 안 먹힘
             }
         }
-//        .popup(isPresented: $isDisabled, style: .none) {
-//            Rectangle()
-//        }
     }
 }
 
@@ -306,29 +308,29 @@ extension NoteDetailView {
             switch selectedCol {
             case 0:
                 if isTextField == false {
-                    noteDetailText(noteDetail.term, strokeColor: .blue)
+                    noteDetailText(noteDetail.term, bodyColor: .systemGray5, strokeColor: .systemBlue)
                     GeometryReader { geometry in
                         HStack {
-                            noteDetailScreen(noteDetail.order, initWidth: 5.0, finalWidth: geometry.size.width + 1, strokeColor: .blue, isScreen: isTermsScreen, anchor: .leading)     // 여기는 + 1 함
+                            noteDetailScreen(noteDetail.order, initWidth: 5.0, finalWidth: geometry.size.width, strokeColor: .systemBlue, isScreen: isTermsScreen, anchor: .leading)
                             Spacer()
                         }
                     }
                 }
                 else {
-                    NoteDetailTextField("Term", $note.term[noteDetail.order], noteDetail.order, 0, strokeColor: .blue)
+                    NoteDetailTextField("Term", $note.term[noteDetail.order], noteDetail.order, 0, bodyColor: .systemGray6, strokeColor: .systemBlue)
                 }
             case 1:
                 if isTextField == false {
-                    noteDetailText(noteDetail.definition, strokeColor: .green)
+                    noteDetailText(noteDetail.definition, bodyColor: .systemGray5, strokeColor: .systemGreen)
                     GeometryReader { geometry in
                         HStack {
                             Spacer()
-                            noteDetailScreen(noteDetail.order, initWidth: 5.0, finalWidth: geometry.size.width, strokeColor: .green, isScreen: isDefsScreen, anchor: .trailing)     // 여기는 + 1 안함
+                            noteDetailScreen(noteDetail.order, initWidth: 5.0, finalWidth: geometry.size.width, strokeColor: .systemGreen, isScreen: isDefsScreen, anchor: .trailing)     // 여기는 + 1 안함
                         }
                     }
                 }
                 else {
-                    NoteDetailTextField("definition", $note.definition[noteDetail.order], noteDetail.order, 1, strokeColor: .green)
+                    NoteDetailTextField("definition", $note.definition[noteDetail.order], noteDetail.order, 1, bodyColor: .systemGray6, strokeColor: .systemGreen)
                 }
                 
             default:
@@ -340,16 +342,16 @@ extension NoteDetailView {
 }
 
 extension NoteDetailView {
-    func noteDetailText(_ text: String, strokeColor: Color) -> some View {
+    func noteDetailText(_ text: String, bodyColor: Color, strokeColor: Color) -> some View {
         Text(text)
             .font(.body)
             .minimumScaleFactor(0.8)
             .lineLimit(2)
             .padding(.horizontal)
-            .modifier(NoteDetailListModifier(strokeColor: strokeColor))
+            .modifier(NoteDetailListModifier(bodyColor: bodyColor, strokeColor: strokeColor))
     }
     
-    func NoteDetailTextField(_ title: String, _ text: Binding<String>, _ row: Int, _ col: Int, strokeColor: Color) -> some View {
+    func NoteDetailTextField(_ title: String, _ text: Binding<String>, _ row: Int, _ col: Int, bodyColor: Color, strokeColor: Color) -> some View {
 
         var responder: Bool {
             return row == selectedRow && col == selectedCol
@@ -357,7 +359,7 @@ extension NoteDetailView {
         
         return CustomTextFieldWithToolbar(title: title, text: text, selectedRow: $selectedRow, selectedCol: $selectedCol, isEnabled: $isTextField, closeKeyboard: $closeKeyboard, col: col, isFirstResponder: responder)
             .padding(.horizontal)
-            .modifier(NoteDetailListModifier(strokeColor: strokeColor))
+            .modifier(NoteDetailListModifier(bodyColor: bodyColor, strokeColor: strokeColor))
     }
     
     func noteDetailScreen(_ order: Int, initWidth: CGFloat = 1.0, finalWidth: CGFloat = 1.0, strokeColor: Color, isScreen: Bool, anchor: UnitPoint) -> some View {

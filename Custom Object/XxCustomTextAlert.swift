@@ -11,7 +11,7 @@
 
 import SwiftUI
 
-public struct TextAlert {
+public struct XxTextAlert {
     public var title: String // Title of the dialog
     public var message: String // Dialog message
     public var placeholder: String = "" // Placeholder text for the TextField
@@ -24,7 +24,7 @@ public struct TextAlert {
 
 
 extension UIAlertController {
-    convenience init(alert: TextAlert) {
+    convenience init(alert: XxTextAlert) {
         self.init(title: alert.title, message: alert.message, preferredStyle: .alert)
    
         if let cancel = alert.cancel {
@@ -78,12 +78,12 @@ extension UIAlertController {
     }
 }
 
-struct AlertWrapper<Content: View>: UIViewControllerRepresentable {
+struct XxAlertWrapper<Content: View>: UIViewControllerRepresentable {
     @Binding var isPresented: Bool
-    let alert: TextAlert
+    let alert: XxTextAlert
     let content: Content
 
-    func makeUIViewController(context: UIViewControllerRepresentableContext<AlertWrapper>) -> UIHostingController<Content> {
+    func makeUIViewController(context: UIViewControllerRepresentableContext<XxAlertWrapper>) -> UIHostingController<Content> {
         UIHostingController(rootView: content)
     }
 
@@ -98,7 +98,7 @@ struct AlertWrapper<Content: View>: UIViewControllerRepresentable {
         return Coordinator()
     }
 
-    func updateUIViewController(_ uiViewController: UIHostingController<Content>, context: UIViewControllerRepresentableContext<AlertWrapper>) {
+    func updateUIViewController(_ uiViewController: UIHostingController<Content>, context: UIViewControllerRepresentableContext<XxAlertWrapper>) {
         
         uiViewController.rootView = content
         
@@ -119,19 +119,19 @@ struct AlertWrapper<Content: View>: UIViewControllerRepresentable {
 }
 
 extension View {
-    public func alert(isPresented: Binding<Bool>, _ alert: TextAlert) -> some View {
-        AlertWrapper(isPresented: isPresented, alert: alert, content: self)
+    public func alert(isPresented: Binding<Bool>, _ alert: XxTextAlert) -> some View {
+        XxAlertWrapper(isPresented: isPresented, alert: alert, content: self)
     }
 }
 
-struct CustomAlert1: View {
+struct XxCustomAlert: View {
     @State private var showDialog = false
 
     var body: some View {
         Button(action: { showDialog.toggle() }) {
             Text("Test")
         }
-        .alert(isPresented: $showDialog, TextAlert(title: "Title", message: "Message", action: { term, definition in
+        .alert(isPresented: $showDialog, XxTextAlert(title: "Title", message: "Message", action: { term, definition in
             if let term = term, let definition = definition {
                 print("Next")
                 print(term)
@@ -144,9 +144,9 @@ struct CustomAlert1: View {
     }
 }
 
-struct CustomAlert1_Previews: PreviewProvider {
+struct XxCustomAlert_Previews: PreviewProvider {
     static var previews: some View {
-        CustomAlert1()
+        XxCustomAlert()
     }
 }
 
