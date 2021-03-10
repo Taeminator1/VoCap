@@ -104,7 +104,7 @@ struct NoteDetailListModifier: ViewModifier {
     let cornerRadius: CGFloat = 5
     let width: CGFloat = .infinity
     let height: CGFloat = 45
-    let lineWidth: CGFloat = 0
+    var lineWidth: CGFloat = 0.0
     
     func body(content: Content) -> some View {
         content

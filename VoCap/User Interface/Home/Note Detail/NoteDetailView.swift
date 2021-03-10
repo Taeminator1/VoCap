@@ -126,7 +126,6 @@ struct NoteDetailView: View {
                                 xXaddButton.disabled(isAddButton == false)
                                 editButton.disabled(isEditButton == false)
                                 hideMemorizedButton
-//                                testButton
                             }
                             label: { Label("", systemImage: "ellipsis.circle").imageScale(.large) }
                         }
@@ -231,15 +230,6 @@ extension NoteDetailView {
         }
     }
     
-    
-    
-    var testButton: some View {
-        Button(action: {
-            print("Test")
-        }) {
-            Label("Dictionary Settings", systemImage: "book")
-        }
-    }
     
     func add() {
         for i in 0..<500 {
@@ -359,7 +349,7 @@ extension NoteDetailView {
         
         return CustomTextFieldWithToolbar(title: title, text: text, selectedRow: $selectedRow, selectedCol: $selectedCol, isEnabled: $isTextField, closeKeyboard: $closeKeyboard, col: col, isFirstResponder: responder)
             .padding(.horizontal)
-            .modifier(NoteDetailListModifier(bodyColor: bodyColor, strokeColor: strokeColor))
+            .modifier(NoteDetailListModifier(bodyColor: bodyColor, strokeColor: strokeColor, lineWidth: 1.0))
     }
     
     func noteDetailScreen(_ order: Int, initWidth: CGFloat = 1.0, finalWidth: CGFloat = 1.0, strokeColor: Color, isScreen: Bool, anchor: UnitPoint) -> some View {
@@ -376,33 +366,44 @@ extension NoteDetailView {
 extension NoteDetailView {
     var showingTermsButton: some View {
         Button(action: {
-                if isDefsScreen == true {
-                    isDefsScreen.toggle()
-                    isDefScaled.toggle()
-                }
-                isTermsScreen.toggle()
-                isTermScaled.toggle()
+            withAnimation {
+                isDisabled.toggle()
+            }
+            
+            if isDefsScreen == true {
+                isDefsScreen.toggle()
+                isDefScaled.toggle()
+            }
+            isTermsScreen.toggle()
+            isTermScaled.toggle()
         }) {
-            isTermsScreen == true ? Image(systemName: "arrow.left") : Image(systemName: "arrow.right")
+//            isTermsScreen == true ? Image(systemName: "arrow.left") : Image(systemName: "arrow.right")
+            isTermsScreen == true ? Image("arrow.right.on").imageScale(.large) : Image("arrow.right.off").imageScale(.large)
         }
     }
     
     var shuffleButton: some View {
         Button(action: { shuffle() }) {
-            isShuffled == true ? Image(systemName: "return") : Image(systemName: "shuffle")
+//            isShuffled == true ? Image(systemName: "return") : Image(systemName: "shuffle")
+            isShuffled == true ? Image("shuffle.on").imageScale(.large) : Image("shuffle.off").imageScale(.large)
         }
     }
     
     var showingDefsButton: some View {
         Button(action: {
-                if isTermsScreen == true {
-                    isTermsScreen.toggle()
-                    isTermScaled.toggle()
-                }
-                isDefsScreen.toggle()
-                isDefScaled.toggle()
+            withAnimation {
+                isDisabled.toggle()
+            }
+            
+            if isTermsScreen == true {
+                isTermsScreen.toggle()
+                isTermScaled.toggle()
+            }
+            isDefsScreen.toggle()
+            isDefScaled.toggle()
         }) {
-            isDefsScreen == true ? Image(systemName: "arrow.right") : Image(systemName: "arrow.left")
+//            isDefsScreen == true ? Image(systemName: "arrow.right") : Image(systemName: "arrow.left")
+            isDefsScreen == true ? Image("arrow.left.on").imageScale(.large) : Image("arrow.left.off").imageScale(.large)
         }
     }
 }
