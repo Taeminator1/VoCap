@@ -17,6 +17,7 @@ struct VoCapApp: App {
 //            CustomGestureModifierExample()
 //            SettingsView()
             HomeView().environment(\.managedObjectContext, persistenceController.container.viewContext)
+                .accentColor(.mainColor)
 //            SwiftUIView()
         }
     }

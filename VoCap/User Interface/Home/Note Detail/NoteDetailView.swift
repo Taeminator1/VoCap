@@ -109,16 +109,13 @@ struct NoteDetailView: View {
                 }
                 .navigationBarTitle("\(note.title!)", displayMode: .inline)
                 .toolbar {
-                    ToolbarItem(placement: .navigationBarLeading) {
+                    ToolbarItem(placement: .navigationBarTrailing) {
                         Button(action: {
                             withAnimation {
                                 isDisabled.toggle()
                             }
-                        }) {
-                            Text("Test")
-                        }
+                        }) { Text("Test") }
                     }
-                    
                     ToolbarItem(placement: .navigationBarTrailing) {
                         if editMode == .inactive {
                             Menu {
@@ -283,9 +280,7 @@ extension NoteDetailView {
                 Button(action: {
                     changeMemorizedState(id: noteDetail.id)
                 }) {
-//                    if editMode == .inactive {
-                        noteDetail.isMemorized == true ? Image(systemName: "square.fill").imageScale(.large) : Image(systemName: "square").imageScale(.large)
-//                    }
+                    noteDetail.isMemorized == true ? Image(systemName: "checkmark.square.fill").imageScale(.large) : Image(systemName: "square").imageScale(.large)
                 }
             }
             .padding()
@@ -298,29 +293,29 @@ extension NoteDetailView {
             switch selectedCol {
             case 0:
                 if isTextField == false {
-                    noteDetailText(noteDetail.term, bodyColor: .systemGray5, strokeColor: .systemBlue)
+                    noteDetailText(noteDetail.term, bodyColor: .textBodyColor, strokeColor: .tTextStrokeColor)
                     GeometryReader { geometry in
                         HStack {
-                            noteDetailScreen(noteDetail.order, initWidth: 5.0, finalWidth: geometry.size.width, strokeColor: .systemBlue, isScreen: isTermsScreen, anchor: .leading)
+                            noteDetailScreen(noteDetail.order, finalWidth: geometry.size.width, screenColor: .tScreenColor, isScreen: isTermsScreen, anchor: .leading)
                             Spacer()
                         }
                     }
                 }
                 else {
-                    NoteDetailTextField("Term", $note.term[noteDetail.order], noteDetail.order, 0, bodyColor: .systemGray6, strokeColor: .systemBlue)
+                    NoteDetailTextField("Term", $note.term[noteDetail.order], noteDetail.order, 0, bodyColor: .textFieldBodyColor, strokeColor: .tTextFieldStrokeColor)
                 }
             case 1:
                 if isTextField == false {
-                    noteDetailText(noteDetail.definition, bodyColor: .systemGray5, strokeColor: .systemGreen)
+                    noteDetailText(noteDetail.definition, bodyColor: .textBodyColor, strokeColor: .dTextStrokeColor)
                     GeometryReader { geometry in
                         HStack {
                             Spacer()
-                            noteDetailScreen(noteDetail.order, initWidth: 5.0, finalWidth: geometry.size.width, strokeColor: .systemGreen, isScreen: isDefsScreen, anchor: .trailing)     // 여기는 + 1 안함
+                            noteDetailScreen(noteDetail.order, finalWidth: geometry.size.width, screenColor: .dScreenColor, isScreen: isDefsScreen, anchor: .trailing)     // 여기는 + 1 안함
                         }
                     }
                 }
                 else {
-                    NoteDetailTextField("definition", $note.definition[noteDetail.order], noteDetail.order, 1, bodyColor: .systemGray6, strokeColor: .systemGreen)
+                    NoteDetailTextField("definition", $note.definition[noteDetail.order], noteDetail.order, 1, bodyColor: .textFieldBodyColor, strokeColor: .dTextFieldStrokeColor)
                 }
                 
             default:
@@ -352,9 +347,9 @@ extension NoteDetailView {
             .modifier(NoteDetailListModifier(bodyColor: bodyColor, strokeColor: strokeColor, lineWidth: 1.0))
     }
     
-    func noteDetailScreen(_ order: Int, initWidth: CGFloat = 1.0, finalWidth: CGFloat = 1.0, strokeColor: Color, isScreen: Bool, anchor: UnitPoint) -> some View {
+    func noteDetailScreen(_ order: Int, initWidth: CGFloat = 4.0, finalWidth: CGFloat, screenColor: Color, isScreen: Bool, anchor: UnitPoint) -> some View {
         Rectangle()
-            .foregroundColor(strokeColor)
+            .foregroundColor(screenColor)
             .frame(width: initWidth)
             .scaleEffect(x: isScreen && !isScaledArray[order] ? finalWidth / initWidth : 1.0, y: 1.0, anchor: anchor)
             .onTapGesture{}                 // Scroll 되게 하려면 필요(해당 자리에)

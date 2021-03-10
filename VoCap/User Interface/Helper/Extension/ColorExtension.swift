@@ -7,9 +7,32 @@
 
 import SwiftUI
 
+// MARK: - Note 관련 color
 extension Color {
     static let buttonBackground = Color(UIColor.systemGray6)
 }
+
+// MARK: - Toolbar 등에 쓰이는 icon 및 text color
+extension Color {
+    static let mainColor = Color(UIColor.systemIndigo)
+}
+
+// MARK: - Note 안의 item 관련 color
+// t: term, d: definition
+extension Color {
+    static let textBodyColor = Color(UIColor.systemGray6)
+    static let textFieldBodyColor = Color(UIColor.clear)
+    
+    static let tTextStrokeColor = Color(UIColor.systemBlue)
+    static let tScreenColor = Color(UIColor.systemBlue)
+    static let tTextFieldStrokeColor = Color(UIColor.systemBlue)
+    
+    static let dTextStrokeColor = Color(UIColor.systemGreen)
+    static let dScreenColor = Color(UIColor.systemGreen)
+    static let dTextFieldStrokeColor = Color(UIColor.systemGreen)
+}
+
+
 
 // MARK: - myColor
 struct myColor {
