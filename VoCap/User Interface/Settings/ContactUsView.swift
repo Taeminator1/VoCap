@@ -58,6 +58,7 @@ struct ContactUsView: View {
                 return emailForReply == "" && country == "" && sourceLanguage == "" && targetLanguage == "" && contents == ""
             }
         }
+        .accentColor(.mainColor)
     }
 }
 

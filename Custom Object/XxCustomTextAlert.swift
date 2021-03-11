@@ -24,8 +24,10 @@ public struct XxTextAlert {
 
 
 extension UIAlertController {
+    
     convenience init(alert: XxTextAlert) {
         self.init(title: alert.title, message: alert.message, preferredStyle: .alert)
+        self.view.tintColor = .mainColor
    
         if let cancel = alert.cancel {
             addAction(UIAlertAction(title: cancel, style: .cancel) { _ in

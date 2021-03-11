@@ -141,6 +141,7 @@ struct HomeView: View {
                     )
             }
         }
+        .accentColor(.mainColor)
     }
 }
 

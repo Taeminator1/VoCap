@@ -143,6 +143,7 @@ struct NoteDetailView: View {
                 .environment(\.editMode, self.$editMode)          // 해당 위치에 없으면 editMode 안 먹힘
             }
         }
+        .accentColor(.mainColor)
     }
 }
 

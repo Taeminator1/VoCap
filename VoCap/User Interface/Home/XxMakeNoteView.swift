@@ -51,6 +51,7 @@ struct XxMakeNoteView: View {
         .allowAutoDismiss($showingCancelSheet, .constant(false)) {
             return note.isEqual(dNote)
         }
+        .accentColor(.mainColor)
     }
     
     var actionSheetTitle: Text {

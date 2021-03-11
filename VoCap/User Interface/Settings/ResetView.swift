@@ -48,6 +48,7 @@ struct ResetView: View {
         }
         .listStyle(InsetGroupedListStyle())
         .navigationBarTitle("Reset", displayMode: .inline)
+        .accentColor(.mainColor)
     }
 }
 

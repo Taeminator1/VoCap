@@ -17,6 +17,10 @@ extension Color {
     static let mainColor = Color(UIColor.systemIndigo)
 }
 
+extension UIColor {
+    static let mainColor = UIColor.systemIndigo
+}
+
 // MARK: - Note 안의 item 관련 color
 // t: term, d: definition
 extension Color {

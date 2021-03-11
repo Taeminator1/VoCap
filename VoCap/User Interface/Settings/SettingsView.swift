@@ -32,6 +32,7 @@ struct SettingsView: View {
             }
         }
         .navigationViewStyle(StackNavigationViewStyle())
+        .accentColor(.mainColor)
     }
 }
 
