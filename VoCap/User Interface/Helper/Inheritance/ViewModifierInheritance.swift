@@ -53,7 +53,7 @@ struct NoteRowModifier: ViewModifier {
             .frame(height: height)
             .background(myColor.colors[colorIndex])
             .cornerRadius(10)
-            .shadow(color: .blue, radius: 1, x: 2, y: 2)
+//            .shadow(color: .blue, radius: 1, x: 2, y: 2)
             .padding(.all)
     }
 }
@@ -69,7 +69,8 @@ struct AddNoteRowModifier: ViewModifier {
             .frame(height: height)
             .overlay(
                 RoundedRectangle(cornerRadius: 10)
-                    .stroke(noteRowColor(), style: StrokeStyle(lineWidth: 2, dash: [10]))
+//                    .stroke(noteRowColor(), style: StrokeStyle(lineWidth: 2, dash: [10]))
+                    .stroke(Color.systemGray, style: StrokeStyle(lineWidth: 2, dash: [10]))
                     .padding(.all, 1)
             )
             .padding(.all)

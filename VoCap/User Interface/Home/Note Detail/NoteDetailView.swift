@@ -46,7 +46,7 @@ struct NoteDetailView: View {
     
     let limitedNumberOfItems: Int = 600
     
-    @Binding var isDisabled: Bool
+    @Binding var isDisableds: [Bool]
     
     let alertController = UIAlertController(title: "Alert", message: "Please enter text", preferredStyle: .alert)
     
@@ -68,7 +68,7 @@ struct NoteDetailView: View {
                 .alert(isPresented: $showingAddItemAlert, XxTextAlert(title: "Add Item", message: "Enter term and definition to memorize. ", action: { term, definition  in
                     if let term = term, let definition = definition {
                         print("Next")
-                        if term != "" && definition != "" && note.term.count < limitedNumberOfItems {
+                        if (term != "" || definition != "") && note.term.count < limitedNumberOfItems {
                             add(term, definition)
 
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {         // 딜레이 안 주면 추가한 목록이 안 보임
@@ -99,20 +99,22 @@ struct NoteDetailView: View {
                     listFrame = geometry.size.height > geometry.size.width ? geometry.size.height : geometry.size.width             // 없으면 .bottomBar 없어짐...
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        if note.term.count == 0 {
-                            showingAddItemAlert = true
+                        withAnimation {
+                            isDisableds[0].toggle()
                         }
                     }
                 }
                 .onDisappear() {
-                    isDisabled = false
+                    for i in 0..<isDisableds.count {
+                        isDisableds[i] = false
+                    }
                 }
                 .navigationBarTitle("\(note.title!)", displayMode: .inline)
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Button(action: {
                             withAnimation {
-                                isDisabled.toggle()
+                                isDisableds[0].toggle()
                             }
                         }) { Text("Test") }
                     }
@@ -153,7 +155,7 @@ extension NoteDetailView {
         Button(action: {
             showingAddItemAlert = true
         }) {
-            Label("Add Items", systemImage: "plus")
+            Label("Add Item", systemImage: "plus")
         }
     }
     
@@ -163,11 +165,11 @@ extension NoteDetailView {
             
             if note.term.count < limitedNumberOfItems { add() }
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                 isAddButton = true
             }
         }) {
-            Label("Add Item", systemImage: "plus")
+            Label("Add Items", systemImage: "plus")
         }
     }
   
@@ -362,8 +364,10 @@ extension NoteDetailView {
 extension NoteDetailView {
     var showingTermsButton: some View {
         Button(action: {
-            withAnimation {
-                isDisabled.toggle()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                withAnimation {
+                    isDisableds[1].toggle()
+                }
             }
             
             if isDefsScreen == true {
@@ -387,8 +391,10 @@ extension NoteDetailView {
     
     var showingDefsButton: some View {
         Button(action: {
-            withAnimation {
-                isDisabled.toggle()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                withAnimation {
+                    isDisableds[1].toggle()
+                }
             }
             
             if isTermsScreen == true {

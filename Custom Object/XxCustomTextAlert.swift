@@ -47,7 +47,7 @@ extension UIAlertController {
             NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification, object: textField, queue: OperationQueue.main, using: {_ in
                 termCount = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines).count ?? 0
                 
-                next.isEnabled = termCount > 0 && definitionCount > 0
+                next.isEnabled = termCount > 0 || definitionCount > 0
             })
         }
         
@@ -57,7 +57,7 @@ extension UIAlertController {
             NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification, object: textField, queue: OperationQueue.main, using: {_ in
                 definitionCount = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines).count ?? 0
                 
-                next.isEnabled = termCount > 0 && definitionCount > 0
+                next.isEnabled = termCount > 0 || definitionCount > 0
             })
         }
 

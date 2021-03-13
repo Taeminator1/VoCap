@@ -31,8 +31,10 @@ struct HomeView: View {
     
     @State var hideNoteDetailsNumber: Bool = false
     
-    @State var isDisabled: Bool = false
-    @State var isHowToGlance: Bool = UserDefaults.standard.bool(forKey: "Tap")
+    @State var isDisableds: [Bool] = [false, false]
+    @State var isHowToAddItem: Bool = UserDefaults.standard.bool(forKey: "Tip0")
+    @State var isHowToGlanceItem: Bool = UserDefaults.standard.bool(forKey: "Tip1")
+    
     
     var body: some View {
         ZStack {
@@ -68,7 +70,7 @@ struct HomeView: View {
                                 }
                             }
                             
-                            NavigationLink(destination: NoteDetailView(note: note, isDisabled: $isDisabled), tag: note.id!, selection: $noteRowSelection) {
+                            NavigationLink(destination: NoteDetailView(note: note, isDisableds: $isDisableds), tag: note.id!, selection: $noteRowSelection) {
                                 EmptyView()
                             }
                             .frame(width: 0).hidden()
@@ -121,21 +123,37 @@ struct HomeView: View {
             .navigationViewStyle(StackNavigationViewStyle())                // 없으면 View전환할 때마다 Tool Bar 로딩되는데 시간이 걸림
             .onAppear() { isEditNotePresented = false }
             .sheet(isPresented: $isSettingsPresented) {
-                SettingsView(isSettingsPresented: $isSettingsPresented, isHowToGlance: $isHowToGlance)
+                SettingsView(isSettingsPresented: $isSettingsPresented, isHowToAddItem: $isHowToAddItem, isHowToGlanceItem: $isHowToGlanceItem)
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
             }
             
-            if isDisabled && isHowToGlance {
+            if isDisableds[0] && isHowToAddItem {
                 Rectangle()
                     .fill(Color.black.opacity(0.4))
                     .ignoresSafeArea()
                     .overlay(
                         Button(action: {
-                            isDisabled.toggle()
-                            isHowToGlance.toggle()
-                            UserDefaults.standard.set(self.isHowToGlance, forKey: "Tap")
+                            isDisableds[0].toggle()
+                            isHowToAddItem.toggle()
+                            UserDefaults.standard.set(self.isHowToAddItem, forKey: "Tip0")
                         }) {
-                            HowToGlanceView()
+                            HowToAddItemView()
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                    )
+            }
+            
+            if isDisableds[1] && isHowToGlanceItem {
+                Rectangle()
+                    .fill(Color.black.opacity(0.4))
+                    .ignoresSafeArea()
+                    .overlay(
+                        Button(action: {
+                            isDisableds[1].toggle()
+                            isHowToGlanceItem.toggle()
+                            UserDefaults.standard.set(self.isHowToGlanceItem, forKey: "Tip1")
+                        }) {
+                            HowToGlanceItemView()
                         }
                         .buttonStyle(PlainButtonStyle())
                     )

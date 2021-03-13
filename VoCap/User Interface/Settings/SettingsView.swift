@@ -14,7 +14,8 @@ struct SettingsView: View {
     
     @State private var isContactUsPresented: Bool = false
     
-    @Binding var isHowToGlance: Bool
+    @Binding var isHowToAddItem: Bool
+    @Binding var isHowToGlanceItem: Bool
     
     var body: some View {
         NavigationView {
@@ -73,7 +74,7 @@ private extension SettingsView {
     
     var reset: some View {
         Section() {
-            NavigationLink(destination: ResetView(isSettingsPresented: $isSettingsPresented, isHowToGlance: $isHowToGlance)) {
+            NavigationLink(destination: ResetView(isSettingsPresented: $isSettingsPresented, isHowToAddItem: $isHowToAddItem, isHowToGlanceItem: $isHowToGlanceItem)) {
                 Text("Reset")
             }
         }
@@ -83,7 +84,7 @@ private extension SettingsView {
 
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
-        SettingsView(isSettingsPresented: .constant(true), isHowToGlance: .constant(true))
+        SettingsView(isSettingsPresented: .constant(true), isHowToAddItem: .constant(true), isHowToGlanceItem: .constant(true))
             .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
     }
 }
