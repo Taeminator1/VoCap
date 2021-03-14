@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import GoogleMobileAds
 
 enum TextFieldType: Int {
     case Term = 0
@@ -51,101 +52,110 @@ struct NoteDetailView: View {
     let alertController = UIAlertController(title: "Alert", message: "Please enter text", preferredStyle: .alert)
     
     var body: some View {
-        GeometryReader { geometry in
-            ScrollViewReader { proxy in
-                List(selection: $selection) {
-                    ForEach(tmpNoteDetails) { noteDetail in
-                        noteDetailRow(noteDetail)
+        VStack {
+//            GADBannerViewController()
+//                .frame(width: kGADAdSizeBanner.size.width, height: kGADAdSizeBanner.size.height)
+            
+            GeometryReader { geometry in
+                ScrollViewReader { proxy in
+                    List(selection: $selection) {
+                        ForEach(tmpNoteDetails) { noteDetail in
+                            noteDetailRow(noteDetail)
+                        }
+                        .onDelete(perform: deleteItems)
+                        .deleteDisabled(isShuffled)             // Shuffle 상태일 때 delete 못하게 함
                     }
-                    .onDelete(perform: deleteItems)
-                    .deleteDisabled(isShuffled)             // Shuffle 상태일 때 delete 못하게 함
-                }
-                .animation(.default)
-//                .alert(isPresented: $showingAddItemAlert, TextAlert(title: "Title", message: "Message", action: { result in
-//                              if let text = result { print("\(text)") }
-//                              else { print("else") }
-//                }))
-                .alert(isPresented: $showingAddItemAlert, XxTextAlert(title: "Add Item", message: "Enter term and definition to memorize. ", action: { term, definition  in
-                    if let term = term, let definition = definition {
-                        print("Next")
-                        if (term != "" || definition != "") && note.term.count < limitedNumberOfItems {
-                            add(term, definition)
+                    .animation(.default)
+    //                .alert(isPresented: $showingAddItemAlert, TextAlert(title: "Title", message: "Message", action: { result in
+    //                              if let text = result { print("\(text)") }
+    //                              else { print("else") }
+    //                }))
+                    .alert(isPresented: $showingAddItemAlert, XxTextAlert(title: "Add Item", message: "Enter term and definition to memorize. ", action: { term, definition  in
+                        if let term = term, let definition = definition {
+                            print("Next")
+                            if (term != "" || definition != "") && note.term.count < limitedNumberOfItems {
+                                add(term, definition)
 
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {         // 딜레이 안 주면 추가한 목록이 안 보임
-                                scrollTarget = note.term.count - 1
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {         // 딜레이 안 주면 추가한 목록이 안 보임
+                                    scrollTarget = note.term.count - 1
+                                }
+                                showingAddItemAlert = true
                             }
-                            showingAddItemAlert = true
+                            else {
+                                print("Cancel")
+                            }
                         }
                         else {
                             print("Cancel")
                         }
-                    }
-                    else {
-                        print("Cancel")
-                    }
-                }))
-//                .frame(height: listFrame)
-                .onChange(of: scrollTarget) { target in
-                    if let target = target {
-                        scrollTarget = nil
-//                        withAnimation { proxy.scrollTo(tmpNoteDetails[target].id, anchor: .bottom) }
-                        withAnimation { proxy.scrollTo(tmpNoteDetails[target].id) }
-                    }
-                }
-                .onAppear() {
-                    UITableView.appearance().showsVerticalScrollIndicator = false
-                    
-                    copyNoteDetails()
-                    listFrame = geometry.size.height > geometry.size.width ? geometry.size.height : geometry.size.width             // 없으면 .bottomBar 없어짐...
-                    
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        withAnimation {
-                            isDisableds[0].toggle()
+                    }))
+    //                .frame(height: listFrame)
+                    .onChange(of: scrollTarget) { target in
+                        if let target = target {
+                            scrollTarget = nil
+    //                        withAnimation { proxy.scrollTo(tmpNoteDetails[target].id, anchor: .bottom) }
+                            withAnimation { proxy.scrollTo(tmpNoteDetails[target].id) }
                         }
                     }
-                }
-                .onDisappear() {
-                    for i in 0..<isDisableds.count {
-                        isDisableds[i] = false
-                    }
-                }
-                .navigationBarTitle("\(note.title!)", displayMode: .inline)
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button(action: {
+                    .onAppear() {
+                        UITableView.appearance().showsVerticalScrollIndicator = false
+                        
+                        copyNoteDetails()
+                        listFrame = geometry.size.height > geometry.size.width ? geometry.size.height : geometry.size.width             // 없으면 .bottomBar 없어짐...
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                             withAnimation {
                                 isDisableds[0].toggle()
                             }
-                        }) { Text("Test") }
+                        }
                     }
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        if editMode == .inactive {
-                            Menu {
-//                                addButton.disabled(isAddButton == false)
-                                xXaddButton.disabled(isAddButton == false)
-                                editButton.disabled(isEditButton == false)
-                                hideMemorizedButton
+                    .onDisappear() {
+                        for i in 0..<isDisableds.count {
+                            isDisableds[i] = false
+                        }
+                    }
+                    .navigationBarTitle("\(note.title!)", displayMode: .inline)
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            Button(action: {
+                                withAnimation {
+                                    isDisableds[0].toggle()
+                                }
+                            }) { Text("Test") }
+                        }
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            if editMode == .inactive {
+                                Menu {
+    //                                addButton.disabled(isAddButton == false)
+                                    xXaddButton.disabled(isAddButton == false)
+                                    editButton.disabled(isEditButton == false)
+                                    hideMemorizedButton
+                                }
+                                label: { Label("", systemImage: "ellipsis.circle").imageScale(.large) }
                             }
-                            label: { Label("", systemImage: "ellipsis.circle").imageScale(.large) }
+                            else {
+                                doneButton
+                            }
                         }
-                        else {
-                            doneButton
+                        
+                        ToolbarItem(placement: .bottomBar) { if editMode == .inactive { showingTermsButton } }
+                        ToolbarItem(placement: .bottomBar) { Spacer() }
+                        ToolbarItem(placement: .bottomBar) { if editMode == .inactive { shuffleButton } }
+                        ToolbarItem(placement: .bottomBar) { Spacer() }
+                        ToolbarItem(placement: .bottomBar) {
+                            if editMode == .inactive { showingDefsButton }
+                            else { deleteButton }
                         }
                     }
-                    
-                    ToolbarItem(placement: .bottomBar) { if editMode == .inactive { showingTermsButton } }
-                    ToolbarItem(placement: .bottomBar) { Spacer() }
-                    ToolbarItem(placement: .bottomBar) { if editMode == .inactive { shuffleButton } }
-                    ToolbarItem(placement: .bottomBar) { Spacer() }
-                    ToolbarItem(placement: .bottomBar) {
-                        if editMode == .inactive { showingDefsButton }
-                        else { deleteButton }
-                    }
+                    .environment(\.editMode, self.$editMode)          // 해당 위치에 없으면 editMode 안 먹힘
                 }
-                .environment(\.editMode, self.$editMode)          // 해당 위치에 없으면 editMode 안 먹힘
             }
+            .accentColor(.mainColor)
+            
+            GADBannerViewController()
+                .frame(width: kGADAdSizeBanner.size.width, height: kGADAdSizeBanner.size.height)
+            
         }
-        .accentColor(.mainColor)
     }
 }
 

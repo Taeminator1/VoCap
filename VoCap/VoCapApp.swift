@@ -18,6 +18,8 @@ struct VoCapApp: App {
 //            SettingsView()
             HomeView().environment(\.managedObjectContext, persistenceController.container.viewContext)
 //            SwiftUIView()
+            
+//            AdMobView()
         }
     }
 }
