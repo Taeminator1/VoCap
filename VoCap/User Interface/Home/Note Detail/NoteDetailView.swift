@@ -62,7 +62,7 @@ struct NoteDetailView: View {
                         ForEach(tmpNoteDetails) { noteDetail in
                             noteDetailRow(noteDetail)
                         }
-                        .onDelete(perform: deleteItems)
+                        .onDelete(perform: deleteItem)
                         .deleteDisabled(isShuffled)             // Shuffle 상태일 때 delete 못하게 함
                     }
                     .animation(.default)
@@ -144,7 +144,7 @@ struct NoteDetailView: View {
                         ToolbarItem(placement: .bottomBar) { Spacer() }
                         ToolbarItem(placement: .bottomBar) {
                             if editMode == .inactive { showingDefsButton }
-                            else { deleteButton }
+                            else { deleteMemorizedButton }
                         }
                     }
                     .environment(\.editMode, self.$editMode)          // 해당 위치에 없으면 editMode 안 먹힘
@@ -328,7 +328,7 @@ extension NoteDetailView {
                     }
                 }
                 else {
-                    NoteDetailTextField("definition", $note.definition[noteDetail.order], noteDetail.order, 1, bodyColor: .textFieldBodyColor, strokeColor: .dTextFieldStrokeColor)
+                    NoteDetailTextField("Definition", $note.definition[noteDetail.order], noteDetail.order, 1, bodyColor: .textFieldBodyColor, strokeColor: .dTextFieldStrokeColor)
                 }
                 
             default:
@@ -457,8 +457,14 @@ extension NoteDetailView {
         }
     }
     
-    private var deleteButton: some View {
+    private var deleteMemorizedButton: some View {
         Button(action: {
+            for i in 0..<note.term.count {
+                if note.isMemorized[i] == true {
+                    selection.insert(tmpNoteDetails[i].id)
+                }
+            }
+            
             for id in selection {
                 if let index = tmpNoteDetails.lastIndex(where: { $0.id == id })  {
                     note.term.remove(at: index)
@@ -472,12 +478,14 @@ extension NoteDetailView {
             saveContext()
             
             for i in 0..<note.term.count { tmpNoteDetails[i].order = i }
+            
+            selection = Set<UUID>()
         }) {
-            Text("Delete")
+            Text("Delete Memorized")
         }
     }
     
-    func deleteItems(at offsets: IndexSet) {
+    func deleteItem(at offsets: IndexSet) {
         note.term.remove(atOffsets: offsets)
         note.definition.remove(atOffsets: offsets)
         note.isMemorized.remove(atOffsets: offsets)

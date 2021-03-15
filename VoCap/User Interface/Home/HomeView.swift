@@ -35,7 +35,6 @@ struct HomeView: View {
     @State var isHowToAddItem: Bool = UserDefaults.standard.bool(forKey: "Tip0")
     @State var isHowToGlanceItem: Bool = UserDefaults.standard.bool(forKey: "Tip1")
     
-    
     var body: some View {
         ZStack {
             NavigationView {
@@ -96,8 +95,8 @@ struct HomeView: View {
                         }
                     }
                 }
-                .background(NavigationLink(destination: UtilityView(), isActive: $showUtility) { EmptyView() })
-                .background(NavigationLink(destination: TestView(), isActive: $showTest) { TestView() })
+//                .background(NavigationLink(destination: UtilityView(), isActive: $showUtility) { EmptyView() })
+//                .background(NavigationLink(destination: TestView(), isActive: $showTest) { TestView() })
                 .toolbar {
 //                    ToolbarItem(placement: .navigationBarLeading) { leadingItem }
                     ToolbarItem(placement: .navigationBarTrailing) {

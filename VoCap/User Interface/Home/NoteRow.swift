@@ -35,6 +35,13 @@ struct NoteRow: View {
             HStack() {
                 Spacer()
                 
+//                Text("Number of Items: ")
+//                    .font(.body)
+//                    .modifier(VisibilityStyle(hidden: $hideNoteDetailsNumber))
+//                Text("\(memorizedNumber) / \(totalNumber)")
+//                    .font(.body)
+//                    .modifier(VisibilityStyle(hidden: $hideNoteDetailsNumber))
+                
                 Text("Number of Items: \(memorizedNumber) / \(totalNumber)")
                     .font(.body)
                     .modifier(VisibilityStyle(hidden: $hideNoteDetailsNumber))

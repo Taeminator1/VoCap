@@ -41,7 +41,7 @@ extension Color {
 // MARK: - myColor
 struct myColor {
     static var colors: [Color] = [.systemBlue, .systemGreen, .systemIndigo, .systemOrange, .systemPink, .systemPurple, .systemRed, .systemTeal, .systemYellow]
-    static var colornames = ["Blue", "Green", "Indigo", "Orange", "Pink", "Purple", "Red", "Teal", "Yellow"]
+    static var colornames = ["Blue".localized, "Green".localized, "Indigo".localized, "Orange".localized, "Pink".localized, "Purple".localized, "Red".localized, "Teal".localized, "Yellow".localized]
 }
 
 extension Color {

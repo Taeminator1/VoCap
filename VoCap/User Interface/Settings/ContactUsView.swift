@@ -38,9 +38,9 @@ struct ContactUsView: View {
             .listStyle(InsetGroupedListStyle())
             .navigationBarTitle("Contact Us", displayMode: .inline)
             .actionSheet(isPresented: $showingCancelSheet) {
-                ActionSheet(title: Text("Are you sure you want to discard your messages?"), message: .none,
+                ActionSheet(title: Text("Would you like to delete this message?"), message: .none,
                             buttons: [
-                                .destructive(Text("Discard Messages"), action: {
+                                .destructive(Text("Delete"), action: {
                                                 showingCancelSheet = false
                                                 isContactUsPresented = false }),
                                 .cancel(Text("Keep Editing"))]
@@ -143,7 +143,7 @@ private extension ContactUsView {
                 .padding(.top)) {
                 HStack {
                     Text("Email for reply: ")
-                    TextField("vocap@vocap.com", text: $emailForReply)
+                    TextField("vocap@example.com", text: $emailForReply)
                         .keyboardType(.emailAddress)
                         .autocapitalization(.none)
             }
@@ -169,7 +169,7 @@ private extension ContactUsView {
     
     var content: some View {
         Section(
-            header: Text("Contents"),
+            header: Text("Content"),
             footer: HStack {
 //                TextField("", value: $contentsCount, formatter: NumberFormatter())
 //                    .multilineTextAlignment(.trailing)
@@ -198,15 +198,15 @@ private extension ContactUsView {
 private extension ContactUsView {
     var sendEmailResultAlert: Alert {
         if alertMessage == "Success" {
-            return Alert(title: Text(alertMessage),
+            return Alert(title: Text(alertMessage.localized),
                          message: Text("Thank you for contacting us. We will review your submission soon. "),
                          dismissButton: .default(Text("Done"), action: { isContactUsPresented = false }))
         }
         else {
-            return Alert(title: Text(alertMessage),
+            return Alert(title: Text(alertMessage.localized),
                          message: Text("Something went wrong. Please check your network status and try again. "),
                          primaryButton: .default(Text("Cancel"), action: { isContactUsPresented = false }),
-                         secondaryButton: .default(Text("Go Back"), action: { isSendingEmail = false }))
+                         secondaryButton: .default(Text("Back"), action: { isSendingEmail = false }))
         }
     }
 }

@@ -55,11 +55,12 @@ struct XxMakeNoteView: View {
     }
     
     var actionSheetTitle: Text {
-        var title: String = "Are you sure you want to discard "
-        if isAddNotePresented   { title += "this new note?" }
-        else                    { title += "your changes?" }
-        
-        return Text(title)
+        if isAddNotePresented {
+            return Text("Are you sure you want to discard this new note?")
+        }
+        else {
+            return Text("Are you sure you want to discard your changes?")
+        }
     }
 }
 
@@ -105,7 +106,7 @@ private extension XxMakeNoteView {
     
     var basicInfo: some View {
         Section() {
-            CustomTextField(title: "Title", text: $note.title, isFirstResponder: isAddNotePresented)
+            CustomTextField(title: "Title".localized, text: $note.title, isFirstResponder: isAddNotePresented)
             
             // Group List에서 이상
             Picker(selection: $note.colorIndex, label: Text("Color")) {      // Need to check the style
@@ -158,7 +159,9 @@ private extension XxMakeNoteView {
             VStack(alignment: .leading) {
                 Text("Memo")                       // Need to add multi line textfield
 
-                TextField("", text: $note.memo)
+//                TextField("", text: $note.memo)
+                TextEditor(text: $note.memo)
+                    .frame(height: 150)
             }
         }
     }

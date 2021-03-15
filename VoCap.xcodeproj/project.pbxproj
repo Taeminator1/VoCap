@@ -23,6 +23,7 @@
 		3444A05725FB893E0008CE14 /* HowToAddItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3444A05625FB893E0008CE14 /* HowToAddItemView.swift */; };
 		3445EBED25C9851B00D16915 /* CustomTextFieldWithToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3445EBEC25C9851B00D16915 /* CustomTextFieldWithToolbar.swift */; };
 		344D33F8257F8E5A004DDCCF /* MakeNoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 344D33F7257F8E5A004DDCCF /* MakeNoteView.swift */; };
+		344FF41D25FF7106009B7E03 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 344FF41C25FF7106009B7E03 /* StringExtension.swift */; };
 		34505B2E25EFB05B0029AC9F /* HowToGlanceItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34505B2D25EFB05B0029AC9F /* HowToGlanceItemView.swift */; };
 		3459D8F925DE8764002A9817 /* CustomSheetDismiss.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3459D8F825DE8764002A9817 /* CustomSheetDismiss.swift */; };
 		345A97CE2577A8DA009323E4 /* LexicalaEntries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 345A97CD2577A8DA009323E4 /* LexicalaEntries.swift */; };
@@ -47,6 +48,7 @@
 		34D88F4A256D2A68009B10AF /* VoCap.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 34D88F48256D2A68009B10AF /* VoCap.xcdatamodeld */; };
 		34D88F55256D2A68009B10AF /* VoCapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D88F54256D2A68009B10AF /* VoCapTests.swift */; };
 		34D88F60256D2A68009B10AF /* VoCapUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D88F5F256D2A68009B10AF /* VoCapUITests.swift */; };
+		34E02AAD25FE1B30005AA07D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 34E02AAF25FE1B30005AA07D /* Localizable.strings */; };
 		34E5B30025DBE08A00CB6D17 /* XxMakeNoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34E5B2FF25DBE08A00CB6D17 /* XxMakeNoteView.swift */; };
 		34E5B35325DC179300CB6D17 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34E5B35225DC179300CB6D17 /* TestView.swift */; };
 		34F89BF525F308070067AAD7 /* ResetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34F89BF425F308070067AAD7 /* ResetView.swift */; };
@@ -89,6 +91,7 @@
 		3444A05625FB893E0008CE14 /* HowToAddItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToAddItemView.swift; sourceTree = "<group>"; };
 		3445EBEC25C9851B00D16915 /* CustomTextFieldWithToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextFieldWithToolbar.swift; sourceTree = "<group>"; };
 		344D33F7257F8E5A004DDCCF /* MakeNoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeNoteView.swift; sourceTree = "<group>"; };
+		344FF41C25FF7106009B7E03 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		34505B2D25EFB05B0029AC9F /* HowToGlanceItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToGlanceItemView.swift; sourceTree = "<group>"; };
 		3459D8F825DE8764002A9817 /* CustomSheetDismiss.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSheetDismiss.swift; sourceTree = "<group>"; };
 		345A97CD2577A8DA009323E4 /* LexicalaEntries.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LexicalaEntries.swift; sourceTree = "<group>"; };
@@ -120,6 +123,10 @@
 		34D88F5B256D2A68009B10AF /* VoCapUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VoCapUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		34D88F5F256D2A68009B10AF /* VoCapUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoCapUITests.swift; sourceTree = "<group>"; };
 		34D88F61256D2A68009B10AF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		34E02AB025FE1B9C005AA07D /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
+		34E02AB425FE1BC7005AA07D /* ja-JP */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ja-JP"; path = "ja-JP.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		34E02AB525FE1BD4005AA07D /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		34E02AB625FE1BE0005AA07D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		34E5B2FF25DBE08A00CB6D17 /* XxMakeNoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XxMakeNoteView.swift; sourceTree = "<group>"; };
 		34E5B35225DC179300CB6D17 /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 		34F89BF425F308070067AAD7 /* ResetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetView.swift; sourceTree = "<group>"; };
@@ -195,8 +202,8 @@
 			isa = PBXGroup;
 			children = (
 				340491F125779D4300CD1BD7 /* SettingsView.swift */,
-				34F89BF425F308070067AAD7 /* ResetView.swift */,
 				3473344A25DD522A00A11151 /* ContactUsView.swift */,
+				34F89BF425F308070067AAD7 /* ResetView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -251,6 +258,7 @@
 			isa = PBXGroup;
 			children = (
 				34A5B648257E522A0023D1AC /* ColorExtension.swift */,
+				344FF41C25FF7106009B7E03 /* StringExtension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -259,6 +267,7 @@
 			isa = PBXGroup;
 			children = (
 				342693C625FCDDE5000A5E4E /* AdMobView.swift */,
+				34E02AAF25FE1B30005AA07D /* Localizable.strings */,
 				34BDA91525BDB83D0049A0A3 /* Inheritance */,
 				34A5B647257E52190023D1AC /* Extension */,
 			);
@@ -463,6 +472,10 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				ko,
+				"ja-JP",
+				"zh-Hans",
+				fr,
 				Base,
 			);
 			mainGroup = 34D88F31256D2A65009B10AF;
@@ -487,6 +500,7 @@
 				34A437CA25FA6ECD006ACC2B /* test.gif in Resources */,
 				3444A05125FB70BF0008CE14 /* HowToGlanceItem_Light.gif in Resources */,
 				34D88F42256D2A68009B10AF /* Assets.xcassets in Resources */,
+				34E02AAD25FE1B30005AA07D /* Localizable.strings in Resources */,
 				34D3E77625FCB1DF00A7C7C6 /* HowToAddItem_Dark.gif in Resources */,
 				34D3E77F25FCB38A00A7C7C6 /* HowToAddItem_Light.gif in Resources */,
 			);
@@ -558,6 +572,7 @@
 				342693C725FCDDE5000A5E4E /* AdMobView.swift in Sources */,
 				3445EBED25C9851B00D16915 /* CustomTextFieldWithToolbar.swift in Sources */,
 				3473344B25DD522A00A11151 /* ContactUsView.swift in Sources */,
+				344FF41D25FF7106009B7E03 /* StringExtension.swift in Sources */,
 				34D88F47256D2A68009B10AF /* Persistence.swift in Sources */,
 				3414F3B725F25E1C00BFB516 /* CustomTextAlert.swift in Sources */,
 				3404921225779FAD00CD1BD7 /* LexicalaEntry.swift in Sources */,
@@ -625,11 +640,26 @@
 		};
 /* End PBXTargetDependency section */
 
+/* Begin PBXVariantGroup section */
+		34E02AAF25FE1B30005AA07D /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				34E02AB025FE1B9C005AA07D /* ko */,
+				34E02AB425FE1BC7005AA07D /* ja-JP */,
+				34E02AB525FE1BD4005AA07D /* zh-Hans */,
+				34E02AB625FE1BE0005AA07D /* fr */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
 /* Begin XCBuildConfiguration section */
 		34D88F62256D2A68009B10AF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -691,6 +721,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";

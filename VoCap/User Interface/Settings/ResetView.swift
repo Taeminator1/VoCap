@@ -29,7 +29,7 @@ struct ResetView: View {
                 Text("Reset Tips Settings")
             }
             .actionSheet(isPresented: $showingResetTipsSheet) {
-                ActionSheet(title: Text("This will make tips be presented again."), message: .none,
+                ActionSheet(title: Text("This will make tips be presented again. "), message: .none,
                             buttons: [
                                 .destructive(Text("Reset Tips Settings"), action: { resetTipsSettings() }),
                                 .cancel(Text("Cancel"))]
@@ -40,7 +40,7 @@ struct ResetView: View {
                 Text("Erase All Data")
             }
             .actionSheet(isPresented: $showingEraseSheet) {
-                ActionSheet(title: Text("This will delete all data, returning them to defaults."), message: .none,
+                ActionSheet(title: Text("This will delete all data. "), message: .none,
                             buttons: [
                                 .destructive(Text("Erase All Data"), action: { deleteAllData() }),
                                 .cancel(Text("Cancel"))]

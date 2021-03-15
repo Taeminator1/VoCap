@@ -15,8 +15,8 @@ public struct XxTextAlert {
     public var title: String // Title of the dialog
     public var message: String // Dialog message
     public var placeholder: String = "" // Placeholder text for the TextField
-    public var next: String = "Next" // The left-most button label
-    public var cancel: String? = "Cancel" // The optional cancel (right-most) button label
+    public var next: String = "Next".localized // The left-most button label
+    public var cancel: String? = "Cancel".localized // The optional cancel (right-most) button label
     public var secondaryActionTitle: String? = nil // The optional center button label
     public var action: (String?, String?) -> Void // Triggers when either of the two buttons closes the dialog
     public var secondaryAction: (() -> Void)? = nil // Triggers when the optional center button is tapped
@@ -42,7 +42,7 @@ extension UIAlertController {
         next.isEnabled = false
         
         addTextField { textField in
-            textField.placeholder = "Term"
+            textField.placeholder = "Term".localized
 
             NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification, object: textField, queue: OperationQueue.main, using: {_ in
                 termCount = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines).count ?? 0
@@ -52,7 +52,7 @@ extension UIAlertController {
         }
         
         addTextField { textField in
-            textField.placeholder = "Definition"
+            textField.placeholder = "Definition".localized
 
             NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification, object: textField, queue: OperationQueue.main, using: {_ in
                 definitionCount = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines).count ?? 0
