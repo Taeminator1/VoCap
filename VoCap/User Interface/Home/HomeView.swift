@@ -50,7 +50,7 @@ struct HomeView: View {
                             self.isEditNotePresented = false
                         }
                     }
-                    .modifier(HomeViewNoteRowModifier())
+                    .modifier(ListModifier())
                     .buttonStyle(BorderlessButtonStyle())
                     
                     ForEach(notes) { note in
@@ -74,7 +74,7 @@ struct HomeView: View {
                             }
                             .frame(width: 0).hidden()
                         }
-                        .modifier(HomeViewNoteRowModifier())
+                        .modifier(ListModifier())
                         .buttonStyle(PlainButtonStyle())            // .active 상태 일 때 버튼 눌릴 수 있도록 함
                     }
                     .onDelete(perform: deleteItems)

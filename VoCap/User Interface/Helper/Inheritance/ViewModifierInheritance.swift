@@ -8,12 +8,15 @@
 import SwiftUI
 
 // MARK: - HomeView
-struct HomeViewNoteRowModifier: ViewModifier {
+struct ListModifier: ViewModifier {
+    var topPadding: CGFloat = -1            // 가장 상단에 Saperator 가리기 위해
+    
     func body(content: Content) -> some View {
         content
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .listRowInsets(EdgeInsets())
             .background(Color(UIColor.systemBackground))
+            .padding(.top, topPadding)
     }
 }
 
@@ -69,7 +72,6 @@ struct AddNoteRowModifier: ViewModifier {
             .frame(height: height)
             .overlay(
                 RoundedRectangle(cornerRadius: 10)
-//                    .stroke(noteRowColor(), style: StrokeStyle(lineWidth: 2, dash: [10]))
                     .stroke(Color.systemGray, style: StrokeStyle(lineWidth: 2, dash: [10]))
                     .padding(.all, 1)
             )

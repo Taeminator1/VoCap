@@ -53,8 +53,8 @@ struct NoteDetailView: View {
     
     var body: some View {
         VStack {
-//            GADBannerViewController()
-//                .frame(width: kGADAdSizeBanner.size.width, height: kGADAdSizeBanner.size.height)
+            GADBannerViewController()
+                .frame(width: kGADAdSizeBanner.size.width, height: kGADAdSizeBanner.size.height)
             
             GeometryReader { geometry in
                 ScrollViewReader { proxy in
@@ -117,6 +117,7 @@ struct NoteDetailView: View {
                     .navigationBarTitle("\(note.title!)", displayMode: .inline)
                     .toolbar {
                         ToolbarItem(placement: .navigationBarTrailing) {
+//                            deleteMemorizedButton
                             Button(action: {
                                 withAnimation {
                                     isDisableds[0].toggle()
@@ -152,8 +153,8 @@ struct NoteDetailView: View {
             }
             .accentColor(.mainColor)
             
-            GADBannerViewController()
-                .frame(width: kGADAdSizeBanner.size.width, height: kGADAdSizeBanner.size.height)
+//            GADBannerViewController()
+//                .frame(width: kGADAdSizeBanner.size.width, height: kGADAdSizeBanner.size.height)
             
         }
     }
@@ -297,7 +298,7 @@ extension NoteDetailView {
                 }
             }
             .padding()
-            .modifier(HomeViewNoteRowModifier())
+            .modifier(ListModifier(topPadding: -5))
         }
     }
     
@@ -457,35 +458,47 @@ extension NoteDetailView {
         }
     }
     
-    private var deleteMemorizedButton: some View {
+    private var deleteMemorizedButton: some View {      // TextField를 없애면 에러 발생
         Button(action: {
-            for i in 0..<note.term.count {
-                if note.isMemorized[i] == true {
-                    selection.insert(tmpNoteDetails[i].id)
-                }
+            if editMode != .inactive {
+                isEditButton = false
+                isTextField = false
+                
+                editMode = .inactive
             }
             
-            for id in selection {
-                if let index = tmpNoteDetails.lastIndex(where: { $0.id == id })  {
-                    note.term.remove(at: index)
-                    note.definition.remove(at: index)
-                    note.isMemorized.remove(at: index)
-                    
-                    tmpNoteDetails.remove(at: index)
-                    isScaledArray.remove(at: index)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {            // 없으면 Keyboard 뒤 배경 안 사라짐
+                
+                for i in 0..<note.term.count {
+                    if note.isMemorized[i] == true {
+                        selection.insert(tmpNoteDetails[i].id)
+                    }
                 }
+                
+                for id in selection {
+                    if let index = tmpNoteDetails.lastIndex(where: { $0.id == id })  {
+                        note.term.remove(at: index)
+                        note.definition.remove(at: index)
+                        note.isMemorized.remove(at: index)
+                        
+                        tmpNoteDetails.remove(at: index)
+                        isScaledArray.remove(at: index)
+                    }
+                }
+                saveContext()
+                
+                for i in 0..<note.term.count { tmpNoteDetails[i].order = i }
+                
+                selection = Set<UUID>()
+                
+                isEditButton = true
             }
-            saveContext()
-            
-            for i in 0..<note.term.count { tmpNoteDetails[i].order = i }
-            
-            selection = Set<UUID>()
         }) {
             Text("Delete Memorized")
         }
     }
     
-    func deleteItem(at offsets: IndexSet) {
+    func deleteItem(at offsets: IndexSet) {         // edit 상태에서 마지막꺼 지우면 에러 발생
         note.term.remove(atOffsets: offsets)
         note.definition.remove(atOffsets: offsets)
         note.isMemorized.remove(atOffsets: offsets)
