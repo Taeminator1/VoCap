@@ -40,18 +40,19 @@ struct HomeView: View {
             NavigationView {
                 List {
                     Button(action: { self.isAddNotePresented = true }) { AddNoteRow() }
-                    .disabled(isEditMode == .inactive ? false : true)
-                    .sheet(isPresented: $isAddNotePresented) {
-                        let tmpNote = TmpNote()
-                        
-                        XxMakeNoteView(note: tmpNote, dNote: tmpNote, isAddNotePresented: $isAddNotePresented, isEditNotePresented: $isEditNotePresented) { title, colorIndex, isWidget, isAutoCheck, memo in
-                            self.addNote(title, colorIndex, isWidget, isAutoCheck, memo)
-                            self.isAddNotePresented = false
-                            self.isEditNotePresented = false
+                        .disabled(isEditMode == .inactive ? false : true)
+                        .sheet(isPresented: $isAddNotePresented) {
+                            let tmpNote = TmpNote()
+                            
+                            XxMakeNoteView(note: tmpNote, dNote: tmpNote, isAddNotePresented: $isAddNotePresented, isEditNotePresented: $isEditNotePresented) { title, colorIndex, isWidget, isAutoCheck, memo in
+                                self.addNote(title, colorIndex, isWidget, isAutoCheck, memo)
+                                self.isAddNotePresented = false
+                                self.isEditNotePresented = false
+                            }
                         }
-                    }
-                    .modifier(ListModifier())
-                    .buttonStyle(BorderlessButtonStyle())
+                        .modifier(ListModifier())
+                        .buttonStyle(BorderlessButtonStyle())
+                        
                     
                     ForEach(notes) { note in
                         HStack {
@@ -80,7 +81,7 @@ struct HomeView: View {
                     .onDelete(perform: deleteItems)
                     .onMove(perform: moveItems)
                 }
-    //            .ignoresSafeArea(.keyboard)
+                .ignoresSafeArea(.keyboard)             // NoteDetailView에서의 키보드 잔상 없어지게 하기 위해(Toolbar에는 잔상 생김)
                 .animation(.default)                    // 해당 자리에 있어야 함
                 .listStyle(PlainListStyle())                        // 안해주면 Add Note 누를 때, title bar button 초기 색이 하얗게 됨
                 .navigationBarTitle("VoCap", displayMode: .inline)

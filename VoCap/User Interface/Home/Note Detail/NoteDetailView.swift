@@ -49,6 +49,11 @@ struct NoteDetailView: View {
     
     @Binding var isDisableds: [Bool]
     
+    @State var orientation = UIDevice.current.orientation
+    let orientationChanged = NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)
+            .makeConnectable()
+            .autoconnect()
+    
     let alertController = UIAlertController(title: "Alert", message: "Please enter text", preferredStyle: .alert)
     
     var body: some View {
@@ -58,7 +63,8 @@ struct NoteDetailView: View {
             
             GeometryReader { geometry in
                 ScrollViewReader { proxy in
-                    List(selection: $selection) {
+//                    List(selection: $selection) {
+                    List {
                         ForEach(tmpNoteDetails) { noteDetail in
                             noteDetailRow(noteDetail)
                         }
@@ -156,6 +162,13 @@ struct NoteDetailView: View {
 //            GADBannerViewController()
 //                .frame(width: kGADAdSizeBanner.size.width, height: kGADAdSizeBanner.size.height)
             
+        }
+        .onReceive(orientationChanged) { _ in                   // XxTextAlert을 추가하면 rotate 시, .bottom Toolbar가 사라져 방지하기 위함
+            self.orientation = UIDevice.current.orientation
+//            print(orientation.isLandscape)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {         // 딜레이 안 주면 연속해서 Rotate했을 때, .bottom Toolbar 사라지는 문제 재발
+                isDisableds[0].toggle()
+            }
         }
     }
 }
@@ -298,7 +311,7 @@ extension NoteDetailView {
                 }
             }
             .padding()
-            .modifier(ListModifier(topPadding: -5))
+            .modifier(ListModifier(verticalPadding: -5))
         }
     }
     
