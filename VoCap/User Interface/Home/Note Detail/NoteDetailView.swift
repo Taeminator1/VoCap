@@ -305,9 +305,12 @@ extension NoteDetailView {
                 }
                 
                 Button(action: {
-                    CustomUITextField(selectedRow: $selectedRow, selectedCol: $selectedCol, closeKeyboard: $closeKeyboard).done(button: UIBarButtonItem())
+                    if editMode == .active {
+                        CustomUITextField(selectedRow: $selectedRow, selectedCol: $selectedCol, closeKeyboard: $closeKeyboard).done(button: UIBarButtonItem())
+                        scrollTarget = noteDetail.order
+                    }
                     changeMemorizedState(id: noteDetail.id)
-                    scrollTarget = noteDetail.order
+                    closeKeyboard = true            // 없으면 키보드 잔상 남음
                 }) {
                     noteDetail.isMemorized == true ? Image(systemName: "checkmark.square.fill").imageScale(.large) : Image(systemName: "square").imageScale(.large)
                 }
