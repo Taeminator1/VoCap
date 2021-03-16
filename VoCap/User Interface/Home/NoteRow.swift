@@ -21,12 +21,13 @@ struct NoteRow: View {
     
     var body: some View {
         VStack() {
+            Spacer()
             HStack() {
                 if totalNumber != 0 && totalNumber == memorizedNumber   { Image(systemName: "checkmark.circle.fill") }
                 else                                                    { Image(systemName: "circle") }
                 
                 Text(title!)
-                    .font(.largeTitle)
+                    .font(.title)
                 
                 Spacer()
             }
@@ -53,7 +54,7 @@ struct AddNoteRow: View {
                 
                 Image(systemName: "plus.circle").imageScale(.large)
                 Text("Add Note")
-                    .font(.largeTitle)
+                    .font(.title)
 
                 Spacer()
             }

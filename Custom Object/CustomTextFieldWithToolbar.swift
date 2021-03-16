@@ -68,7 +68,9 @@ struct CustomTextFieldWithToolbar: UIViewRepresentable {
         
         let flexible = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         
-        let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(textField.done(button:)))
+        let doneButton = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(textField.done(button:)))
+        
+//        let doneButton = UIBarButtonItem(title: "Done".localized, style: .done, target: self, action: #selector(textField.done(button:)))
         
         switch col {
         case 0:

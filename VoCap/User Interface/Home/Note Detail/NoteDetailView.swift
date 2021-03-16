@@ -41,8 +41,8 @@ struct NoteDetailView: View {
     
     @State private var selectedRow = -1
     @State private var selectedCol = -1
-    
     @State var closeKeyboard: Bool = true
+    
     @State var listFrame: CGFloat = 0.0
     
     let limitedNumberOfItems: Int = 600
@@ -305,10 +305,13 @@ extension NoteDetailView {
                 }
                 
                 Button(action: {
+                    CustomUITextField(selectedRow: $selectedRow, selectedCol: $selectedCol, closeKeyboard: $closeKeyboard).done(button: UIBarButtonItem())
                     changeMemorizedState(id: noteDetail.id)
+                    scrollTarget = noteDetail.order
                 }) {
                     noteDetail.isMemorized == true ? Image(systemName: "checkmark.square.fill").imageScale(.large) : Image(systemName: "square").imageScale(.large)
                 }
+                .buttonStyle(PlainButtonStyle())        // TextField 상태일 때, 경계부분 누르면 버튼이 눌리는 현상 막기 위해
             }
             .padding()
             .modifier(ListModifier(verticalPadding: -5))
