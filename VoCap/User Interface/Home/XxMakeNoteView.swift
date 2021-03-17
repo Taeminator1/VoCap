@@ -29,7 +29,8 @@ struct XxMakeNoteView: View {
 //                toggleConfig
                 others
             }
-            .listStyle(InsetGroupedListStyle())
+            .listStyle(GroupedListStyle())
+//            .listStyle(InsetGroupedListStyle())
             .environment(\.horizontalSizeClass, .regular)               // 이건 뭐지?
             .navigationBarTitle(isAddNotePresented == true ? "Add Note" : "Edit Note", displayMode: .inline)
             .actionSheet(isPresented: $showingCancelSheet) {
@@ -116,6 +117,11 @@ private extension XxMakeNoteView {
                         .foregroundColor(myColor.colors[$0])
                 }
             }
+//            .pickerStyle(DefaultPickerStyle())
+//            .pickerStyle(InlinePickerStyle())
+//            .pickerStyle(MenuPickerStyle())
+//            .pickerStyle(SegmentedPickerStyle())
+//            .pickerStyle(WheelPickerStyle())
         }
     }
 

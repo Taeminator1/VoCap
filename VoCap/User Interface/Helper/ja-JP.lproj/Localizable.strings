@@ -1,7 +1,71 @@
-/* 
+/*
   Localizable.strings
   VoCap
 
   Created by 윤태민 on 3/14/21.
   
 */
+
+"VoCap" = "";
+"Edit" = "";
+"Add Note" = "";
+"Number of Items: %d / %d" = "";
+
+"Cancel" = "";
+"Save" = "";
+"Title" = "";
+"Color" = "";
+"Memo" = "";
+"Are you sure you want to discard this new note?" = "";
+"Discard Changes" = "";
+"Keep Editing" = "";
+"Edit Note" = "";
+"Are you sure you want to discard your changes?" = "";
+
+"Blue" = "";
+"Green" = "";
+"Indigo" = "";
+"Orange" = "";
+"Pink" = "";
+"Purple" = "";
+"Red" = "";
+"Teal" = "";
+"Yellow" = "";
+
+"Edit item" = "";
+"Show Memorized" = "";
+// "Dictionary Settings" = "";
+"Hide Memorized" = "";
+"Add Item" = "";
+"Enter term and definition to memorize. " = "";
+"Term" = "";
+"Definition" = "";
+"Next" = "";
+"Delete Memorized" = "";
+
+"Settings" = "";
+"Done" = "";
+"Contact Us" = "";
+"Reset" = "";
+"Reset Tips Settings" = "";
+"Erase All Data" = "";
+"This will make tips be presented again. " = "";
+"This will delete all data. " = "";
+
+"User Info(Optional)" = "";
+"Address for reply" = "";
+"Region" = "";
+"Country" = "";
+"Language" = "";
+"Source" = "";
+"Target" = "";
+"Content" = "";
+"Would you like to delete this message?" = "";
+"Delete" = "";
+"Send" = "";
+
+"Success" = "";
+"Thank you for contacting us. We will review your submission soon. " = "";
+"Error" = "";
+"Something went wrong. Please check your network status and try again. " = "";
+"Back" = "";

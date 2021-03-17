@@ -102,6 +102,11 @@ private extension MakeNoteView {
                         .foregroundColor(myColor.colors[$0])
                 }
             }
+//            .pickerStyle(DefaultPickerStyle())
+//            .pickerStyle(InlinePickerStyle())
+//            .pickerStyle(MenuPickerStyle())
+//            .pickerStyle(SegmentedPickerStyle())
+//            .pickerStyle(WheelPickerStyle())
         }
     }
 
@@ -144,8 +149,7 @@ private extension MakeNoteView {
     var others: some View {
         Section() {
             VStack(alignment: .leading) {
-                Text("Memo")                       // Need to add multi line textfield
-
+                Text("Memo")
                 TextField("", text: $note.memo)
             }
         }

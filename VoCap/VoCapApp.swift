@@ -20,6 +20,8 @@ struct VoCapApp: App {
 //            SwiftUIView()
             
 //            AdMobView()
+            
+//            XxMakeNoteView(isAddNotePresented: .constant(true), isEditNotePresented: .constant(false)) { _,_,_,_,_ in }
         }
     }
 }

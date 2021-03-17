@@ -101,7 +101,8 @@ struct HomeView: View {
                 .toolbar {
 //                    ToolbarItem(placement: .navigationBarLeading) { leadingItem }
                     ToolbarItem(placement: .navigationBarTrailing) {
-                        EditButton()
+//                        EditButton()
+                        editButton              // localize 위해 EditButton() 안 씀
                             .onAppear() {
                                 if isEditMode == .inactive || isEditMode == .transient {    // When Edit Button has been not pressed
                                     hideNoteDetailsNumber = false
@@ -205,6 +206,18 @@ private extension HomeView {
     var bottom3Item: some View {
         Button(action: { isSettingsPresented = true }) {
             Image(systemName: "gearshape").imageScale(.large)
+        }
+    }
+}
+
+extension HomeView {
+    var editButton: some View {
+        Button(action: {                // localize 위해 EditButton() 안 씀
+            if isEditMode == .inactive  { isEditMode = .active }
+            else                        { isEditMode = .inactive }
+        }) {
+            if isEditMode == .inactive  { Text("Edit") }
+            else                        { Text("Done") }
         }
     }
 }

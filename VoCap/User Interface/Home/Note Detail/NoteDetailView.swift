@@ -69,7 +69,7 @@ struct NoteDetailView: View {
                             noteDetailRow(noteDetail)
                         }
                         .onDelete(perform: deleteItem)
-                        .deleteDisabled(isShuffled)             // Shuffle 상태일 때 delete 못하게 함
+                        .deleteDisabled(isShuffled || editMode == .active)             // Shuffle 상태일 때 delete 못하게 함
                     }
                     .animation(.default)
     //                .alert(isPresented: $showingAddItemAlert, TextAlert(title: "Title", message: "Message", action: { result in
@@ -122,14 +122,14 @@ struct NoteDetailView: View {
                     }
                     .navigationBarTitle("\(note.title!)", displayMode: .inline)
                     .toolbar {
-                        ToolbarItem(placement: .navigationBarTrailing) {
-//                            deleteMemorizedButton
-                            Button(action: {
-                                withAnimation {
-                                    isDisableds[0].toggle()
-                                }
-                            }) { Text("Test") }
-                        }
+//                        ToolbarItem(placement: .navigationBarTrailing) {
+////                            deleteMemorizedButton
+//                            Button(action: {
+//                                withAnimation {
+//                                    isDisableds[0].toggle()
+//                                }
+//                            }) { Text("Test") }
+//                        }
                         ToolbarItem(placement: .navigationBarTrailing) {
                             if editMode == .inactive {
                                 Menu {
@@ -528,7 +528,9 @@ extension NoteDetailView {
         saveContext()
         
         // shuffle 상태에서 삭제하면 해당 구문이 return 못하게 함(shuffle 상태에서는 delete 못하게 함)
-        for i in 0..<note.term.count { tmpNoteDetails[i].order = i }
+        for i in 0..<note.term.count {
+            tmpNoteDetails[i].order = i
+        }
     }
     
     func changeMemorizedState(id: UUID) {

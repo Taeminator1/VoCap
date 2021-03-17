@@ -13,8 +13,8 @@ import Combine
 struct ContactUsView: View {
     @Binding var isContactUsPresented: Bool
     
-    @State var emailForReply: String = ""
-    @State var country: String = ""
+    @State var addressForReply: String = ""
+    @State var region: String = ""
     @State var sourceLanguage: String = ""
     @State var targetLanguage: String = ""
     @State var contents: String = ""
@@ -26,6 +26,12 @@ struct ContactUsView: View {
     @State var isSendingEmail: Bool = false
     
     let textLimit: Int = 200
+    
+    @State var contentFrameHeight: CGFloat = 150
+    @State var orientation = UIDevice.current.orientation
+    let orientationChanged = NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)
+            .makeConnectable()
+            .autoconnect()
     
     var body: some View {
         NavigationView {
@@ -52,10 +58,10 @@ struct ContactUsView: View {
                 ToolbarItem(placement: .navigationBarTrailing) { trailingItem.disabled(contents == "" || isSendingEmail) }
             }
 //            .allowAutoDismiss($showingCancelSheet) {
-//                return emailForReply == "" && country == "" && sourceLanguage == "" && targetLanguage == "" && contents == ""
+//                return addressForReply == "" && country == "" && sourceLanguage == "" && targetLanguage == "" && contents == ""
 //            }
             .allowAutoDismiss($showingCancelSheet, $isSendingEmail) {
-                return emailForReply == "" && country == "" && sourceLanguage == "" && targetLanguage == "" && contents == ""
+                return addressForReply == "" && region == "" && sourceLanguage == "" && targetLanguage == "" && contents == ""
             }
         }
         .accentColor(.mainColor)
@@ -77,7 +83,7 @@ private extension ContactUsView {
     }
     
     func cancel() {
-        if emailForReply == "" && country == "" && sourceLanguage == "" && targetLanguage == "" && contents == "" {
+        if addressForReply == "" && region == "" && sourceLanguage == "" && targetLanguage == "" && contents == "" {
             isContactUsPresented = false
         }
         else {
@@ -110,8 +116,8 @@ private extension ContactUsView {
         builder.htmlBody += "Version Number: \(Bundle.main.infoDictionary!["CFBundleShortVersionString"] ?? "")<br>"
         builder.htmlBody += "Build Number: \(Bundle.main.infoDictionary!["CFBundleVersion"] ?? "")<br>"
         builder.htmlBody += "<br>"
-        builder.htmlBody += "Email for reply: \(emailForReply)<br>"
-        builder.htmlBody += "Country: \(country)<br>"
+        builder.htmlBody += "Address for reply: \(addressForReply)<br>"
+        builder.htmlBody += "Region: \(region)<br>"
         builder.htmlBody += "Source Language: \(sourceLanguage)<br>"
         builder.htmlBody += "Target Language: \(targetLanguage)<br>"
         builder.htmlBody += "<br>"
@@ -142,19 +148,24 @@ private extension ContactUsView {
             header: Text("User Info(Optional)")
                 .padding(.top)) {
                 HStack {
-                    Text("Email for reply: ")
-                    TextField("vocap@example.com", text: $emailForReply)
+                    Text("Address for reply")
+                        .font(.caption)
+                    TextField("vocap@example.com", text: $addressForReply)
                         .keyboardType(.emailAddress)
                         .autocapitalization(.none)
+                        .multilineTextAlignment(.center)
             }
             
             HStack {
-                Text("Region: ")
-                TextField("Country", text: $country)
+                Text("Region")
+                    .font(.caption)
+                TextField("Country", text: $region)
+                    .multilineTextAlignment(.center)
             }
             
             HStack {
                 Text("Language")
+                    .font(.caption)
                 HStack {
                     TextField("Source", text: $sourceLanguage)
                         .multilineTextAlignment(.center)
@@ -171,19 +182,26 @@ private extension ContactUsView {
         Section(
             header: Text("Content"),
             footer: HStack {
-//                TextField("", value: $contentsCount, formatter: NumberFormatter())
-//                    .multilineTextAlignment(.trailing)
-//                Text("/")
-//                Text("\(textLimit)")
                 Spacer()
                 Text("\(textLimit - contentsCount)")
             }) {
             TextEditor(text: $contents)
-                .frame(height: 150)
+                .frame(height: contentFrameHeight)
                 .onChange(of: contents) { value in
                     contentsCount = contents.count
                 }
                 .onReceive(Just(contents)) { _ in limitText(textLimit)}
+        }
+        .onReceive(orientationChanged) { _ in                   // content의 Frame size Height가 변경되는 것 방지
+            self.orientation = UIDevice.current.orientation
+            print(orientation.isLandscape)
+            if orientation.isLandscape {
+                contentFrameHeight = 150.1
+            }
+            else {
+                contentFrameHeight = 150.0
+            }
+            print(contentFrameHeight)
         }
     }
     
