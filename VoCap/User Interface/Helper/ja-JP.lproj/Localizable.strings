@@ -59,7 +59,7 @@
 "Language" = "言語";
 "Source" = "ソース";
 "Target" = "ターゲット";
-"Content" = "内容";
+"Content(Required)" = "内容(必湏)";
 "Would you like to delete this message?" = "このメッセージを削除しますか？";
 "Delete" = "削除";
 "Send" = "送信";

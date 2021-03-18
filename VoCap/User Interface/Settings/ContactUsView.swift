@@ -180,7 +180,7 @@ private extension ContactUsView {
     
     var content: some View {
         Section(
-            header: Text("Content"),
+            header: Text("Content(Required)"),
             footer: HStack {
                 Spacer()
                 Text("\(textLimit - contentsCount)")

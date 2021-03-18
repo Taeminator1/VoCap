@@ -59,7 +59,7 @@
 "Language" = "语言";
 "Source" = "本源语言";
 "Target" = "对象语言";
-"Content" = "内容";
+"Content(Required)" = "内容(必需)";
 "Would you like to delete this message?" = "您要删除此信息？";
 "Delete" = "删除";
 "Send" = "发送";

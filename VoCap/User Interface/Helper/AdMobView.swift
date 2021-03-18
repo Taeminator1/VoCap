@@ -30,15 +30,15 @@ struct GADBannerViewController: UIViewControllerRepresentable {
     }
 }
 
-struct AdMobView: View {
-    var body: some View {
-        GADBannerViewController()
-            .frame(width: kGADAdSizeBanner.size.width, height: kGADAdSizeBanner.size.height)
-    }
-}
-
-struct AdMobView_Previews: PreviewProvider {
-    static var previews: some View {
-        AdMobView()
-    }
-}
+//struct AdMobView: View {
+//    var body: some View {
+//        GADBannerViewController()
+//            .frame(width: kGADAdSizeBanner.size.width, height: kGADAdSizeBanner.size.height)
+//    }
+//}
+//
+//struct AdMobView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        AdMobView()
+//    }
+//}

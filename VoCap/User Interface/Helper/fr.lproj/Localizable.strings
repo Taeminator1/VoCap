@@ -59,7 +59,7 @@
 "Language" = "Langue";
 "Source" = "Source";
 "Target" = "Cible";
-"Content" = "Contenu";
+"Content(Required)" = "Contenu(Requis)";
 "Would you like to delete this message?" = "Souhaitez-vous supprimer ce message ?";
 "Delete" = "Supprimer";
 "Send" = "Envoyer";

@@ -59,7 +59,7 @@ struct NoteDetailView: View {
     var body: some View {
         VStack {
             GADBannerViewController()
-                .frame(width: kGADAdSizeBanner.size.width, height: kGADAdSizeBanner.size.height)
+                .frame(width: kGADAdSizeBanner.size.width, height: kGADAdSizeBanner.size.height)        // Frame 사이즈 변경 가능(실제 앱 구동하는 것 보고 변경 여부 결정)
             
             GeometryReader { geometry in
                 ScrollViewReader { proxy in

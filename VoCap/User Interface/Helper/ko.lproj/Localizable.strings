@@ -52,14 +52,14 @@
 "This will make tips be presented again. " = "이 작업은 팁을 다시 나타나게 해줍니다. ";
 "This will delete all data. " = "모든 데이터를 삭제합니다. ";
 
-"User Info(Optional)" = "사용자 정보(선택)";
+"User Info(Optional)" = "사용자 정보(선택 사항)";
 "Address for reply" = "답변 받을 주소";
 "Region" = "지역";
 "Country" = "국가";
 "Language" = "언어";
 "Source" = "원천";
 "Target" = "대상";
-"Content" = "내용";
+"Content(Required)" = "내용(필수 사항)";
 "Would you like to delete this message?" = "이 메시지를 삭제하시겠습니까?";
 "Delete" = "삭제";
 "Send" = "보내기";
