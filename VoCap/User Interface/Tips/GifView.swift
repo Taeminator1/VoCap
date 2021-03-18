@@ -30,7 +30,6 @@ struct GifView: UIViewRepresentable {
         ])
         
         return view
-        
     }
     
     func updateUIView(_ uiView: UIView, context: UIViewRepresentableContext<GifView>) {

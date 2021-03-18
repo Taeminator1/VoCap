@@ -45,7 +45,7 @@ struct NoteDetailView: View {
     
     @State var listFrame: CGFloat = 0.0
     
-    let limitedNumberOfItems: Int = 600
+//    let limitedNumberOfItems: Int = 500
     
     @Binding var isDisableds: [Bool]
     
@@ -76,23 +76,16 @@ struct NoteDetailView: View {
     //                              if let text = result { print("\(text)") }
     //                              else { print("else") }
     //                }))
-                    .alert(isPresented: $showingAddItemAlert, XxTextAlert(title: "Add Item", message: "Enter term and definition to memorize. ", action: { term, definition  in
+                    .alert(isPresented: $showingAddItemAlert, TextAlert(title: "Add Item", message: "Enter a term and a definition to memorize. ", action: { term, definition  in
                         if let term = term, let definition = definition {
-                            print("Next")
-                            if (term != "" || definition != "") && note.term.count < limitedNumberOfItems {
-                                add(term, definition)
+//                            if (term != "" || definition != "") && note.term.count < limitedNumberOfItems {
+                                addItem(term, definition)
 
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {         // 딜레이 안 주면 추가한 목록이 안 보임
                                     scrollTarget = note.term.count - 1
                                 }
                                 showingAddItemAlert = true
-                            }
-                            else {
-                                print("Cancel")
-                            }
-                        }
-                        else {
-                            print("Cancel")
+//                            }
                         }
                     }))
     //                .frame(height: listFrame)
@@ -123,7 +116,6 @@ struct NoteDetailView: View {
                     .navigationBarTitle("\(note.title!)", displayMode: .inline)
                     .toolbar {
 //                        ToolbarItem(placement: .navigationBarTrailing) {
-////                            deleteMemorizedButton
 //                            Button(action: {
 //                                withAnimation {
 //                                    isDisableds[0].toggle()
@@ -133,9 +125,9 @@ struct NoteDetailView: View {
                         ToolbarItem(placement: .navigationBarTrailing) {
                             if editMode == .inactive {
                                 Menu {
-    //                                addButton.disabled(isAddButton == false)
-                                    xXaddButton.disabled(isAddButton == false)
-                                    editButton.disabled(isEditButton == false)
+//                                    addItemsButton.disabled(isAddButton == false)
+                                    addItemButton.disabled(isAddButton == false)
+                                    editItemButton.disabled(isEditButton == false)
                                     hideMemorizedButton
                                 }
                                 label: { Label("", systemImage: "ellipsis.circle").imageScale(.large) }
@@ -175,19 +167,11 @@ struct NoteDetailView: View {
 
 // MARK: - Menu
 extension NoteDetailView {
-    var xXaddButton: some View {
-        Button(action: {
-            showingAddItemAlert = true
-        }) {
-            Label("Add Item", systemImage: "plus")
-        }
-    }
-    
-    private var addButton: some View {
+    private var addItemsButton: some View {
         Button(action: {
             isAddButton = false
             
-            if note.term.count < limitedNumberOfItems { add() }
+            addItems()
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                 isAddButton = true
@@ -196,8 +180,16 @@ extension NoteDetailView {
             Label("Add Items", systemImage: "plus")
         }
     }
+    
+    var addItemButton: some View {
+        Button(action: {
+            showingAddItemAlert = true
+        }) {
+            Label("Add Item", systemImage: "plus")
+        }
+    }
   
-    var editButton: some View {
+    var editItemButton: some View {
         Button(action: {
             isEditButton = false
             isTermsScreen = false
@@ -247,15 +239,13 @@ extension NoteDetailView {
         }
     }
     
-    
     var hideMemorizedButton: some View {
         Button(action: { isHidingNoteDetails.toggle() }) {
             isHidingNoteDetails == true ? Label("Show Memorized", systemImage: "eye") : Label("Hide Memorized", systemImage: "eye.slash")
         }
     }
     
-    
-    func add() {
+    func addItems() {
         for i in 0..<500 {
             note.term.append("\(i)")
             note.definition.append("\(i)")
@@ -270,20 +260,16 @@ extension NoteDetailView {
         scrollTarget = note.term.count - 1
     }
     
-    func add(_ term: String, _ definitino: String) {
-//        for i in 0..<50 {
+    func addItem(_ term: String, _ definitino: String) {
         note.term.append(term)
         note.definition.append(definitino)
         note.isMemorized.append(false)
         
-//        tmpNoteDetails.append(NoteDetail(order: note.term.count - 1))
-//        tmpNoteDetails.append(NoteDetail(order: note.term.count - 1, term: note.term, definition: note.definition))
         let index = note.term.count - 1
         tmpNoteDetails.append(NoteDetail(order: index, term: note.term[index], definition: note.definition[index]))
         saveContext()
     
         isScaledArray.append(Bool(false))
-//        }
     }
 }
 
@@ -355,7 +341,6 @@ extension NoteDetailView {
                 Text("Error")
             }
         }
-//        .ignoresSafeArea(.keyboard)
     }
 }
 
@@ -407,7 +392,7 @@ extension NoteDetailView {
             isTermsScreen.toggle()
             isTermScaled.toggle()
         }) {
-//            isTermsScreen == true ? Image(systemName: "arrow.left") : Image(systemName: "arrow.right")
+
             isTermsScreen == true ? Image("arrow.right.on").imageScale(.large) : Image("arrow.right.off").imageScale(.large)
         }
     }

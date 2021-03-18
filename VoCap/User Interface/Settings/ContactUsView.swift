@@ -132,7 +132,7 @@ private extension ContactUsView {
                 alertMessage = "Error"
                 showingAlert = true
             } else {
-                print(builder.htmlBody!)
+//                print(builder.htmlBody!)
                 NSLog("Successfully sent email!")
                 alertMessage = "Success"
                 showingAlert = true
@@ -194,14 +194,14 @@ private extension ContactUsView {
         }
         .onReceive(orientationChanged) { _ in                   // content의 Frame size Height가 변경되는 것 방지
             self.orientation = UIDevice.current.orientation
-            print(orientation.isLandscape)
+//            print(orientation.isLandscape)
             if orientation.isLandscape {
                 contentFrameHeight = 150.1
             }
             else {
                 contentFrameHeight = 150.0
             }
-            print(contentFrameHeight)
+//            print(contentFrameHeight)
         }
     }
     

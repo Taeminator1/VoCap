@@ -58,7 +58,7 @@ extension MbModalHackView {
         }
         
         func presentationControllerDidAttemptToDismiss(_ presentationController: UIPresentationController) {
-            print("presentationControllerDidAttemptToDismiss")
+//            print("presentationControllerDidAttemptToDismiss")
             
             if isSending == true {
                 showingCancelSheet = false
@@ -66,7 +66,6 @@ extension MbModalHackView {
             else {
                 showingCancelSheet = true
             }
-//            showingCancelSheet = true
         }
         
         // set delegate to the presentation of the root parent
@@ -96,30 +95,6 @@ extension UIViewController {
 /// view.allowAutDismiss(...)
 extension View {
     /// Control if allow to dismiss the sheet by the user actions
-//    public func allowAutoDismiss(_ dismissable: @escaping () -> Bool) -> some View {
-//        self
-//            .background(MbModalHackView(dismissable: dismissable))
-//    }
-//
-//    /// Control if allow to dismiss the sheet by the user actions
-//    public func allowAutoDismiss(_ dismissable: Bool) -> some View {
-//        self
-//            .background(MbModalHackView(dismissable: { dismissable }))
-//    }
-//    public func allowAutoDismiss(_ dismissable: @escaping () -> Bool, _ showingCancelSheet: Binding<Bool>) -> some View {
-//        self
-//            .background(MbModalHackView(dismissable: dismissable, showingCancelSheet: showingCancelSheet))
-//    }
-    
-//    public func allowAutoDismiss(_ showingCancelSheet: Binding<Bool>, _ dismissable: @escaping () -> Bool) -> some View {
-//        self
-//            .background(MbModalHackView(dismissable: dismissable, showingCancelSheet: showingCancelSheet))
-//    }
-//
-//    public func allowAutoDismiss(_ dismissable: Bool, _ showingCancelSheet: Binding<Bool>) -> some View {
-//        self
-//            .background(MbModalHackView(dismissable: { dismissable }, showingCancelSheet: showingCancelSheet))
-//    }
     
     public func allowAutoDismiss(_ showingCancelSheet: Binding<Bool>, _ isSending: Binding<Bool>, _ dismissable: @escaping () -> Bool) -> some View {
         self
@@ -127,7 +102,6 @@ extension View {
     }
 }
 
-/// Example:
 // MARK: - Example
 //struct ContentView: View {
 //    @State private var presenting = false

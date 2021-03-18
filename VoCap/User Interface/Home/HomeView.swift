@@ -44,7 +44,7 @@ struct HomeView: View {
                         .sheet(isPresented: $isAddNotePresented) {
                             let tmpNote = TmpNote()
                             
-                            XxMakeNoteView(note: tmpNote, dNote: tmpNote, isAddNotePresented: $isAddNotePresented, isEditNotePresented: $isEditNotePresented) { title, colorIndex, isWidget, isAutoCheck, memo in
+                            MakeNoteView(note: tmpNote, dNote: tmpNote, isAddNotePresented: $isAddNotePresented, isEditNotePresented: $isEditNotePresented) { title, colorIndex, isWidget, isAutoCheck, memo in
                                 self.addNote(title, colorIndex, isWidget, isAutoCheck, memo)
                                 self.isAddNotePresented = false
                                 self.isEditNotePresented = false
@@ -89,17 +89,14 @@ struct HomeView: View {
                     if let order = noteRowOrder {
                         let tmpNote = TmpNote(note: notes[order])
                        
-                        XxMakeNoteView(note: tmpNote, dNote: tmpNote, isAddNotePresented: $isAddNotePresented, isEditNotePresented: $isEditNotePresented) { title, colorIndex, isWidget, isAutoCheck, memo in
+                        MakeNoteView(note: tmpNote, dNote: tmpNote, isAddNotePresented: $isAddNotePresented, isEditNotePresented: $isEditNotePresented) { title, colorIndex, isWidget, isAutoCheck, memo in
                             self.editItems(title, colorIndex, isWidget, isAutoCheck, memo)
                             self.isEditNotePresented = false
                             self.isEditNotePresented = false
                         }
                     }
                 }
-//                .background(NavigationLink(destination: UtilityView(), isActive: $showUtility) { EmptyView() })
-//                .background(NavigationLink(destination: TestView(), isActive: $showTest) { TestView() })
                 .toolbar {
-//                    ToolbarItem(placement: .navigationBarLeading) { leadingItem }
                     ToolbarItem(placement: .navigationBarTrailing) {
 //                        EditButton()
                         editButton              // localize 위해 EditButton() 안 씀
@@ -113,11 +110,8 @@ struct HomeView: View {
                             }
                     }
                     
-//                    ToolbarItem(placement: .bottomBar) { bottom1Item }
-//                    ToolbarItem(placement: .bottomBar) { Spacer() }
-//                    ToolbarItem(placement: .bottomBar) { bottom2Item }
                     ToolbarItem(placement: .bottomBar) { Spacer() }
-                    ToolbarItem(placement: .bottomBar) { bottom3Item.disabled(isEditMode != .inactive) }
+                    ToolbarItem(placement: .bottomBar) { settingsButton.disabled(isEditMode != .inactive) }
                 }
                 .environment(\.editMode, self.$isEditMode)          // 없으면 Edit 오류 생김(해당 위치에 있어야 함)
             }
@@ -138,7 +132,7 @@ struct HomeView: View {
                             isHowToAddItem.toggle()
                             UserDefaults.standard.set(self.isHowToAddItem, forKey: "Tip0")
                         }) {
-                            HowToAddItemView()
+                            HowToDoSomethingView(width: 300.0, height: 350.0, fileName_Light: "HowToAddItem_Light", fileName_Dark: "HowToAddItem_Dark")
                         }
                         .buttonStyle(PlainButtonStyle())
                     )
@@ -154,7 +148,7 @@ struct HomeView: View {
                             isHowToGlanceItem.toggle()
                             UserDefaults.standard.set(self.isHowToGlanceItem, forKey: "Tip1")
                         }) {
-                            HowToGlanceItemView()
+                            HowToDoSomethingView(width: 280.0, height: 210.0, fileName_Light: "HowToGlanceItem_Light", fileName_Dark: "HowToGlanceItem_Dark")
                         }
                         .buttonStyle(PlainButtonStyle())
                     )
@@ -166,13 +160,7 @@ struct HomeView: View {
 
 
 // MARK: - Tool Bar Items
-private extension HomeView {
-    var leadingItem: some View {
-        NavigationLink(destination: SearchView()) {
-            Image(systemName: "magnifyingglass").imageScale(.large)
-        }
-    }
-    
+private extension HomeView {    
     private func editItems(title: String, colorIndex: Int16, memo: String) {
         notes[noteRowOrder!].title = title
         notes[noteRowOrder!].colorIndex = colorIndex
@@ -191,19 +179,7 @@ private extension HomeView {
         saveContext()
     }
     
-    var bottom1Item: some View {
-        Button(action: { showUtility = true }) {
-            Image(systemName: "1.circle").imageScale(.large)
-        }
-    }
-    
-    var bottom2Item: some View {
-        Button(action: { showTest = true }) {
-            Image(systemName: "2.circle").imageScale(.large)
-        }
-    }
-    
-    var bottom3Item: some View {
+    var settingsButton: some View {
         Button(action: { isSettingsPresented = true }) {
             Image(systemName: "gearshape").imageScale(.large)
         }

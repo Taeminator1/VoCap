@@ -19,23 +19,25 @@ struct MakeNoteView: View {
     @State private var shwoingAutoCheckAlert: Bool = false
     @State private var showingCancelSheet: Bool = false
     
-    let onComplete: (String, Int16, String) -> Void
+    // title, colorIndex, isWidget, isAutoCheck, memo
+    let onComplete: (String, Int16, Bool, Bool, String) -> Void
     
     var body: some View {
         NavigationView {
             List {
                 basicInfo
-                toggleConfig
+//                toggleConfig
                 others
             }
-            .listStyle(GroupedListStyle())
+//            .listStyle(GroupedListStyle())
+            .listStyle(InsetGroupedListStyle())
             .environment(\.horizontalSizeClass, .regular)               // 이건 뭐지?
             .navigationBarTitle(isAddNotePresented == true ? "Add Note" : "Edit Note", displayMode: .inline)
             .actionSheet(isPresented: $showingCancelSheet) {
-    //            "Are you sure you want to discard this new note?"
-                ActionSheet(title: Text("Are you sure you want to discard your changes?"), message: .none,
+                ActionSheet(title: actionSheetTitle, message: .none,
                             buttons: [
                                 .destructive(Text("Discard Changes"), action: {
+                                                showingCancelSheet = false
                                                 isAddNotePresented = false
                                                 isEditNotePresented = false }),
                                 .cancel(Text("Keep Editing"))]
@@ -45,6 +47,19 @@ struct MakeNoteView: View {
                 ToolbarItem(placement: .navigationBarLeading) { leadingItem }
                 ToolbarItem(placement: .navigationBarTrailing) { trailingItem }
             }
+        }
+        .allowAutoDismiss($showingCancelSheet, .constant(false)) {
+            return note.isEqual(dNote)
+        }
+        .accentColor(.mainColor)
+    }
+    
+    var actionSheetTitle: Text {
+        if isAddNotePresented {
+            return Text("Are you sure you want to discard this new note?")
+        }
+        else {
+            return Text("Are you sure you want to discard your changes?")
         }
     }
 }
@@ -57,18 +72,17 @@ private extension MakeNoteView {
         Button(action: cancel) {
             Text("Cancel")
         }
-        
     }
 
     @ViewBuilder            // for conditionally view
     var trailingItem: some View {
         if isAddNotePresented == true {
-            Button(action: { onComplete(note.title, Int16(note.colorIndex), note.memo) }) {
+            Button(action: { onComplete(note.title, Int16(note.colorIndex), note.isWidget, note.isAutoCheck, note.memo) }) {
                 Text("Done")
             }
         }
         else {
-            Button(action: { onComplete(note.title, Int16(note.colorIndex), note.memo) }) {
+            Button(action: { onComplete(note.title, Int16(note.colorIndex), note.isWidget, note.isAutoCheck, note.memo) }) {
                 Text("Save")
             }
             .disabled(note.isEqual(dNote))
@@ -92,7 +106,7 @@ private extension MakeNoteView {
     
     var basicInfo: some View {
         Section() {
-            CustomTextField(title: "Title", text: $note.title, isFirstResponder: isAddNotePresented)
+            CustomTextField(title: "Title".localized, text: $note.title, isFirstResponder: isAddNotePresented)
             
             // Group List에서 이상
             Picker(selection: $note.colorIndex, label: Text("Color")) {      // Need to check the style
@@ -102,11 +116,6 @@ private extension MakeNoteView {
                         .foregroundColor(myColor.colors[$0])
                 }
             }
-//            .pickerStyle(DefaultPickerStyle())
-//            .pickerStyle(InlinePickerStyle())
-//            .pickerStyle(MenuPickerStyle())
-//            .pickerStyle(SegmentedPickerStyle())
-//            .pickerStyle(WheelPickerStyle())
         }
     }
 
@@ -121,7 +130,6 @@ private extension MakeNoteView {
                 .alert(isPresented: $shwoingWidgetAlert) {
                     Alert(title: Text("Widget Info"))
                 }
-
 
                 Spacer()
 
@@ -149,8 +157,11 @@ private extension MakeNoteView {
     var others: some View {
         Section() {
             VStack(alignment: .leading) {
-                Text("Memo")
-                TextField("", text: $note.memo)
+                Text("Memo")                       // Need to add multi line textfield
+
+//                TextField("", text: $note.memo)
+                TextEditor(text: $note.memo)
+                    .frame(height: 150)
             }
         }
     }
@@ -159,6 +170,6 @@ private extension MakeNoteView {
 
 struct MakeNoteView_Previews: PreviewProvider {
     static var previews: some View {
-        MakeNoteView(isAddNotePresented: .constant(true), isEditNotePresented: .constant(false)) { _,_,_ in }
+        MakeNoteView(isAddNotePresented: .constant(true), isEditNotePresented: .constant(false)) { _,_,_,_,_ in }
     }
 }

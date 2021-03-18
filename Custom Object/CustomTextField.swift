@@ -24,19 +24,16 @@ struct CustomTextField: UIViewRepresentable {
         }
 
         func textFieldDidChangeSelection(_ textField: UITextField) {
-//            print("a")
             text = textField.text ?? ""
         }
         
         func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-//            print("b")
             textField.resignFirstResponder()
             return false
         }
         
         func textFieldDidEndEditing(_ textField: UITextField) {
             textField.resignFirstResponder()
-//            print("c")
         }
     }
 

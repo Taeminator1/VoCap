@@ -6,7 +6,7 @@
   
 */
 
-"VoCap" = "VoCap";
+"VoCap" = "VoCap";      // VoCap-암기왕
 "Edit" = "편집";
 "Add Note" = "노트 추가";
 "Number of Items: %d / %d" = "목록 수: %d / %d";
@@ -37,7 +37,7 @@
 // "Dictionary Settings" = "사전 설정";
 "Hide Memorized" = "외운 항목 가리기";
 "Add Item" = "항목 추가";
-"Enter term and definition to memorize. " = "외우고자 하는 용어와 단어를 추가하세요. ";
+"Enter a term and a definition to memorize. " = "외우고자 하는 단어와 의미를 추가하세요. ";
 "Term" = "단어";
 "Definition" = "의미";
 "Next" = "다음";
