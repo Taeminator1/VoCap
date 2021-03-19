@@ -101,6 +101,8 @@ struct HomeView: View {
 //                        EditButton()
                         editButton              // localize 위해 EditButton() 안 씀
                             .onAppear() {
+//                                UITableView.appearance().showsVerticalScrollIndicator = false
+                                
                                 if isEditMode == .inactive || isEditMode == .transient {    // When Edit Button has been not pressed
                                     hideNoteDetailsNumber = false
                                 }
