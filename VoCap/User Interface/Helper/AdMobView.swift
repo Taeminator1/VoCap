@@ -16,7 +16,8 @@ struct GADBannerViewController: UIViewControllerRepresentable {
         let view = GADBannerView(adSize: kGADAdSizeBanner)
         let viewController = UIViewController()
         
-        view.adUnitID = "ca-app-pub-1173596179673040/5837435794"
+//        view.adUnitID = "ca-app-pub-3940256099942544/2934735716"            // for Test
+        view.adUnitID = "ca-app-pub-1173596179673040/5837435794"            // for Release
         view.rootViewController = viewController
         viewController.view.addSubview(view)
         viewController.view.frame = CGRect(origin: .zero, size: kGADAdSizeBanner.size)

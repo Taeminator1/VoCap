@@ -14,6 +14,7 @@
 		34152FB7259A08A5007E4953 /* TmpNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34152FB6259A08A5007E4953 /* TmpNote.swift */; };
 		3423403525EFC47000A04176 /* GifView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3423403425EFC47000A04176 /* GifView.swift */; };
 		342693C725FCDDE5000A5E4E /* AdMobView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342693C625FCDDE5000A5E4E /* AdMobView.swift */; };
+		34346F4C2604ACDC003279D7 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 34346F4B2604ACDC003279D7 /* Launch Screen.storyboard */; };
 		3444A05125FB70BF0008CE14 /* HowToGlanceItem_Light.gif in Resources */ = {isa = PBXBuildFile; fileRef = 3444A04F25FB70BE0008CE14 /* HowToGlanceItem_Light.gif */; };
 		3445EBED25C9851B00D16915 /* CustomTextFieldWithToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3445EBEC25C9851B00D16915 /* CustomTextFieldWithToolbar.swift */; };
 		344FF41D25FF7106009B7E03 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 344FF41C25FF7106009B7E03 /* StringExtension.swift */; };
@@ -70,6 +71,8 @@
 		34152FB6259A08A5007E4953 /* TmpNote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TmpNote.swift; sourceTree = "<group>"; };
 		3423403425EFC47000A04176 /* GifView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GifView.swift; sourceTree = "<group>"; };
 		342693C625FCDDE5000A5E4E /* AdMobView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdMobView.swift; sourceTree = "<group>"; };
+		34346F3C2604A7B5003279D7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		34346F4B2604ACDC003279D7 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		3444A04F25FB70BE0008CE14 /* HowToGlanceItem_Light.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = HowToGlanceItem_Light.gif; sourceTree = "<group>"; };
 		3445EBEC25C9851B00D16915 /* CustomTextFieldWithToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextFieldWithToolbar.swift; sourceTree = "<group>"; };
 		344FF41C25FF7106009B7E03 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
@@ -279,6 +282,7 @@
 				34D88F48256D2A68009B10AF /* VoCap.xcdatamodeld */,
 				34D88F4B256D2A68009B10AF /* Info.plist */,
 				34D88F43256D2A68009B10AF /* Preview Content */,
+				34346F4B2604ACDC003279D7 /* Launch Screen.storyboard */,
 			);
 			path = VoCap;
 			sourceTree = "<group>";
@@ -437,6 +441,7 @@
 			files = (
 				34A32AF02603443C004E8C17 /* HowToGlanceItem_Dark.gif in Resources */,
 				34D88F45256D2A68009B10AF /* Preview Assets.xcassets in Resources */,
+				34346F4C2604ACDC003279D7 /* Launch Screen.storyboard in Resources */,
 				3444A05125FB70BF0008CE14 /* HowToGlanceItem_Light.gif in Resources */,
 				34A32AF82603452B004E8C17 /* HowToAddItem_Dark.gif in Resources */,
 				34D88F42256D2A68009B10AF /* Assets.xcassets in Resources */,
@@ -576,6 +581,7 @@
 				34E02AB425FE1BC7005AA07D /* ja-JP */,
 				34E02AB525FE1BD4005AA07D /* zh-Hans */,
 				34E02AB625FE1BE0005AA07D /* fr */,
+				34346F3C2604A7B5003279D7 /* en */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -708,6 +714,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"VoCap/Preview Content\"";
 				DEVELOPMENT_TEAM = LGU69RG34G;
 				ENABLE_PREVIEWS = YES;
@@ -723,6 +730,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Taeminator.VoCap;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "${SRCROOT}/VoCap/VoCap_bridge.h";
@@ -738,6 +746,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"VoCap/Preview Content\"";
 				DEVELOPMENT_TEAM = LGU69RG34G;
 				ENABLE_PREVIEWS = YES;
@@ -753,6 +762,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Taeminator.VoCap;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "${SRCROOT}/VoCap/VoCap_bridge.h";
