@@ -84,7 +84,7 @@ private extension SettingsView {
 
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
-        SettingsView(isSettingsPresented: .constant(true), isHowToAddItem: .constant(true), isHowToGlanceItem: .constant(true))
+        SettingsView(isSettingsPresented: .constant(true), isHowToAddItem: .constant(false), isHowToGlanceItem: .constant(false))
             .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
     }
 }

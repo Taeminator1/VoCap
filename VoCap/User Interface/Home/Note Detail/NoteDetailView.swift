@@ -76,7 +76,7 @@ struct NoteDetailView: View {
     //                              if let text = result { print("\(text)") }
     //                              else { print("else") }
     //                }))
-                    .alert(isPresented: $showingAddItemAlert, TextAlert(title: "Add Item", message: "Enter a term and a definition to memorize. ", action: { term, definition  in
+                    .alert(isPresented: $showingAddItemAlert, TextAlert(title: "Add Item".localized, message: "Enter a term and a definition to memorize. ".localized, action: { term, definition  in
                         if let term = term, let definition = definition {
 //                            if (term != "" || definition != "") && note.term.count < limitedNumberOfItems {
                                 addItem(term, definition)

@@ -101,8 +101,6 @@ struct HomeView: View {
 //                        EditButton()
                         editButton              // localize 위해 EditButton() 안 씀
                             .onAppear() {
-                                UITableView.appearance().showsVerticalScrollIndicator = false
-                                
                                 if isEditMode == .inactive || isEditMode == .transient {    // When Edit Button has been not pressed
                                     hideNoteDetailsNumber = false
                                 }
@@ -118,20 +116,23 @@ struct HomeView: View {
                 .environment(\.editMode, self.$isEditMode)          // 없으면 Edit 오류 생김(해당 위치에 있어야 함)
             }
             .navigationViewStyle(StackNavigationViewStyle())                // 없으면 View전환할 때마다 Tool Bar 로딩되는데 시간이 걸림
-            .onAppear() { isEditNotePresented = false }
+            .onAppear() {
+                isEditNotePresented = false
+                UITableView.appearance().showsVerticalScrollIndicator = false
+            }
             .sheet(isPresented: $isSettingsPresented) {
                 SettingsView(isSettingsPresented: $isSettingsPresented, isHowToAddItem: $isHowToAddItem, isHowToGlanceItem: $isHowToGlanceItem)
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
             }
             
-            if isDisableds[0] && isHowToAddItem {
+            if isDisableds[0] && !isHowToAddItem {
                 Rectangle()
                     .fill(Color.black.opacity(0.4))
                     .ignoresSafeArea()
                     .overlay(
                         Button(action: {
                             isDisableds[0].toggle()
-                            isHowToAddItem.toggle()
+                            isHowToAddItem = true
                             UserDefaults.standard.set(self.isHowToAddItem, forKey: "Tip0")
                         }) {
                             HowToDoSomethingView(width: 300.0, height: 350.0, fileName_Light: "HowToAddItem_Light", fileName_Dark: "HowToAddItem_Dark")
@@ -140,14 +141,14 @@ struct HomeView: View {
                     )
             }
             
-            if isDisableds[1] && isHowToGlanceItem {
+            if isDisableds[1] && !isHowToGlanceItem {
                 Rectangle()
                     .fill(Color.black.opacity(0.4))
                     .ignoresSafeArea()
                     .overlay(
                         Button(action: {
                             isDisableds[1].toggle()
-                            isHowToGlanceItem.toggle()
+                            isHowToGlanceItem = true
                             UserDefaults.standard.set(self.isHowToGlanceItem, forKey: "Tip1")
                         }) {
                             HowToDoSomethingView(width: 280.0, height: 210.0, fileName_Light: "HowToGlanceItem_Light", fileName_Dark: "HowToGlanceItem_Dark")

@@ -57,10 +57,10 @@ struct ResetView: View {
 // MARK: - Modify notes
 private extension ResetView {
     private func resetTipsSettings() {
-        isHowToAddItem = true
+        isHowToAddItem = false
         UserDefaults.standard.set(self.isHowToAddItem, forKey: "Tip0")
         
-        isHowToGlanceItem = true
+        isHowToGlanceItem = false
         UserDefaults.standard.set(self.isHowToGlanceItem, forKey: "Tip1")
     }
     
@@ -86,6 +86,6 @@ private extension ResetView {
 
 struct ResetView_Previews: PreviewProvider {
     static var previews: some View {
-        ResetView(isSettingsPresented: .constant(true), isHowToAddItem: .constant(true), isHowToGlanceItem: .constant(true))
+        ResetView(isSettingsPresented: .constant(true), isHowToAddItem: .constant(false), isHowToGlanceItem: .constant(false))
     }
 }
