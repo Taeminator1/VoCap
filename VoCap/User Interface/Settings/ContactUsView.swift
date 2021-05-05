@@ -96,7 +96,7 @@ private extension ContactUsView {
         let smtpSession = MCOSMTPSession()
         smtpSession.hostname = "smtp.gmail.com"
         smtpSession.username = "vocap2021@gmail.com"
-        smtpSession.password = "byzQat-sorvat-gyrxe9"
+        smtpSession.password = "cyzsar-xywsy9-zumZuc"
         smtpSession.port = 465
         smtpSession.authType = MCOAuthType.saslPlain
         smtpSession.connectionType = MCOConnectionType.TLS
