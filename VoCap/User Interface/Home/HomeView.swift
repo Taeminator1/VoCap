@@ -97,21 +97,12 @@ struct HomeView: View {
                     }
                 }
                 .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-//                        EditButton()
-                        editButton              // localize 위해 EditButton() 안 씀
-                            .onAppear() {
-                                if isEditMode == .inactive || isEditMode == .transient {    // When Edit Button has been not pressed
-                                    hideNoteDetailsNumber = false
-                                }
-                                else {                                                      // When Edit Button has been pressed by user
-                                    hideNoteDetailsNumber = true
-                                }
-                            }
-                    }
+                    // NavigationBar
+                    editButton
                     
-                    ToolbarItem(placement: .bottomBar) { Spacer() }
-                    ToolbarItem(placement: .bottomBar) { settingsButton.disabled(isEditMode != .inactive) }
+                    // BottomBar
+                    spacer
+                    settingsButton
                 }
                 .environment(\.editMode, self.$isEditMode)          // 없으면 Edit 오류 생김(해당 위치에 있어야 함)
             }
@@ -162,16 +153,8 @@ struct HomeView: View {
 }
 
 
-// MARK: - Tool Bar Items
-private extension HomeView {    
-    private func editItems(title: String, colorIndex: Int16, memo: String) {
-        notes[noteRowOrder!].title = title
-        notes[noteRowOrder!].colorIndex = colorIndex
-        notes[noteRowOrder!].memo = memo
-        
-        saveContext()
-    }
-    
+// MARK: - Toolbar Items
+private extension HomeView {
     private func editItems(_ title: String, _ colorIndex: Int16, _ isWidget: Bool, _ isAutoCheck: Bool, _ memo: String) {
         notes[noteRowOrder!].title = title
         notes[noteRowOrder!].colorIndex = colorIndex
@@ -181,22 +164,39 @@ private extension HomeView {
         
         saveContext()
     }
-    
-    var settingsButton: some View {
-        Button(action: { isSettingsPresented = true }) {
-            Image(systemName: "gearshape").imageScale(.large)
-        }
-    }
 }
 
 extension HomeView {
-    var editButton: some View {
-        Button(action: {                // localize 위해 EditButton() 안 씀
-            if isEditMode == .inactive  { isEditMode = .active }
-            else                        { isEditMode = .inactive }
-        }) {
-            if isEditMode == .inactive  { Text("Edit") }
-            else                        { Text("Done") }
+    var editButton: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarTrailing) {
+            Button(action: {                // localize 위해 EditButton() 안 씀
+                if isEditMode == .inactive  { isEditMode = .active }
+                else                        { isEditMode = .inactive }
+            }) {
+                if isEditMode == .inactive  { Text("Edit") }
+                else                        { Text("Done") }
+            }
+            .onAppear() {
+                if isEditMode == .inactive || isEditMode == .transient {    // When Edit Button has been not pressed
+                    hideNoteDetailsNumber = false
+                }
+                else {                                                      // When Edit Button has been pressed by user
+                    hideNoteDetailsNumber = true
+                }
+            }
+        }
+    }
+    
+    var spacer: some ToolbarContent {
+        ToolbarItem(placement: .bottomBar) { Spacer() }
+    }
+    
+    var settingsButton: some ToolbarContent {
+        ToolbarItem(placement: .bottomBar) {
+            Button(action: { isSettingsPresented = true }) {
+                Image(systemName: "gearshape").imageScale(.large)
+            }
+            .disabled(isEditMode != .inactive)
         }
     }
 }

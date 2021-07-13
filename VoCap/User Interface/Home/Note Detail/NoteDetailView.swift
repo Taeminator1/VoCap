@@ -115,45 +115,20 @@ struct NoteDetailView: View {
                     }
                     .navigationBarTitle("\(note.title!)", displayMode: .inline)
                     .toolbar {
-//                        ToolbarItem(placement: .navigationBarTrailing) {
-//                            Button(action: {
-//                                withAnimation {
-//                                    isDisableds[0].toggle()
-//                                }
-//                            }) { Text("Test") }
-//                        }
-                        ToolbarItem(placement: .navigationBarTrailing) {
-                            if editMode == .inactive {
-                                Menu {
-//                                    addItemsButton.disabled(isAddButton == false)
-                                    addItemButton.disabled(isAddButton == false)
-                                    editItemButton.disabled(isEditButton == false)
-                                    hideMemorizedButton
-                                }
-                                label: { Label("", systemImage: "ellipsis.circle").imageScale(.large) }
-                            }
-                            else {
-                                doneButton
-                            }
-                        }
+                        // NavigationBar
+                        menuButton
                         
-                        ToolbarItem(placement: .bottomBar) { if editMode == .inactive { showingTermsButton } }
-                        ToolbarItem(placement: .bottomBar) { Spacer() }
-                        ToolbarItem(placement: .bottomBar) { if editMode == .inactive { shuffleButton } }
-                        ToolbarItem(placement: .bottomBar) { Spacer() }
-                        ToolbarItem(placement: .bottomBar) {
-                            if editMode == .inactive { showingDefsButton }
-                            else { deleteMemorizedButton }
-                        }
+                        // BottomBar
+                        showingTermsButton
+                        spacer
+                        shuffleButton
+                        spacer
+                        showingDefsButton
                     }
                     .environment(\.editMode, self.$editMode)          // 해당 위치에 없으면 editMode 안 먹힘
                 }
             }
             .accentColor(.mainColor)
-            
-//            GADBannerViewController()
-//                .frame(width: kGADAdSizeBanner.size.width, height: kGADAdSizeBanner.size.height)
-            
         }
         .onReceive(orientationChanged) { _ in                   // XxTextAlert을 추가하면 rotate 시, .bottom Toolbar가 사라져 방지하기 위함
             self.orientation = UIDevice.current.orientation
@@ -377,50 +352,79 @@ extension NoteDetailView {
 
 // MARK: - Tool Bar Items
 extension NoteDetailView {
-    var showingTermsButton: some View {
-        Button(action: {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                withAnimation {
-                    isDisableds[1].toggle()
+    var menuButton: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarTrailing) {
+            if editMode == .inactive {
+                Menu {
+                    addItemButton.disabled(isAddButton == false)
+                    editItemButton.disabled(isEditButton == false)
+                    hideMemorizedButton
                 }
+                label: { Label("", systemImage: "ellipsis.circle").imageScale(.large) }
             }
-            
-            if isDefsScreen == true {
-                isDefsScreen.toggle()
-                isDefScaled.toggle()
+            else {
+                doneButton
             }
-            isTermsScreen.toggle()
-            isTermScaled.toggle()
-        }) {
-
-            isTermsScreen == true ? Image("arrow.right.on").imageScale(.large) : Image("arrow.right.off").imageScale(.large)
         }
     }
     
-    var shuffleButton: some View {
-        Button(action: { shuffle() }) {
-//            isShuffled == true ? Image(systemName: "return") : Image(systemName: "shuffle")
-            isShuffled == true ? Image("shuffle.on").imageScale(.large) : Image("shuffle.off").imageScale(.large)
-        }
+    var spacer: some ToolbarContent {
+        ToolbarItem(placement: .bottomBar) { Spacer() }
     }
     
-    var showingDefsButton: some View {
-        Button(action: {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                withAnimation {
-                    isDisableds[1].toggle()
+    var showingTermsButton: some ToolbarContent {
+        ToolbarItem(placement: .bottomBar) {
+            Button(action: {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    withAnimation {
+                        isDisableds[1].toggle()
+                    }
                 }
-            }
-            
-            if isTermsScreen == true {
+                
+                if isDefsScreen == true {
+                    isDefsScreen.toggle()
+                    isDefScaled.toggle()
+                }
                 isTermsScreen.toggle()
                 isTermScaled.toggle()
+            }) {
+                if editMode == .inactive {
+                    isTermsScreen == true ? Image("arrow.right.on").imageScale(.large) : Image("arrow.right.off").imageScale(.large)
+                }
             }
-            isDefsScreen.toggle()
-            isDefScaled.toggle()
-        }) {
-//            isDefsScreen == true ? Image(systemName: "arrow.right") : Image(systemName: "arrow.left")
-            isDefsScreen == true ? Image("arrow.left.on").imageScale(.large) : Image("arrow.left.off").imageScale(.large)
+        }
+    }
+    
+    var shuffleButton: some ToolbarContent {
+        ToolbarItem(placement: .bottomBar) {
+            Button(action: { shuffle() }) {
+                if editMode == .inactive {
+                    isShuffled == true ? Image("shuffle.on").imageScale(.large) : Image("shuffle.off").imageScale(.large)
+                }
+            }
+        }
+    }
+    
+    var showingDefsButton: some ToolbarContent {
+        ToolbarItem(placement: .bottomBar) {
+            Button(action: {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    withAnimation {
+                        isDisableds[1].toggle()
+                    }
+                }
+                
+                if isTermsScreen == true {
+                    isTermsScreen.toggle()
+                    isTermScaled.toggle()
+                }
+                isDefsScreen.toggle()
+                isDefScaled.toggle()
+            }) {
+                if editMode == .inactive {
+                    isDefsScreen == true ? Image("arrow.left.on").imageScale(.large) : Image("arrow.left.off").imageScale(.large)
+                }
+            }
         }
     }
 }

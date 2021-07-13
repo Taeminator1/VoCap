@@ -54,12 +54,9 @@ struct ContactUsView: View {
             }
             .alert(isPresented: $showingAlert) { sendEmailResultAlert }
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) { leadingItem.disabled(isSendingEmail) }
-                ToolbarItem(placement: .navigationBarTrailing) { trailingItem.disabled(contents == "" || isSendingEmail) }
+                cancelButton
+                sendButton
             }
-//            .allowAutoDismiss($showingCancelSheet) {
-//                return addressForReply == "" && country == "" && sourceLanguage == "" && targetLanguage == "" && contents == ""
-//            }
             .allowAutoDismiss($showingCancelSheet, $isSendingEmail) {
                 return addressForReply == "" && region == "" && sourceLanguage == "" && targetLanguage == "" && contents == ""
             }
@@ -70,15 +67,16 @@ struct ContactUsView: View {
 
 // MARK: - Tool Bar Items
 private extension ContactUsView {
-    var leadingItem: some View {
-        Button(action: cancel) {
-            Text("Cancel")
+    var cancelButton: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            Button(action: cancel) { Text("Cancel") }
         }
     }
     
-    var trailingItem: some View {
-        Button(action: sendEmail) {
-            Text("Send")
+    var sendButton: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarTrailing) {
+            Button(action: sendEmail) { Text("Send") }
+                .disabled(contents == "" || isSendingEmail)
         }
     }
     

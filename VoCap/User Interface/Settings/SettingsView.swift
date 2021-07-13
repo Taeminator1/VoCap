@@ -28,8 +28,7 @@ struct SettingsView: View {
             .environment(\.horizontalSizeClass, .regular)               // 이건 뭐지?
             .navigationBarTitle("Settings", displayMode: .inline)
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) { leadingItem }
-                ToolbarItem(placement: .navigationBarTrailing) { trailingItem }
+                doneButton
             }
         }
         .navigationViewStyle(StackNavigationViewStyle())
@@ -39,16 +38,11 @@ struct SettingsView: View {
 
 // MARK: - Tool Bar Items
 private extension SettingsView {
-    
-    var leadingItem: some View {
-        Button(action: { }) {
-            Text("")
-        }
-    }
-    
-    var trailingItem: some View {
-        Button(action: { isSettingsPresented = false }) {
-            Text("Done")
+    var doneButton: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarTrailing) {
+            Button(action: { isSettingsPresented = false }) {
+                Text("Done")
+            }
         }
     }
 }

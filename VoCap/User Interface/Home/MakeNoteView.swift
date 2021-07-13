@@ -44,8 +44,9 @@ struct MakeNoteView: View {
                 )
             }
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) { leadingItem }
-                ToolbarItem(placement: .navigationBarTrailing) { trailingItem }
+                // NavigationBar
+                cancelButton
+                doneSaveButton
             }
         }
         .allowAutoDismiss($showingCancelSheet, .constant(false)) {
@@ -68,35 +69,38 @@ struct MakeNoteView: View {
 // MARK: - Tool Bar Items
 private extension MakeNoteView {
     
-    var leadingItem: some View {
-        Button(action: cancel) {
-            Text("Cancel")
-        }
-    }
-
-    @ViewBuilder            // for conditionally view
-    var trailingItem: some View {
-        if isAddNotePresented == true {
-            Button(action: { onComplete(note.title, Int16(note.colorIndex), note.isWidget, note.isAutoCheck, note.memo) }) {
-                Text("Done")
+    var cancelButton: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            Button(action: cancel) {
+                Text("Cancel")
             }
         }
-        else {
-            Button(action: { onComplete(note.title, Int16(note.colorIndex), note.isWidget, note.isAutoCheck, note.memo) }) {
-                Text("Save")
-            }
-            .disabled(note.isEqual(dNote))
-        }
     }
-
+    
     func cancel() {
-        // 바뀜
         if note.isEqual(dNote) {
             isAddNotePresented = false
             isEditNotePresented = false
         }
         else {
             showingCancelSheet = true
+        }
+    }
+    
+//    @ViewBuilder            // for conditionally view
+    var doneSaveButton: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarTrailing) {
+            if isAddNotePresented == true {
+                Button(action: { onComplete(note.title, Int16(note.colorIndex), note.isWidget, note.isAutoCheck, note.memo) }) {
+                    Text("Done")
+                }
+            }
+            else {
+                Button(action: { onComplete(note.title, Int16(note.colorIndex), note.isWidget, note.isAutoCheck, note.memo) }) {
+                    Text("Save")
+                }
+                .disabled(note.isEqual(dNote))
+            }
         }
     }
 }
