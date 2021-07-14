@@ -29,28 +29,39 @@ struct ResetView: View {
                 Text("Reset Tips Settings")
             }
             .actionSheet(isPresented: $showingResetTipsSheet) {
-                ActionSheet(title: Text("This will make tips be presented again. "), message: .none,
-                            buttons: [
-                                .destructive(Text("Reset Tips Settings"), action: { resetTipsSettings() }),
-                                .cancel(Text("Cancel"))]
-                )
+                resetTipsSettingsActionSheet
             }
             
             Button(action: { showingEraseSheet = true }) {
                 Text("Erase All Data")
             }
             .actionSheet(isPresented: $showingEraseSheet) {
-                ActionSheet(title: Text("This will delete all data. "), message: .none,
-                            buttons: [
-                                .destructive(Text("Erase All Data"), action: { deleteAllData() }),
-                                .cancel(Text("Cancel"))]
-                )
+                eraseAllDataActionSheet
             }
         }
         .listStyle(GroupedListStyle())
 //            .listStyle(InsetGroupedListStyle())
         .navigationBarTitle("Reset", displayMode: .inline)
         .accentColor(.mainColor)
+    }
+}
+
+// MARK: - Action Sheet
+private extension ResetView {
+    var resetTipsSettingsActionSheet: ActionSheet {
+        ActionSheet(title: Text("This will make tips be presented again. "), 
+                    buttons: [
+                        .destructive(Text("Reset Tips Settings"), action: { resetTipsSettings() }),
+                        .cancel(Text("Cancel"))]
+        )
+    }
+    
+    var eraseAllDataActionSheet: ActionSheet {
+        ActionSheet(title: Text("This will delete all data. "),
+                    buttons: [
+                        .destructive(Text("Erase All Data"), action: { deleteAllData() }),
+                        .cancel(Text("Cancel"))]
+        )
     }
 }
 

@@ -32,16 +32,7 @@ struct MakeNoteView: View {
             .listStyle(InsetGroupedListStyle())
             .environment(\.horizontalSizeClass, .regular)               // 이건 뭐지?
             .navigationBarTitle(isAddNotePresented == true ? "Add Note" : "Edit Note", displayMode: .inline)
-            .actionSheet(isPresented: $showingCancelSheet) {
-                ActionSheet(title: actionSheetTitle, message: .none,
-                            buttons: [
-                                .destructive(Text("Discard Changes"), action: {
-                                                showingCancelSheet = false
-                                                isAddNotePresented = false
-                                                isEditNotePresented = false }),
-                                .cancel(Text("Keep Editing"))]
-                )
-            }
+            .actionSheet(isPresented: $showingCancelSheet) { actionSheet }
             .toolbar {
                 // NavigationBar
                 cancelButton
@@ -53,6 +44,20 @@ struct MakeNoteView: View {
         }
         .accentColor(.mainColor)
     }
+}
+
+// MARK: - Action Sheet
+private extension MakeNoteView {
+    var actionSheet: ActionSheet {
+        ActionSheet(title: actionSheetTitle,
+                    buttons: [
+                        .destructive(Text("Discard Changes"), action: {
+                                        showingCancelSheet = false
+                                        isAddNotePresented = false
+                                        isEditNotePresented = false }),
+                        .cancel(Text("Keep Editing"))]
+        )
+    }
     
     var actionSheetTitle: Text {
         if isAddNotePresented {
@@ -63,7 +68,6 @@ struct MakeNoteView: View {
         }
     }
 }
-
 
 // MARK: - Tool Bar Items
 private extension MakeNoteView {

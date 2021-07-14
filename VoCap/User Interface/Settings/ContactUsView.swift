@@ -44,13 +44,7 @@ struct ContactUsView: View {
             .listStyle(InsetGroupedListStyle())
             .navigationBarTitle("Contact Us", displayMode: .inline)
             .actionSheet(isPresented: $showingCancelSheet) {
-                ActionSheet(title: Text("Would you like to delete this message?"), message: .none,
-                            buttons: [
-                                .destructive(Text("Delete"), action: {
-                                                showingCancelSheet = false
-                                                isContactUsPresented = false }),
-                                .cancel(Text("Keep Editing"))]
-                )
+                actionSheet
             }
             .alert(isPresented: $showingAlert) { sendEmailResultAlert }
             .toolbar {
@@ -62,6 +56,19 @@ struct ContactUsView: View {
             }
         }
         .accentColor(.mainColor)
+    }
+}
+
+// MARK: - Action Sheet
+private extension ContactUsView {
+    var actionSheet: ActionSheet {
+        ActionSheet(title: Text("Would you like to delete this message?"), 
+                    buttons: [
+                        .destructive(Text("Delete"), action: {
+                                        showingCancelSheet = false
+                                        isContactUsPresented = false }),
+                        .cancel(Text("Keep Editing"))]
+        )
     }
 }
 
