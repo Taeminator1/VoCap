@@ -19,8 +19,7 @@ struct MakeNoteView: View {
     @State private var shwoingAutoCheckAlert: Bool = false
     @State private var showingCancelSheet: Bool = false
     
-    // title, colorIndex, isWidget, isAutoCheck, memo
-    let onComplete: (String, Int16, Bool, Bool, String) -> Void
+    let onComplete: (TmpNote) -> Void
     
     var body: some View {
         NavigationView {
@@ -68,7 +67,6 @@ struct MakeNoteView: View {
 
 // MARK: - Tool Bar Items
 private extension MakeNoteView {
-    
     var cancelButton: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             Button(action: cancel) {
@@ -91,12 +89,12 @@ private extension MakeNoteView {
     var doneSaveButton: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             if isAddNotePresented == true {
-                Button(action: { onComplete(note.title, Int16(note.colorIndex), note.isWidget, note.isAutoCheck, note.memo) }) {
+                Button(action: { onComplete(note) }) {
                     Text("Done")
                 }
             }
             else {
-                Button(action: { onComplete(note.title, Int16(note.colorIndex), note.isWidget, note.isAutoCheck, note.memo) }) {
+                Button(action: { onComplete(note) }) {
                     Text("Save")
                 }
                 .disabled(note.isEqual(dNote))
@@ -174,6 +172,6 @@ private extension MakeNoteView {
 
 struct MakeNoteView_Previews: PreviewProvider {
     static var previews: some View {
-        MakeNoteView(isAddNotePresented: .constant(true), isEditNotePresented: .constant(false)) { _,_,_,_,_ in }
+        MakeNoteView(isAddNotePresented: .constant(true), isEditNotePresented: .constant(false)) { _ in }
     }
 }

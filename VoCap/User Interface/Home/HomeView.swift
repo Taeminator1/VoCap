@@ -43,9 +43,9 @@ struct HomeView: View {
                         .disabled(isEditMode == .inactive ? false : true)
                         .sheet(isPresented: $isAddNotePresented) {
                             let tmpNote = TmpNote()
-                            
-                            MakeNoteView(note: tmpNote, dNote: tmpNote, isAddNotePresented: $isAddNotePresented, isEditNotePresented: $isEditNotePresented) { title, colorIndex, isWidget, isAutoCheck, memo in
-                                self.addNote(title, colorIndex, isWidget, isAutoCheck, memo)
+
+                            MakeNoteView(note: tmpNote, dNote: tmpNote, isAddNotePresented: $isAddNotePresented, isEditNotePresented: $isEditNotePresented) { tmpNote in
+                                self.addNote(tmpNote)
                                 self.isAddNotePresented = false
                                 self.isEditNotePresented = false
                             }
@@ -89,8 +89,8 @@ struct HomeView: View {
                     if let order = noteRowOrder {
                         let tmpNote = TmpNote(note: notes[order])
                        
-                        MakeNoteView(note: tmpNote, dNote: tmpNote, isAddNotePresented: $isAddNotePresented, isEditNotePresented: $isEditNotePresented) { title, colorIndex, isWidget, isAutoCheck, memo in
-                            self.editItems(title, colorIndex, isWidget, isAutoCheck, memo)
+                        MakeNoteView(note: tmpNote, dNote: tmpNote, isAddNotePresented: $isAddNotePresented, isEditNotePresented: $isEditNotePresented) { tmpNote in
+                            self.editItems(tmpNote)
                             self.isEditNotePresented = false
                             self.isEditNotePresented = false
                         }
@@ -154,17 +154,6 @@ struct HomeView: View {
 
 
 // MARK: - Toolbar Items
-private extension HomeView {
-    private func editItems(_ title: String, _ colorIndex: Int16, _ isWidget: Bool, _ isAutoCheck: Bool, _ memo: String) {
-        notes[noteRowOrder!].title = title
-        notes[noteRowOrder!].colorIndex = colorIndex
-        notes[noteRowOrder!].isWidget = isWidget
-        notes[noteRowOrder!].isAutoCheck = isAutoCheck
-        notes[noteRowOrder!].memo = memo
-        
-        saveContext()
-    }
-}
 
 extension HomeView {
     var editButton: some ToolbarContent {
@@ -203,29 +192,25 @@ extension HomeView {
 
 // MARK: - Modify NoteRows
 private extension HomeView {
-    private func addNote(title: String, colorIndex: Int16, memo: String) {
-        withAnimation {
-            let newNote = Note(context: viewContext)
-            newNote.id = UUID()
-            newNote.title = title
-            newNote.colorIndex = colorIndex
-            newNote.memo = memo
-
-            saveContext()
-            makeOrder()             // 간단하게 바꿔도 될 듯
-            saveContext()
-        }
+    private func editItems(_ note: TmpNote) {
+        notes[noteRowOrder!].title = note.title
+        notes[noteRowOrder!].colorIndex = Int16(note.colorIndex)
+        notes[noteRowOrder!].isWidget = note.isWidget
+        notes[noteRowOrder!].isAutoCheck = note.isAutoCheck
+        notes[noteRowOrder!].memo = note.memo
+        
+        saveContext()
     }
     
-    private func addNote(_ title: String, _ colorIndex: Int16, _ isWidget: Bool, _ isAutoCheck: Bool, _ memo: String) {
+    private func addNote(_ note: TmpNote) {
         withAnimation {
             let newNote = Note(context: viewContext)
             newNote.id = UUID()
-            newNote.title = title
-            newNote.colorIndex = colorIndex
-            newNote.isWidget = isWidget
-            newNote.isAutoCheck = isAutoCheck
-            newNote.memo = memo
+            newNote.title = note.title
+            newNote.colorIndex = Int16(note.colorIndex)
+            newNote.isWidget = note.isWidget
+            newNote.isAutoCheck = note.isAutoCheck
+            newNote.memo = note.memo
 
             saveContext()
             makeOrder()             // 간단하게 바꿔도 될 듯
