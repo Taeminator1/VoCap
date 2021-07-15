@@ -39,44 +39,10 @@ struct HomeView: View {
         ZStack {
             NavigationView {
                 List {
-                    Button(action: { self.isAddNotePresented = true }) { AddNoteRow() }
-                        .disabled(isEditMode == .inactive ? false : true)
-                        .sheet(isPresented: $isAddNotePresented) {
-                            let tmpNote = TmpNote()
-
-                            MakeNoteView(note: tmpNote, dNote: tmpNote, isAddNotePresented: $isAddNotePresented, isEditNotePresented: $isEditNotePresented) { tmpNote in
-                                self.addNote(tmpNote)
-                                self.isAddNotePresented = false
-                                self.isEditNotePresented = false
-                            }
-                        }
-                        .modifier(ListModifier())
-                        .buttonStyle(BorderlessButtonStyle())
-                        
+                    addNoteButton
                     
                     ForEach(notes) { note in
-                        HStack {
-                            Button(action: {
-                                if isEditMode == .inactive || isEditMode == .transient {    // When Edit Button has been not pressed
-                                    self.noteRowSelection = note.id                         // 왜 noteRowSelection에 !붙일 때랑 안 붙일 때 다르지?
-                                }
-                                else {                                                      // When Edit Button has been pressed by user
-                                    self.noteRowOrder = Int(note.order)
-                                    self.isEditNotePresented = true
-                                }
-                            }) {
-                                VStack() {
-                                    NoteRow(title: note.title!, colorIndex: note.colorIndex, totalNumber: Int16(note.term.count), memorizedNumber: Int16(countTrues(note.isMemorized)), hideNoteDetailsNumber: $hideNoteDetailsNumber)
-                                }
-                            }
-                            
-                            NavigationLink(destination: NoteDetailView(note: note, isDisableds: $isDisableds), tag: note.id!, selection: $noteRowSelection) {
-                                EmptyView()
-                            }
-                            .frame(width: 0).hidden()
-                        }
-                        .modifier(ListModifier())
-                        .buttonStyle(PlainButtonStyle())            // .active 상태 일 때 버튼 눌릴 수 있도록 함
+                        noteList(note)
                     }
                     .onDelete(perform: deleteItems)
                     .onMove(perform: moveItems)
@@ -91,7 +57,6 @@ struct HomeView: View {
                        
                         MakeNoteView(note: tmpNote, dNote: tmpNote, isAddNotePresented: $isAddNotePresented, isEditNotePresented: $isEditNotePresented) { tmpNote in
                             self.editItems(tmpNote)
-                            self.isEditNotePresented = false
                             self.isEditNotePresented = false
                         }
                     }
@@ -152,9 +117,50 @@ struct HomeView: View {
     }
 }
 
+extension HomeView {
+    var addNoteButton: some View {
+        Button(action: { self.isAddNotePresented = true }) { AddNoteRow() }
+            .disabled(isEditMode == .inactive ? false : true)
+            .sheet(isPresented: $isAddNotePresented) {
+                let tmpNote = TmpNote()
+
+                MakeNoteView(note: tmpNote, dNote: tmpNote, isAddNotePresented: $isAddNotePresented, isEditNotePresented: $isEditNotePresented) { tmpNote in
+                    self.addNote(tmpNote)
+                    self.isAddNotePresented = false
+                    self.isEditNotePresented = false
+                }
+            }
+            .modifier(ListModifier())
+            .buttonStyle(BorderlessButtonStyle())
+    }
+    
+    func noteList(_ note: Note) -> some View {
+        HStack {
+            Button(action: {
+                if isEditMode == .inactive || isEditMode == .transient {    // When Edit Button has been not pressed
+                    self.noteRowSelection = note.id                         // 왜 noteRowSelection에 !붙일 때랑 안 붙일 때 다르지?
+                }
+                else {                                                      // When Edit Button has been pressed by user
+                    self.noteRowOrder = Int(note.order)
+                    self.isEditNotePresented = true
+                }
+            }) {
+                VStack() {
+                    NoteRow(title: note.title!, colorIndex: note.colorIndex, totalNumber: Int16(note.term.count), memorizedNumber: Int16(countTrues(note.isMemorized)), hideNoteDetailsNumber: $hideNoteDetailsNumber)
+                }
+            }
+            
+            NavigationLink(destination: NoteDetailView(note: note, isDisableds: $isDisableds), tag: note.id!, selection: $noteRowSelection) {
+                EmptyView()
+            }
+            .frame(width: 0).hidden()
+        }
+        .modifier(ListModifier())
+        .buttonStyle(PlainButtonStyle())            // .active 상태 일 때 버튼 눌릴 수 있도록 함
+    }
+}
 
 // MARK: - Toolbar Items
-
 extension HomeView {
     var editButton: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {

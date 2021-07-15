@@ -9,8 +9,8 @@ import SwiftUI
 
 struct MakeNoteView: View {
     
-    @State var note = TmpNote()
-    @State var dNote = TmpNote()            // duplicated Note
+    @State var note: TmpNote
+    let dNote: TmpNote            // duplicated Note
     
     @Binding var isAddNotePresented: Bool
     @Binding var isEditNotePresented: Bool
@@ -176,6 +176,6 @@ private extension MakeNoteView {
 
 struct MakeNoteView_Previews: PreviewProvider {
     static var previews: some View {
-        MakeNoteView(isAddNotePresented: .constant(true), isEditNotePresented: .constant(false)) { _ in }
+        MakeNoteView(note: TmpNote(), dNote: TmpNote(), isAddNotePresented: .constant(true), isEditNotePresented: .constant(false)) { _ in }
     }
 }
