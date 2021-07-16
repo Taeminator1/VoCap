@@ -10,10 +10,10 @@ import SwiftUI
 struct MakeNoteView: View {
     
     @State var note: TmpNote
-    let dNote: TmpNote            // duplicated Note
+    @State var dNote: TmpNote = TmpNote()           // duplicated Note
     
-    @Binding var isAddNotePresented: Bool
-    @Binding var isEditNotePresented: Bool
+    @Binding var noteRowOrder: Int?
+    @Binding var isPresented: Bool
     
     @State private var shwoingWidgetAlert: Bool = false
     @State private var shwoingAutoCheckAlert: Bool = false
@@ -31,13 +31,19 @@ struct MakeNoteView: View {
 //            .listStyle(GroupedListStyle())
             .listStyle(InsetGroupedListStyle())
             .environment(\.horizontalSizeClass, .regular)               // 이건 뭐지?
-            .navigationBarTitle(isAddNotePresented == true ? "Add Note" : "Edit Note", displayMode: .inline)
+            .navigationBarTitle(noteRowOrder == nil ? "Add Note" : "Edit Note", displayMode: .inline)
             .actionSheet(isPresented: $showingCancelSheet) { actionSheet }
             .toolbar {
                 // NavigationBar
                 cancelButton
                 doneSaveButton
             }
+        }
+        .onAppear() {
+            dNote = note
+        }
+        .onDisappear() {
+            noteRowOrder = nil
         }
         .allowAutoDismiss($showingCancelSheet, .constant(false)) {
             return note.isEqual(dNote)
@@ -53,19 +59,13 @@ private extension MakeNoteView {
                     buttons: [
                         .destructive(Text("Discard Changes"), action: {
                                         showingCancelSheet = false
-                                        isAddNotePresented = false
-                                        isEditNotePresented = false }),
+                                        isPresented = false }),
                         .cancel(Text("Keep Editing"))]
         )
     }
     
     var actionSheetTitle: Text {
-        if isAddNotePresented {
-            return Text("Are you sure you want to discard this new note?")
-        }
-        else {
-            return Text("Are you sure you want to discard your changes?")
-        }
+        noteRowOrder == nil ? Text("Are you sure you want to discard this new note?") : Text("Are you sure you want to discard your changes?")
     }
 }
 
@@ -81,8 +81,7 @@ private extension MakeNoteView {
     
     func cancel() {
         if note.isEqual(dNote) {
-            isAddNotePresented = false
-            isEditNotePresented = false
+            isPresented = false
         }
         else {
             showingCancelSheet = true
@@ -92,17 +91,10 @@ private extension MakeNoteView {
 //    @ViewBuilder            // for conditionally view
     var doneSaveButton: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
-            if isAddNotePresented == true {
-                Button(action: { onComplete(note) }) {
-                    Text("Done")
-                }
+            Button(action: { onComplete(note) }) {
+                noteRowOrder == nil ? Text("Save") : Text("Done")
             }
-            else {
-                Button(action: { onComplete(note) }) {
-                    Text("Save")
-                }
-                .disabled(note.isEqual(dNote))
-            }
+            .disabled(noteRowOrder != nil && note.isEqual(dNote))
         }
     }
 }
@@ -112,7 +104,7 @@ private extension MakeNoteView {
     
     var basicInfo: some View {
         Section() {
-            CustomTextField(title: "Title".localized, text: $note.title, isFirstResponder: isAddNotePresented)
+            CustomTextField(title: "Title".localized, text: $note.title, isFirstResponder: noteRowOrder == nil)
             
             // Group List에서 이상
             Picker(selection: $note.colorIndex, label: Text("Color")) {      // Need to check the style
@@ -176,6 +168,6 @@ private extension MakeNoteView {
 
 struct MakeNoteView_Previews: PreviewProvider {
     static var previews: some View {
-        MakeNoteView(note: TmpNote(), dNote: TmpNote(), isAddNotePresented: .constant(true), isEditNotePresented: .constant(false)) { _ in }
+        MakeNoteView(note: TmpNote(), noteRowOrder: .constant(nil), isPresented: .constant(false)) { _ in }
     }
 }

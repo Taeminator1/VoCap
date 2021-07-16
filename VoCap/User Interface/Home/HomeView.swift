@@ -18,11 +18,10 @@ struct HomeView: View {
         animation: .default)
     private var notes: FetchedResults<Note>
     
-    @State private var isAddNotePresented: Bool = false
-    @State private var isEditNotePresented: Bool = true         // 처음 실행할 때 MakeNoteView의 isEditNotePresented를 true로 변경해서 sheet를 띄우고 닫아야(NavigationView.onAppear()) 처음에 Edit시 note 가리키지 못하는 현상 막을 수 있음
+    @State private var isMakeNotePresented: Bool = true         // 처음 실행할 때 MakeNoteView의 isEditNotePresented를 true로 변경해서 sheet를 띄우고 닫아야(NavigationView.onAppear()) 처음에 Edit시 note 가리키지 못하는 현상 막을 수 있음
     @State private var isEditMode: EditMode = .inactive
     @State private var noteRowSelection: UUID?
-    @State private var noteRowOrder: Int!
+    @State private var noteRowOrder: Int?
     
     @State private var showUtility: Bool = false
     @State private var showTest: Bool = false
@@ -51,14 +50,11 @@ struct HomeView: View {
                 .animation(.default)                    // 해당 자리에 있어야 함
                 .listStyle(PlainListStyle())                        // 안해주면 Add Note 누를 때, title bar button 초기 색이 하얗게 됨
                 .navigationBarTitle("VoCap", displayMode: .inline)
-                .sheet(isPresented: $isEditNotePresented) {
-                    if let order = noteRowOrder {
-                        let tmpNote = TmpNote(note: notes[order])
-                       
-                        MakeNoteView(note: tmpNote, dNote: tmpNote, isAddNotePresented: $isAddNotePresented, isEditNotePresented: $isEditNotePresented) { tmpNote in
-                            self.editItems(tmpNote)
-                            self.isEditNotePresented = false
-                        }
+                .sheet(isPresented: $isMakeNotePresented) {
+                    let tmpNote = noteRowOrder == nil ? TmpNote() : TmpNote(note: notes[noteRowOrder!])
+                    MakeNoteView(note: tmpNote, noteRowOrder: $noteRowOrder, isPresented: $isMakeNotePresented) { tmpNote in
+                        self.noteRowOrder == nil ? self.addNote(tmpNote) : self.editNote(tmpNote)
+                        self.isMakeNotePresented = false
                     }
                 }
                 .toolbar {
@@ -73,7 +69,7 @@ struct HomeView: View {
             }
             .navigationViewStyle(StackNavigationViewStyle())                // 없으면 View전환할 때마다 Tool Bar 로딩되는데 시간이 걸림
             .onAppear() {
-                isEditNotePresented = false
+                isMakeNotePresented = false
                 UITableView.appearance().showsVerticalScrollIndicator = false
             }
             .sheet(isPresented: $isSettingsPresented) {
@@ -119,17 +115,8 @@ struct HomeView: View {
 
 extension HomeView {
     var addNoteButton: some View {
-        Button(action: { self.isAddNotePresented = true }) { AddNoteRow() }
+        Button(action: { self.isMakeNotePresented = true }) { AddNoteRow() }
             .disabled(isEditMode == .inactive ? false : true)
-            .sheet(isPresented: $isAddNotePresented) {
-                let tmpNote = TmpNote()
-
-                MakeNoteView(note: tmpNote, dNote: tmpNote, isAddNotePresented: $isAddNotePresented, isEditNotePresented: $isEditNotePresented) { tmpNote in
-                    self.addNote(tmpNote)
-                    self.isAddNotePresented = false
-                    self.isEditNotePresented = false
-                }
-            }
             .modifier(ListModifier())
             .buttonStyle(BorderlessButtonStyle())
     }
@@ -142,7 +129,7 @@ extension HomeView {
                 }
                 else {                                                      // When Edit Button has been pressed by user
                     self.noteRowOrder = Int(note.order)
-                    self.isEditNotePresented = true
+                    self.isMakeNotePresented = true
                 }
             }) {
                 VStack() {
@@ -198,7 +185,7 @@ extension HomeView {
 
 // MARK: - Modify NoteRows
 private extension HomeView {
-    private func editItems(_ note: TmpNote) {
+    private func editNote(_ note: TmpNote) {
         notes[noteRowOrder!].title = note.title
         notes[noteRowOrder!].colorIndex = Int16(note.colorIndex)
         notes[noteRowOrder!].isWidget = note.isWidget
