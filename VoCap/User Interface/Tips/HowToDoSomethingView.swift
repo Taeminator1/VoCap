@@ -13,8 +13,7 @@ struct HowToDoSomethingView: View {
     var width: CGFloat = 100.0
     var height: CGFloat = 100.0
     
-    let fileName_Light: String?
-    let fileName_Dark: String?
+    let fileName: String
     
     var body: some View {
         ZStack {
@@ -22,10 +21,10 @@ struct HowToDoSomethingView: View {
                 .colorInvert()
                 
             if colorScheme == .light {
-                GifView(fileName: fileName_Light!)
+                GifView(fileName: String("\(fileName)_Light"))
             }
             else {
-                GifView(fileName: fileName_Dark!)
+                GifView(fileName: String("\(fileName)_Dark"))
             }
             
         }
@@ -36,6 +35,6 @@ struct HowToDoSomethingView: View {
 
 struct HowToDoSomethingView_Previews: PreviewProvider {
     static var previews: some View {
-        HowToDoSomethingView(width: 1000, height: 100, fileName_Light: "test_Light", fileName_Dark: "test_Dark")
+        HowToDoSomethingView(width: 1000, height: 100, fileName: "test")
     }
 }

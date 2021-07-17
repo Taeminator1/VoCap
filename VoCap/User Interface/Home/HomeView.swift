@@ -30,9 +30,10 @@ struct HomeView: View {
     
     @State var hideNoteDetailsNumber: Bool = false
     
+    let tipFileNames: [String] = ["HowToAddItem", "HowToGlanceItem"]
+    let tipSizes: [(width: CGFloat, height: CGFloat)] = [(300.0, 350.0), (280.0, 210.0)]
     @State var isDisableds: [Bool] = [false, false]
-    @State var isHowToAddItem: Bool = UserDefaults.standard.bool(forKey: "Tip0")
-    @State var isHowToGlanceItem: Bool = UserDefaults.standard.bool(forKey: "Tip1")
+    @State var isTipsPresented: [Bool] = [UserDefaults.standard.bool(forKey: "Tip0"), UserDefaults.standard.bool(forKey: "Tip1")]
     
     var body: some View {
         ZStack {
@@ -73,41 +74,13 @@ struct HomeView: View {
                 UITableView.appearance().showsVerticalScrollIndicator = false
             }
             .sheet(isPresented: $isSettingsPresented) {
-                SettingsView(isSettingsPresented: $isSettingsPresented, isHowToAddItem: $isHowToAddItem, isHowToGlanceItem: $isHowToGlanceItem)
+                SettingsView(isSettingsPresented: $isSettingsPresented, isTipsPresented: $isTipsPresented)
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
             }
             
-            if isDisableds[0] && !isHowToAddItem {
-                Rectangle()
-                    .fill(Color.black.opacity(0.4))
-                    .ignoresSafeArea()
-                    .overlay(
-                        Button(action: {
-                            isDisableds[0].toggle()
-                            isHowToAddItem = true
-                            UserDefaults.standard.set(self.isHowToAddItem, forKey: "Tip0")
-                        }) {
-                            HowToDoSomethingView(width: 300.0, height: 350.0, fileName_Light: "HowToAddItem_Light", fileName_Dark: "HowToAddItem_Dark")
-                        }
-                        .buttonStyle(PlainButtonStyle())
-                    )
-            }
             
-            if isDisableds[1] && !isHowToGlanceItem {
-                Rectangle()
-                    .fill(Color.black.opacity(0.4))
-                    .ignoresSafeArea()
-                    .overlay(
-                        Button(action: {
-                            isDisableds[1].toggle()
-                            isHowToGlanceItem = true
-                            UserDefaults.standard.set(self.isHowToGlanceItem, forKey: "Tip1")
-                        }) {
-                            HowToDoSomethingView(width: 280.0, height: 210.0, fileName_Light: "HowToGlanceItem_Light", fileName_Dark: "HowToGlanceItem_Dark")
-                        }
-                        .buttonStyle(PlainButtonStyle())
-                    )
-            }
+            DisplayTip(order: 0)
+            DisplayTip(order: 1)
         }
         .accentColor(.mainColor)
     }
@@ -144,6 +117,32 @@ extension HomeView {
         }
         .modifier(ListModifier())
         .buttonStyle(PlainButtonStyle())            // .active 상태 일 때 버튼 눌릴 수 있도록 함
+    }
+}
+
+// MARK: - Tips
+extension HomeView {
+    func DisplayTip(order: Int) -> some View {
+        Group {
+            if isDisableds[order] && !isTipsPresented[order] {
+                Rectangle()
+                    .fill(Color.black.opacity(0.4))
+                    .ignoresSafeArea()
+                    .overlay(
+                        Button(action: {
+                            isDisableds[order].toggle()
+                            isTipsPresented[order] = true
+                            UserDefaults.standard.set(self.isTipsPresented[order], forKey: "Tip\(order)")
+                        }) {
+                            HowToDoSomethingView(width: tipSizes[order].width, height: tipSizes[order].height, fileName: tipFileNames[order])     // 에러 처리 필요
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                    )
+            }
+            else {
+                EmptyView()
+            }
+        }
     }
 }
 

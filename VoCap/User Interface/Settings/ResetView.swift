@@ -20,8 +20,7 @@ struct ResetView: View {
     @State private var showingResetTipsSheet: Bool = false
     @State private var showingEraseSheet: Bool = false
     
-    @Binding var isHowToAddItem: Bool
-    @Binding var isHowToGlanceItem: Bool
+    @Binding var isTipsPresented: [Bool]
     
     var body: some View {
         List {
@@ -68,11 +67,11 @@ private extension ResetView {
 // MARK: - Modify notes
 private extension ResetView {
     private func resetTipsSettings() {
-        isHowToAddItem = false
-        UserDefaults.standard.set(self.isHowToAddItem, forKey: "Tip0")
+        isTipsPresented[0] = false
+        UserDefaults.standard.set(self.isTipsPresented[0], forKey: "Tip0")
         
-        isHowToGlanceItem = false
-        UserDefaults.standard.set(self.isHowToGlanceItem, forKey: "Tip1")
+        isTipsPresented[1] = false
+        UserDefaults.standard.set(self.isTipsPresented[1], forKey: "Tip1")
     }
     
     private func deleteAllData() {
@@ -97,6 +96,6 @@ private extension ResetView {
 
 struct ResetView_Previews: PreviewProvider {
     static var previews: some View {
-        ResetView(isSettingsPresented: .constant(true), isHowToAddItem: .constant(false), isHowToGlanceItem: .constant(false))
+        ResetView(isSettingsPresented: .constant(true), isTipsPresented: .constant([false, false]))
     }
 }
