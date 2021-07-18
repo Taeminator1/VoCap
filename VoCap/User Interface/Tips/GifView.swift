@@ -11,14 +11,14 @@ import FLAnimatedImage
 struct GifView: UIViewRepresentable {
     let animatedView = FLAnimatedImageView()
     var fileName: String
+    
     func makeUIView(context: UIViewRepresentableContext<GifView>) -> UIView {
         let view = UIView()
         
-//        guard let path: String = Bundle.main.path(forResource: fileName, ofType: "gif") else {
-//            return view
-//        }
+        guard let path: String = Bundle.main.path(forResource: fileName, ofType: "gif") else {
+            return view
+        }
         
-        let path: String = Bundle.main.path(forResource: fileName, ofType: "gif")!
         let url = URL(fileURLWithPath: path)
         let gifData = try! Data(contentsOf: url)
         

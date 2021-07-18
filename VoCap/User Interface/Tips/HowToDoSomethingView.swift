@@ -9,32 +9,22 @@ import SwiftUI
 
 struct HowToDoSomethingView: View {
     @Environment(\.colorScheme) var colorScheme
-    
-    var width: CGFloat = 100.0
-    var height: CGFloat = 100.0
-    
-    let fileName: String
+    var tipInfo: TipInfo = TipInfo()
     
     var body: some View {
         ZStack {
-            Rectangle()
-                .colorInvert()
-                
-            if colorScheme == .light {
-                GifView(fileName: String("\(fileName)_Light"))
-            }
-            else {
-                GifView(fileName: String("\(fileName)_Dark"))
-            }
+//            GifView(fileName: "\(TipInfo.fileNames[tipInfo.order])_\(colorScheme)")     // Tip 띄어진 상태에서 mode 변경하면 반영 안 됨
             
+            if colorScheme == .light    { GifView(fileName: "\(TipInfo.fileNames[tipInfo.order])_\(colorScheme)") }
+            else                        { GifView(fileName: "\(TipInfo.fileNames[tipInfo.order])_\(colorScheme)") }
         }
-        .frame(width: width, height: height)
+        .frame(width: TipInfo.viewSizes[tipInfo.order].width, height: TipInfo.viewSizes[tipInfo.order].height)
         .cornerRadius(12)
     }
 }
 
 struct HowToDoSomethingView_Previews: PreviewProvider {
     static var previews: some View {
-        HowToDoSomethingView(width: 1000, height: 100, fileName: "test")
+        HowToDoSomethingView()
     }
 }

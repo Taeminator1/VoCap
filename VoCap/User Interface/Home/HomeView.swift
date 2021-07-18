@@ -30,8 +30,6 @@ struct HomeView: View {
     
     @State var hideNoteDetailsNumber: Bool = false
     
-    let tipFileNames: [String] = ["HowToAddItem", "HowToGlanceItem"]
-    let tipSizes: [(width: CGFloat, height: CGFloat)] = [(300.0, 350.0), (280.0, 210.0)]
     @State var isDisableds: [Bool] = [false, false]
     @State var isTipsPresented: [Bool] = [UserDefaults.standard.bool(forKey: "Tip0"), UserDefaults.standard.bool(forKey: "Tip1")]
     
@@ -134,7 +132,7 @@ extension HomeView {
                             isTipsPresented[order] = true
                             UserDefaults.standard.set(self.isTipsPresented[order], forKey: "Tip\(order)")
                         }) {
-                            HowToDoSomethingView(width: tipSizes[order].width, height: tipSizes[order].height, fileName: tipFileNames[order])     // 에러 처리 필요
+                            HowToDoSomethingView(tipInfo: TipInfo(order: order))
                         }
                         .buttonStyle(PlainButtonStyle())
                     )
