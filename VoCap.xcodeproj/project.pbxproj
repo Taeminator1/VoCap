@@ -10,6 +10,7 @@
 		340491E525779D2C00CD1BD7 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 340491E425779D2C00CD1BD7 /* HomeView.swift */; };
 		340491F225779D4300CD1BD7 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 340491F125779D4300CD1BD7 /* SettingsView.swift */; };
 		3404B4C6258784890021CDAE /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3404B4C5258784890021CDAE /* CustomTextField.swift */; };
+		3413DDF726B327E30002120C /* AddNoteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3413DDF626B327E30002120C /* AddNoteButton.swift */; };
 		3414F3B225F25B3F00BFB516 /* NoteDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3414F3B125F25B3F00BFB516 /* NoteDetailView.swift */; };
 		34152FB7259A08A5007E4953 /* TmpNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34152FB6259A08A5007E4953 /* TmpNote.swift */; };
 		3423403525EFC47000A04176 /* GifView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3423403425EFC47000A04176 /* GifView.swift */; };
@@ -23,8 +24,8 @@
 		34858A49266645B50078F503 /* Note+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34858A47266645B50078F503 /* Note+CoreDataProperties.swift */; };
 		34858A4A266645B50078F503 /* Note+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34858A48266645B50078F503 /* Note+CoreDataClass.swift */; };
 		34871BCE26A3F1DD004640BD /* TipInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34871BCD26A3F1DD004640BD /* TipInfo.swift */; };
+		34871BF126A3FF06004640BD /* ViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34871BF026A3FF06004640BD /* ViewExtension.swift */; };
 		3490ED8125A48EE400DB1B2F /* ViewModifierInheritance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3490ED8025A48EE400DB1B2F /* ViewModifierInheritance.swift */; };
-		34A32AD826033BE4004E8C17 /* HowToDoSomethingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A32AD726033BE4004E8C17 /* HowToDoSomethingView.swift */; };
 		34A32AF02603443C004E8C17 /* HowToGlanceItem_dark.gif in Resources */ = {isa = PBXBuildFile; fileRef = 34A32AEF2603443C004E8C17 /* HowToGlanceItem_dark.gif */; };
 		34A32AF82603452B004E8C17 /* HowToAddItem_dark.gif in Resources */ = {isa = PBXBuildFile; fileRef = 34A32AF72603452B004E8C17 /* HowToAddItem_dark.gif */; };
 		34A5B63A257E3AC60023D1AC /* NoteRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A5B639257E3AC60023D1AC /* NoteRow.swift */; };
@@ -44,6 +45,8 @@
 		34E5B30025DBE08A00CB6D17 /* MakeNoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34E5B2FF25DBE08A00CB6D17 /* MakeNoteView.swift */; };
 		34F89BF525F308070067AAD7 /* ResetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34F89BF425F308070067AAD7 /* ResetView.swift */; };
 		34F990A925ED417D00E3710A /* CustomTextAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34F990A825ED417D00E3710A /* CustomTextAlert.swift */; };
+		34FEA28326B32C5800E6FDDC /* NoteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34FEA28226B32C5800E6FDDC /* NoteButton.swift */; };
+		34FEA28B26B3309700E6FDDC /* TipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34FEA28A26B3309700E6FDDC /* TipView.swift */; };
 		9A2B9D465AA8008092048A5A /* Pods_VoCap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D566AC9AAF2CC2A0B5B4B9B3 /* Pods_VoCap.framework */; };
 /* End PBXBuildFile section */
 
@@ -68,6 +71,7 @@
 		340491E425779D2C00CD1BD7 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		340491F125779D4300CD1BD7 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		3404B4C5258784890021CDAE /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
+		3413DDF626B327E30002120C /* AddNoteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNoteButton.swift; sourceTree = "<group>"; };
 		3414F3B125F25B3F00BFB516 /* NoteDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetailView.swift; sourceTree = "<group>"; };
 		34152FB6259A08A5007E4953 /* TmpNote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TmpNote.swift; sourceTree = "<group>"; };
 		3423403425EFC47000A04176 /* GifView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GifView.swift; sourceTree = "<group>"; };
@@ -83,8 +87,8 @@
 		34858A47266645B50078F503 /* Note+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Note+CoreDataProperties.swift"; path = "VoCap/Note+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		34858A48266645B50078F503 /* Note+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Note+CoreDataClass.swift"; path = "VoCap/Note+CoreDataClass.swift"; sourceTree = "<group>"; };
 		34871BCD26A3F1DD004640BD /* TipInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipInfo.swift; sourceTree = "<group>"; };
+		34871BF026A3FF06004640BD /* ViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtension.swift; sourceTree = "<group>"; };
 		3490ED8025A48EE400DB1B2F /* ViewModifierInheritance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModifierInheritance.swift; sourceTree = "<group>"; };
-		34A32AD726033BE4004E8C17 /* HowToDoSomethingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToDoSomethingView.swift; sourceTree = "<group>"; };
 		34A32AEF2603443C004E8C17 /* HowToGlanceItem_dark.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = HowToGlanceItem_dark.gif; sourceTree = "<group>"; };
 		34A32AF72603452B004E8C17 /* HowToAddItem_dark.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = HowToAddItem_dark.gif; sourceTree = "<group>"; };
 		34A5B639257E3AC60023D1AC /* NoteRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteRow.swift; sourceTree = "<group>"; };
@@ -113,6 +117,8 @@
 		34E5B2FF25DBE08A00CB6D17 /* MakeNoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeNoteView.swift; sourceTree = "<group>"; };
 		34F89BF425F308070067AAD7 /* ResetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetView.swift; sourceTree = "<group>"; };
 		34F990A825ED417D00E3710A /* CustomTextAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextAlert.swift; sourceTree = "<group>"; };
+		34FEA28226B32C5800E6FDDC /* NoteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteButton.swift; sourceTree = "<group>"; };
+		34FEA28A26B3309700E6FDDC /* TipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipView.swift; sourceTree = "<group>"; };
 		406059946C82FB478F2E26E3 /* Pods-VoCap.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VoCap.release.xcconfig"; path = "Target Support Files/Pods-VoCap/Pods-VoCap.release.xcconfig"; sourceTree = "<group>"; };
 		B627202D1851DA6952B5BB24 /* Pods-VoCap.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VoCap.debug.xcconfig"; path = "Target Support Files/Pods-VoCap/Pods-VoCap.debug.xcconfig"; sourceTree = "<group>"; };
 		D566AC9AAF2CC2A0B5B4B9B3 /* Pods_VoCap.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VoCap.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -159,6 +165,8 @@
 			isa = PBXGroup;
 			children = (
 				340491E425779D2C00CD1BD7 /* HomeView.swift */,
+				3413DDF626B327E30002120C /* AddNoteButton.swift */,
+				34FEA28226B32C5800E6FDDC /* NoteButton.swift */,
 				34E5B2FF25DBE08A00CB6D17 /* MakeNoteView.swift */,
 				34152FB6259A08A5007E4953 /* TmpNote.swift */,
 				34A5B639257E3AC60023D1AC /* NoteRow.swift */,
@@ -193,8 +201,8 @@
 			isa = PBXGroup;
 			children = (
 				3423403425EFC47000A04176 /* GifView.swift */,
-				34A32AD726033BE4004E8C17 /* HowToDoSomethingView.swift */,
 				34871BCD26A3F1DD004640BD /* TipInfo.swift */,
+				34FEA28A26B3309700E6FDDC /* TipView.swift */,
 				34A32AEB26033E2C004E8C17 /* gif */,
 			);
 			path = Tips;
@@ -216,6 +224,7 @@
 			children = (
 				34A5B648257E522A0023D1AC /* ColorExtension.swift */,
 				344FF41C25FF7106009B7E03 /* StringExtension.swift */,
+				34871BF026A3FF06004640BD /* ViewExtension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -517,15 +526,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				342693C725FCDDE5000A5E4E /* AdMobView.swift in Sources */,
+				3413DDF726B327E30002120C /* AddNoteButton.swift in Sources */,
 				3445EBED25C9851B00D16915 /* CustomTextFieldWithToolbar.swift in Sources */,
-				34A32AD826033BE4004E8C17 /* HowToDoSomethingView.swift in Sources */,
 				3473344B25DD522A00A11151 /* ContactUsView.swift in Sources */,
 				34858A49266645B50078F503 /* Note+CoreDataProperties.swift in Sources */,
 				344FF41D25FF7106009B7E03 /* StringExtension.swift in Sources */,
+				34FEA28326B32C5800E6FDDC /* NoteButton.swift in Sources */,
+				34FEA28B26B3309700E6FDDC /* TipView.swift in Sources */,
 				34D88F47256D2A68009B10AF /* Persistence.swift in Sources */,
 				34858A4A266645B50078F503 /* Note+CoreDataClass.swift in Sources */,
 				340491F225779D4300CD1BD7 /* SettingsView.swift in Sources */,
 				34E5B30025DBE08A00CB6D17 /* MakeNoteView.swift in Sources */,
+				34871BF126A3FF06004640BD /* ViewExtension.swift in Sources */,
 				34D88F3E256D2A65009B10AF /* VoCapApp.swift in Sources */,
 				34BDA92A25BDB91C0049A0A3 /* CustomGestureModifier.swift in Sources */,
 				340491E525779D2C00CD1BD7 /* HomeView.swift in Sources */,

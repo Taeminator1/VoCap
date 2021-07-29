@@ -22,31 +22,6 @@ struct ListModifier: ViewModifier {
 
 
 // MARK: - NoteRow
-struct XxNoteRowModifier: ViewModifier {
-    
-    @Environment(\.colorScheme) var colorScheme
-    let colorIndex: Int
-    
-    func body(content: Content) -> some View {
-        content
-            .frame(height: 100)
-            .background(noteRowColor())
-            .cornerRadius(10)
-            .shadow(color: .blue, radius: 1, x: 2, y: 2)
-            .padding(.all)
-    }
-    
-    func noteRowColor() -> Color {
-        if colorIndex == RowType.AddNoteRow.rawValue {       // Add Note Row
-            return colorScheme == .dark ? Color.white : Color.black
-//            return colorScheme == .dark ? Color.black : Color.white
-        }
-        else {                      // Note Row
-            return myColor.colors[colorIndex]
-        }
-    }
-}
-
 struct NoteRowModifier: ViewModifier {
     let colorIndex: Int
     let height: CGFloat
@@ -56,7 +31,6 @@ struct NoteRowModifier: ViewModifier {
             .frame(height: height)
             .background(myColor.colors[colorIndex])
             .cornerRadius(10)
-//            .shadow(color: .blue, radius: 1, x: 2, y: 2)
             .padding(.all)
     }
 }
@@ -129,3 +103,14 @@ struct NoteDetailEditorModifier: ViewModifier {
     }
 }
 
+
+// MARK: - Tip
+struct TipModifier: ViewModifier {
+    let order: Int
+    
+    func body(content: Content) -> some View {
+        content
+            .frame(width: TipInfo.viewSizes[order].width, height: TipInfo.viewSizes[order].height)
+            .cornerRadius(12)
+    }
+}

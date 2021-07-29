@@ -37,11 +37,9 @@ struct HomeView: View {
         ZStack {
             NavigationView {
                 List {
-                    addNoteButton
+                    AddNoteButton(isPresent: $isMakeNotePresented, isEditMode: $isEditMode)
                     
-                    ForEach(notes) { note in
-                        noteList(note)
-                    }
+                    ForEach(notes) { noteList($0) }
                     .onDelete(perform: deleteItems)
                     .onMove(perform: moveItems)
                 }
@@ -66,7 +64,7 @@ struct HomeView: View {
                 }
                 .environment(\.editMode, self.$isEditMode)          // 없으면 Edit 오류 생김(해당 위치에 있어야 함)
             }
-            .navigationViewStyle(StackNavigationViewStyle())                // 없으면 View전환할 때마다 Tool Bar 로딩되는데 시간이 걸림
+            .navigationViewStyle(StackNavigationViewStyle())        // 없으면 View전환할 때마다 Tool Bar 로딩되는데 시간이 걸림
             .onAppear() {
                 isMakeNotePresented = false
                 UITableView.appearance().showsVerticalScrollIndicator = false
@@ -76,29 +74,22 @@ struct HomeView: View {
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
             }
             
-            
-            DisplayTip(order: 0)
-            DisplayTip(order: 1)
+            ForEach(0 ..< isTipsPresented.count) {
+                TipView(isDisableds: $isDisableds, isPresenteds: $isTipsPresented, order: $0)
+            }
         }
         .accentColor(.mainColor)
     }
 }
 
 extension HomeView {
-    var addNoteButton: some View {
-        Button(action: { self.isMakeNotePresented = true }) { AddNoteRow() }
-            .disabled(isEditMode == .inactive ? false : true)
-            .modifier(ListModifier())
-            .buttonStyle(BorderlessButtonStyle())
-    }
-    
     func noteList(_ note: Note) -> some View {
         HStack {
             Button(action: {
-                if isEditMode == .inactive || isEditMode == .transient {    // When Edit Button has been not pressed
-                    self.noteRowSelection = note.id                         // 왜 noteRowSelection에 !붙일 때랑 안 붙일 때 다르지?
+                if isEditMode == .inactive || isEditMode == .transient {
+                    self.noteRowSelection = note.id     // 왜 noteRowSelection에 !붙일 때랑 안 붙일 때 다르지?
                 }
-                else {                                                      // When Edit Button has been pressed by user
+                else {
                     self.noteRowOrder = Int(note.order)
                     self.isMakeNotePresented = true
                 }
@@ -113,34 +104,8 @@ extension HomeView {
             }
             .frame(width: 0).hidden()
         }
-        .modifier(ListModifier())
+        .listModifier()
         .buttonStyle(PlainButtonStyle())            // .active 상태 일 때 버튼 눌릴 수 있도록 함
-    }
-}
-
-// MARK: - Tips
-extension HomeView {
-    func DisplayTip(order: Int) -> some View {
-        Group {
-            if isDisableds[order] && !isTipsPresented[order] {
-                Rectangle()
-                    .fill(Color.black.opacity(0.4))
-                    .ignoresSafeArea()
-                    .overlay(
-                        Button(action: {
-                            isDisableds[order].toggle()
-                            isTipsPresented[order] = true
-                            UserDefaults.standard.set(self.isTipsPresented[order], forKey: "Tip\(order)")
-                        }) {
-                            HowToDoSomethingView(tipInfo: TipInfo(order: order))
-                        }
-                        .buttonStyle(PlainButtonStyle())
-                    )
-            }
-            else {
-                EmptyView()
-            }
-        }
     }
 }
 
