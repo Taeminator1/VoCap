@@ -35,12 +35,12 @@ struct NoteDetailView: View {
     @State var isTextField: Bool = false
     @State var isEditButton : Bool = true
     @State var isAddButton: Bool = true
-    @State private var showingAddItemAlert: Bool = false
+    @State var showingAddItemAlert: Bool = false
     
-    @State private var scrollTarget: Int?
+    @State var scrollTarget: Int?
     
-    @State private var selectedRow = -1
-    @State private var selectedCol = -1
+    @State var selectedRow = -1
+    @State var selectedCol = -1
     @State var closeKeyboard: Bool = true
     
     @State var listFrame: CGFloat = 0.0
@@ -142,7 +142,7 @@ struct NoteDetailView: View {
 
 // MARK: - Menu
 extension NoteDetailView {
-    private var addItemsButton: some View {
+    var addItemsButton: some View {
         Button(action: {
             isAddButton = false
             
@@ -431,7 +431,7 @@ extension NoteDetailView {
 
 
 // MARK: - Other Functions
-private extension NoteDetailView {
+extension NoteDetailView {
     func copyNoteDetails() {
         tmpNoteDetails = [NoteDetail]()
         
@@ -466,7 +466,7 @@ extension NoteDetailView {
         }
     }
     
-    private var deleteMemorizedButton: some View {      // TextField를 없애면 에러 발생
+    var deleteMemorizedButton: some View {      // TextField를 없애면 에러 발생
         Button(action: {
             if editMode != .inactive {
                 isEditButton = false

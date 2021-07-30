@@ -15,9 +15,9 @@ struct MakeNoteView: View {
     @Binding var noteRowOrder: Int?
     @Binding var isPresented: Bool
     
-    @State private var shwoingWidgetAlert: Bool = false
-    @State private var shwoingAutoCheckAlert: Bool = false
-    @State private var showingCancelSheet: Bool = false
+    @State var shwoingWidgetAlert: Bool = false
+    @State var shwoingAutoCheckAlert: Bool = false
+    @State var showingCancelSheet: Bool = false
     
     let onComplete: (TmpNote) -> Void
     
@@ -53,7 +53,7 @@ struct MakeNoteView: View {
 }
 
 // MARK: - Action Sheet
-private extension MakeNoteView {
+extension MakeNoteView {
     var actionSheet: ActionSheet {
         ActionSheet(title: actionSheetTitle,
                     buttons: [
@@ -70,7 +70,7 @@ private extension MakeNoteView {
 }
 
 // MARK: - Tool Bar Items
-private extension MakeNoteView {
+extension MakeNoteView {
     var cancelButton: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             Button(action: cancel) {
@@ -100,7 +100,7 @@ private extension MakeNoteView {
 }
 
 // MARK: - View of List
-private extension MakeNoteView {
+extension MakeNoteView {
     
     var basicInfo: some View {
         Section() {

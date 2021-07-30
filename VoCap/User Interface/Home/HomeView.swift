@@ -18,15 +18,12 @@ struct HomeView: View {
         animation: .default)
     private var notes: FetchedResults<Note>
     
-    @State private var isMakeNotePresented: Bool = true         // 처음 실행할 때 MakeNoteView의 isEditNotePresented를 true로 변경해서 sheet를 띄우고 닫아야(NavigationView.onAppear()) 처음에 Edit시 note 가리키지 못하는 현상 막을 수 있음
-    @State private var isEditMode: EditMode = .inactive
-    @State private var noteRowSelection: UUID?
-    @State private var noteRowOrder: Int?
+    @State var isMakeNotePresented: Bool = true         // 처음 실행할 때 MakeNoteView의 isEditNotePresented를 true로 변경해서 sheet를 띄우고 닫아야(NavigationView.onAppear()) 처음에 Edit시 note 가리키지 못하는 현상 막을 수 있음
+    @State var isEditMode: EditMode = .inactive
+    @State var noteRowSelection: UUID?
+    @State var noteRowOrder: Int?
     
-    @State private var showUtility: Bool = false
-    @State private var showTest: Bool = false
-    
-    @State private var isSettingsPresented: Bool = false
+    @State var isSettingsPresented: Bool = false
     
     @State var hideNoteDetailsNumber: Bool = false
     
@@ -147,7 +144,7 @@ extension HomeView {
 
 // MARK: - Modify NoteRows
 private extension HomeView {
-    private func editNote(_ note: TmpNote) {
+    func editNote(_ note: TmpNote) {
         notes[noteRowOrder!].title = note.title
         notes[noteRowOrder!].colorIndex = Int16(note.colorIndex)
         notes[noteRowOrder!].isWidget = note.isWidget
@@ -157,7 +154,7 @@ private extension HomeView {
         saveContext()
     }
     
-    private func addNote(_ note: TmpNote) {
+    func addNote(_ note: TmpNote) {
         withAnimation {
             let newNote = Note(context: viewContext)
             newNote.id = UUID()
@@ -173,7 +170,7 @@ private extension HomeView {
         }
     }
 
-    private func deleteItems(offsets: IndexSet) {
+    func deleteItems(offsets: IndexSet) {
         withAnimation {
             offsets.map { notes[$0] }.forEach(viewContext.delete)
 
@@ -183,7 +180,7 @@ private extension HomeView {
         }
     }
     
-    private func moveItems(from source: IndexSet, to destination: Int) {
+    func moveItems(from source: IndexSet, to destination: Int) {
         withAnimation {
             arrangeOrder(start: source.map({$0}).first!, destination: destination)
             saveContext()
@@ -201,7 +198,7 @@ private extension HomeView {
 }
 
 // MARK: - Other Functions
-private extension HomeView {
+extension HomeView {
     func makeOrder() {
         for i in 0..<notes.count {
             notes[i].order = Int16(i)

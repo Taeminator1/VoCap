@@ -20,8 +20,8 @@ struct ContactUsView: View {
     @State var contents: String = ""
     @State var contentsCount: Int = 0
     
-    @State private var showingCancelSheet: Bool = false
-    @State private var showingAlert: Bool = false
+    @State var showingCancelSheet: Bool = false
+    @State var showingAlert: Bool = false
     @State var alertMessage: String = ""
     @State var isSendingEmail: Bool = false
     
@@ -60,7 +60,7 @@ struct ContactUsView: View {
 }
 
 // MARK: - Action Sheet
-private extension ContactUsView {
+extension ContactUsView {
     var actionSheet: ActionSheet {
         ActionSheet(title: Text("Would you like to delete this message?"), 
                     buttons: [
@@ -73,7 +73,7 @@ private extension ContactUsView {
 }
 
 // MARK: - Tool Bar Items
-private extension ContactUsView {
+extension ContactUsView {
     var cancelButton: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             Button(action: cancel) { Text("Cancel") }
@@ -147,7 +147,7 @@ private extension ContactUsView {
 }
 
 // MARK: - View of List
-private extension ContactUsView {
+extension ContactUsView {
     var userInfo: some View {
         Section(
             header: Text("User Info(Optional)")
@@ -218,7 +218,7 @@ private extension ContactUsView {
 }
 
 // MARK: - Others
-private extension ContactUsView {
+extension ContactUsView {
     var sendEmailResultAlert: Alert {
         if alertMessage == "Success" {
             return Alert(title: Text(alertMessage.localized),

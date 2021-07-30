@@ -13,12 +13,12 @@ struct ResetView: View {
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Note.order, ascending: true)],
         animation: .default)
-    private var notes: FetchedResults<Note>
+    var notes: FetchedResults<Note>
     
     @Binding var isSettingsPresented: Bool
     
-    @State private var showingResetTipsSheet: Bool = false
-    @State private var showingEraseSheet: Bool = false
+    @State var showingResetTipsSheet: Bool = false
+    @State var showingEraseSheet: Bool = false
     
     @Binding var isTipsPresented: [Bool]
     
@@ -46,7 +46,7 @@ struct ResetView: View {
 }
 
 // MARK: - Action Sheet
-private extension ResetView {
+extension ResetView {
     var resetTipsSettingsActionSheet: ActionSheet {
         ActionSheet(title: Text("This will make tips be presented again. "), 
                     buttons: [
@@ -65,8 +65,8 @@ private extension ResetView {
 }
 
 // MARK: - Modify notes
-private extension ResetView {
-    private func resetTipsSettings() {
+extension ResetView {
+    func resetTipsSettings() {
         isTipsPresented[0] = false
         UserDefaults.standard.set(self.isTipsPresented[0], forKey: "Tip0")
         
@@ -74,7 +74,7 @@ private extension ResetView {
         UserDefaults.standard.set(self.isTipsPresented[1], forKey: "Tip1")
     }
     
-    private func deleteAllData() {
+    func deleteAllData() {
         
         for i in 0..<notes.count {
             viewContext.delete(notes[i])

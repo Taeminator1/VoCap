@@ -12,7 +12,7 @@ struct SettingsView: View {
 
     @Binding var isSettingsPresented: Bool
     
-    @State private var isContactUsPresented: Bool = false
+    @State var isContactUsPresented: Bool = false
     
     @Binding var isTipsPresented: [Bool]
     
