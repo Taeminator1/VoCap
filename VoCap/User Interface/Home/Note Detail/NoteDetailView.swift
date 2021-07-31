@@ -8,10 +8,7 @@
 import SwiftUI
 import GoogleMobileAds
 
-enum TextFieldType: Int {
-    case Term = 0
-    case Definition = 1
-}
+
 
 struct NoteDetailView: View {
     @Environment(\.managedObjectContext) private var viewContext
@@ -23,14 +20,8 @@ struct NoteDetailView: View {
     @State var editMode: EditMode = .inactive
     @State var selection = Set<UUID>()
     
-    @State var isTermsScreen: Bool = false
-    @State var isHidingNoteDetails: Bool = false
-    @State var isShuffled: Bool = false
-    @State var isDefsScreen: Bool = false
-    
-    @State var isTermScaled: Bool = false
-    @State var isDefScaled: Bool = false
-    @State var isScaledArray: [Bool] = []
+    @State var itemControl = ItemControl()
+    @State var itemAnimation = ItemAnimation()
     
     @State var isTextField: Bool = false
     @State var isEditButton : Bool = true
@@ -69,13 +60,9 @@ struct NoteDetailView: View {
                             noteDetailRow(noteDetail)
                         }
                         .onDelete(perform: deleteItem)
-                        .deleteDisabled(isShuffled || editMode == .active)             // Shuffle 상태일 때 delete 못하게 함
+                        .deleteDisabled(itemControl.isShuffled || editMode == .active)             // Shuffle 상태일 때 delete 못하게 함
                     }
                     .animation(.default)
-    //                .alert(isPresented: $showingAddItemAlert, TextAlert(title: "Title", message: "Message", action: { result in
-    //                              if let text = result { print("\(text)") }
-    //                              else { print("else") }
-    //                }))
                     .alert(isPresented: $showingAddItemAlert, TextAlert(title: "Add Item".localized, message: "Enter a term and a definition to memorize. ".localized, action: { term, definition  in
                         if let term = term, let definition = definition {
 //                            if (term != "" || definition != "") && note.term.count < limitedNumberOfItems {
@@ -142,20 +129,6 @@ struct NoteDetailView: View {
 
 // MARK: - Menu
 extension NoteDetailView {
-    var addItemsButton: some View {
-        Button(action: {
-            isAddButton = false
-            
-            addItems()
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                isAddButton = true
-            }
-        }) {
-            Label("Add Items", systemImage: "plus")
-        }
-    }
-    
     var addItemButton: some View {
         Button(action: {
             showingAddItemAlert = true
@@ -166,16 +139,13 @@ extension NoteDetailView {
   
     var editItemButton: some View {
         Button(action: {
-            isEditButton = false
-            isTermsScreen = false
-            isDefsScreen = false
-            isHidingNoteDetails = false
+            itemControl = ItemControl()
             
             selectedRow = -1
             selectedCol = -1
             closeKeyboard = false
             
-            if isShuffled { shuffle() }
+            if itemControl.isShuffled { shuffle() }
             
             editMode = .active
             selection = Set<UUID>()
@@ -215,24 +185,9 @@ extension NoteDetailView {
     }
     
     var hideMemorizedButton: some View {
-        Button(action: { isHidingNoteDetails.toggle() }) {
-            isHidingNoteDetails == true ? Label("Show Memorized", systemImage: "eye") : Label("Hide Memorized", systemImage: "eye.slash")
+        Button(action: { itemControl.hideMemorized.toggle() }) {
+            itemControl.hideMemorized == true ? Label("Show Memorized", systemImage: "eye") : Label("Hide Memorized", systemImage: "eye.slash")
         }
-    }
-    
-    func addItems() {
-        for i in 0..<500 {
-            note.term.append("\(i)")
-            note.definition.append("\(i)")
-            note.isMemorized.append(false)
-            
-            tmpNoteDetails.append(NoteDetail(order: note.term.count - 1))
-            saveContext()
-        
-            isScaledArray.append(Bool(false))
-        }
-        
-        scrollTarget = note.term.count - 1
     }
     
     func addItem(_ term: String, _ definitino: String) {
@@ -244,14 +199,14 @@ extension NoteDetailView {
         tmpNoteDetails.append(NoteDetail(order: index, term: note.term[index], definition: note.definition[index]))
         saveContext()
     
-        isScaledArray.append(Bool(false))
+        itemAnimation.append(false)
     }
 }
 
 extension NoteDetailView {
     @ViewBuilder        // 없으면 Function declares an opaque return type ... error 발생
     func noteDetailRow(_ noteDetail: NoteDetail) -> some View {
-        if noteDetail.isMemorized && isHidingNoteDetails {
+        if noteDetail.isMemorized && itemControl.hideMemorized {
             EmptyView()
         }
         else {
@@ -290,7 +245,7 @@ extension NoteDetailView {
                     noteDetailText(noteDetail.term, bodyColor: .textBodyColor, strokeColor: .tTextStrokeColor)
                     GeometryReader { geometry in
                         HStack {
-                            noteDetailScreen(noteDetail.order, finalWidth: geometry.size.width, screenColor: .tScreenColor, isScreen: isTermsScreen, anchor: .leading)
+                            noteDetailScreen(noteDetail.order, finalWidth: geometry.size.width, screenColor: .tScreenColor, isScreen: itemControl.lScreen, anchor: .leading)
                             Spacer()
                         }
                     }
@@ -304,7 +259,7 @@ extension NoteDetailView {
                     GeometryReader { geometry in
                         HStack {
                             Spacer()
-                            noteDetailScreen(noteDetail.order, finalWidth: geometry.size.width, screenColor: .dScreenColor, isScreen: isDefsScreen, anchor: .trailing)     // 여기는 + 1 안함
+                            noteDetailScreen(noteDetail.order, finalWidth: geometry.size.width, screenColor: .dScreenColor, isScreen: itemControl.rScreen, anchor: .trailing)     // 여기는 + 1 안함
                         }
                     }
                 }
@@ -344,9 +299,9 @@ extension NoteDetailView {
         Rectangle()
             .foregroundColor(screenColor)
             .frame(width: initWidth)
-            .scaleEffect(x: isScreen && !isScaledArray[order] ? finalWidth / initWidth : 1.0, y: 1.0, anchor: anchor)
+            .scaleEffect(x: isScreen && !itemAnimation.isScaledArray[order] ? finalWidth / initWidth : 1.0, y: 1.0, anchor: anchor)
             .onTapGesture{}                 // Scroll 되게 하려면 필요(해당 자리에)
-            .modifier(CustomGestureModifier(isPressed: $isScaledArray[order], f: { }))
+            .modifier(CustomGestureModifier(isPressed: $itemAnimation.isScaledArray[order], f: { }))
     }
 }
 
@@ -381,15 +336,15 @@ extension NoteDetailView {
                     }
                 }
                 
-                if isDefsScreen == true {
-                    isDefsScreen.toggle()
-                    isDefScaled.toggle()
+                if itemControl.rScreen == true {
+                    itemControl.rScreen.toggle()
+                    itemAnimation.isDefScaled.toggle()
                 }
-                isTermsScreen.toggle()
-                isTermScaled.toggle()
+                itemControl.lScreen.toggle()
+                itemAnimation.isTermScaled.toggle()
             }) {
                 if editMode == .inactive {
-                    isTermsScreen == true ? Image("arrow.right.on").imageScale(.large) : Image("arrow.right.off").imageScale(.large)
+                    itemControl.lScreen == true ? Image("arrow.right.on").imageScale(.large) : Image("arrow.right.off").imageScale(.large)
                 }
             }
         }
@@ -399,7 +354,7 @@ extension NoteDetailView {
         ToolbarItem(placement: .bottomBar) {
             Button(action: { shuffle() }) {
                 if editMode == .inactive {
-                    isShuffled == true ? Image("shuffle.on").imageScale(.large) : Image("shuffle.off").imageScale(.large)
+                    itemControl.isShuffled == true ? Image("shuffle.on").imageScale(.large) : Image("shuffle.off").imageScale(.large)
                 }
             }
         }
@@ -414,15 +369,15 @@ extension NoteDetailView {
                     }
                 }
                 
-                if isTermsScreen == true {
-                    isTermsScreen.toggle()
-                    isTermScaled.toggle()
+                if itemControl.lScreen == true {
+                    itemControl.lScreen.toggle()
+                    itemAnimation.isTermScaled.toggle()
                 }
-                isDefsScreen.toggle()
-                isDefScaled.toggle()
+                itemControl.rScreen.toggle()
+                itemAnimation.isDefScaled.toggle()
             }) {
                 if editMode == .inactive {
-                    isDefsScreen == true ? Image("arrow.left.on").imageScale(.large) : Image("arrow.left.off").imageScale(.large)
+                    itemControl.rScreen == true ? Image("arrow.left.on").imageScale(.large) : Image("arrow.left.off").imageScale(.large)
                 }
             }
         }
@@ -438,14 +393,14 @@ extension NoteDetailView {
         for i in 0..<note.term.count {
             tmpNoteDetails.append(NoteDetail(order: i, term: note.term[i], definition: note.definition[i], isMemorized: note.isMemorized[i]))
             
-            isScaledArray.append(Bool(false))
+            itemAnimation.isScaledArray.append(Bool(false))
         }
     }
     
     func shuffle() -> Void {
-        isShuffled.toggle()
+        itemControl.isShuffled.toggle()
         
-        if isShuffled == true {
+        if itemControl.isShuffled == true {
             tmpNoteDetails.shuffle()
         }
         else {
@@ -490,7 +445,7 @@ extension NoteDetailView {
                         note.isMemorized.remove(at: index)
                         
                         tmpNoteDetails.remove(at: index)
-                        isScaledArray.remove(at: index)
+                        itemAnimation.isScaledArray.remove(at: index)
                     }
                 }
                 saveContext()
@@ -512,7 +467,7 @@ extension NoteDetailView {
         note.isMemorized.remove(atOffsets: offsets)
 
         tmpNoteDetails.remove(atOffsets: offsets)
-        isScaledArray.remove(atOffsets: offsets)
+        itemAnimation.isScaledArray.remove(atOffsets: offsets)
         
         saveContext()
         

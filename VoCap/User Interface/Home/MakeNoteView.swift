@@ -25,10 +25,9 @@ struct MakeNoteView: View {
         NavigationView {
             List {
                 basicInfo
-//                toggleConfig
+                toggleConfig
                 others
             }
-//            .listStyle(GroupedListStyle())
             .listStyle(InsetGroupedListStyle())
             .environment(\.horizontalSizeClass, .regular)               // 이건 뭐지?
             .navigationBarTitle(noteRowOrder == nil ? "Add Note" : "Edit Note", displayMode: .inline)

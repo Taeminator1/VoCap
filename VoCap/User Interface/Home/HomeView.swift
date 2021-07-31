@@ -36,7 +36,10 @@ struct HomeView: View {
                 List {
                     AddNoteButton(isPresent: $isMakeNotePresented, isEditMode: $isEditMode)
                     
-                    ForEach(notes) { noteList($0) }
+                    ForEach(notes) {
+                        noteList($0)
+//                        NoteButton(isPresented: $isMakeNotePresented, isEditMode: $isEditMode, id: $noteRowSelection, order: $noteRowOrder, hideNumber: $hideNoteDetailsNumber, isDisableds: $isDisableds, note: $0)
+                    }
                     .onDelete(perform: deleteItems)
                     .onMove(perform: moveItems)
                 }
@@ -79,6 +82,7 @@ struct HomeView: View {
     }
 }
 
+// MARK: - Note List
 extension HomeView {
     func noteList(_ note: Note) -> some View {
         HStack {
