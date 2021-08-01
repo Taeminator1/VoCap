@@ -21,7 +21,6 @@ struct NoteDetailView: View {
     @State var selection = Set<UUID>()
     
     @State var itemControl = ItemControl()
-    @State var itemAnimation = ItemAnimation()
     
     @State var isTextField: Bool = false
     @State var isEditButton : Bool = true
@@ -199,7 +198,7 @@ extension NoteDetailView {
         tmpNoteDetails.append(NoteDetail(order: index, term: note.term[index], definition: note.definition[index]))
         saveContext()
     
-        itemAnimation.append(false)
+        itemControl.isScaledArray.append(false)
     }
 }
 
@@ -245,7 +244,7 @@ extension NoteDetailView {
                     noteDetailText(noteDetail.term, bodyColor: .textBodyColor, strokeColor: .tTextStrokeColor)
                     GeometryReader { geometry in
                         HStack {
-                            noteDetailScreen(noteDetail.order, finalWidth: geometry.size.width, screenColor: .tScreenColor, isScreen: itemControl.lScreen, anchor: .leading)
+                            noteDetailScreen(noteDetail.order, finalWidth: geometry.size.width, screenColor: .tScreenColor, isScreen: itemControl.screen.left, anchor: .leading)
                             Spacer()
                         }
                     }
@@ -259,7 +258,7 @@ extension NoteDetailView {
                     GeometryReader { geometry in
                         HStack {
                             Spacer()
-                            noteDetailScreen(noteDetail.order, finalWidth: geometry.size.width, screenColor: .dScreenColor, isScreen: itemControl.rScreen, anchor: .trailing)     // 여기는 + 1 안함
+                            noteDetailScreen(noteDetail.order, finalWidth: geometry.size.width, screenColor: .dScreenColor, isScreen: itemControl.screen.right, anchor: .trailing)     // 여기는 + 1 안함
                         }
                     }
                 }
@@ -299,9 +298,9 @@ extension NoteDetailView {
         Rectangle()
             .foregroundColor(screenColor)
             .frame(width: initWidth)
-            .scaleEffect(x: isScreen && !itemAnimation.isScaledArray[order] ? finalWidth / initWidth : 1.0, y: 1.0, anchor: anchor)
+            .scaleEffect(x: isScreen && !itemControl.isScaledArray[order] ? finalWidth / initWidth : 1.0, y: 1.0, anchor: anchor)
             .onTapGesture{}                 // Scroll 되게 하려면 필요(해당 자리에)
-            .modifier(CustomGestureModifier(isPressed: $itemAnimation.isScaledArray[order], f: { }))
+            .modifier(CustomGestureModifier(isPressed: $itemControl.isScaledArray[order], f: { }))
     }
 }
 
@@ -336,15 +335,11 @@ extension NoteDetailView {
                     }
                 }
                 
-                if itemControl.rScreen == true {
-                    itemControl.rScreen.toggle()
-                    itemAnimation.isDefScaled.toggle()
-                }
-                itemControl.lScreen.toggle()
-                itemAnimation.isTermScaled.toggle()
+                itemControl.toggleLeft()
+                
             }) {
                 if editMode == .inactive {
-                    itemControl.lScreen == true ? Image("arrow.right.on").imageScale(.large) : Image("arrow.right.off").imageScale(.large)
+                    itemControl.screen.left == true ? Image("arrow.right.on").imageScale(.large) : Image("arrow.right.off").imageScale(.large)
                 }
             }
         }
@@ -369,15 +364,11 @@ extension NoteDetailView {
                     }
                 }
                 
-                if itemControl.lScreen == true {
-                    itemControl.lScreen.toggle()
-                    itemAnimation.isTermScaled.toggle()
-                }
-                itemControl.rScreen.toggle()
-                itemAnimation.isDefScaled.toggle()
+                itemControl.toggleRight()
+                
             }) {
                 if editMode == .inactive {
-                    itemControl.rScreen == true ? Image("arrow.left.on").imageScale(.large) : Image("arrow.left.off").imageScale(.large)
+                    itemControl.screen.right == true ? Image("arrow.left.on").imageScale(.large) : Image("arrow.left.off").imageScale(.large)
                 }
             }
         }
@@ -393,7 +384,7 @@ extension NoteDetailView {
         for i in 0..<note.term.count {
             tmpNoteDetails.append(NoteDetail(order: i, term: note.term[i], definition: note.definition[i], isMemorized: note.isMemorized[i]))
             
-            itemAnimation.isScaledArray.append(Bool(false))
+            itemControl.isScaledArray.append(false)
         }
     }
     
@@ -445,7 +436,7 @@ extension NoteDetailView {
                         note.isMemorized.remove(at: index)
                         
                         tmpNoteDetails.remove(at: index)
-                        itemAnimation.isScaledArray.remove(at: index)
+                        itemControl.isScaledArray.remove(at: index)
                     }
                 }
                 saveContext()
@@ -467,7 +458,7 @@ extension NoteDetailView {
         note.isMemorized.remove(atOffsets: offsets)
 
         tmpNoteDetails.remove(atOffsets: offsets)
-        itemAnimation.isScaledArray.remove(atOffsets: offsets)
+        itemControl.isScaledArray.remove(atOffsets: offsets)
         
         saveContext()
         
