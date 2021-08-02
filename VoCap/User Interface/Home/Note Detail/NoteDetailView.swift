@@ -8,8 +8,6 @@
 import SwiftUI
 import GoogleMobileAds
 
-
-
 struct NoteDetailView: View {
     @Environment(\.managedObjectContext) private var viewContext
     
@@ -30,8 +28,7 @@ struct NoteDetailView: View {
     
     @State var scrollTarget: Int?
     
-    @State var selectedRow = -1
-    @State var selectedCol = -1
+    @State var itemLocation = ItemLocation()
     @State var closeKeyboard: Bool = true
     
     @State var listFrame: CGFloat = 0.0
@@ -141,8 +138,7 @@ extension NoteDetailView {
         Button(action: {
             itemControl = ItemControl()
             
-            selectedRow = -1
-            selectedCol = -1
+            itemLocation = ItemLocation()
             closeKeyboard = false
             
             if itemControl.isShuffled { shuffle() }
@@ -214,15 +210,14 @@ extension NoteDetailView {
                 ForEach(0 ..< 2) { col in
                     noteDetailCell(noteDetail, col)
                         .onTapGesture {
-                            selectedRow = noteDetail.order
-                            selectedCol = col           // 여기 있으면 Keyboard 뒤에 View가 안 없어지는 경우 생김
+                            itemLocation = ItemLocation(noteDetail.order, col)  // col 할당 관련해서, 여기 있으면 Keyboard 뒤에 View가 안 없어지는 경우 생김
                             if isTextField { scrollTarget = noteDetail.order }
                         }
                 }
                 
                 Button(action: {
                     if editMode == .active {
-                        CustomUITextField(selectedRow: $selectedRow, selectedCol: $selectedCol, closeKeyboard: $closeKeyboard).done(button: UIBarButtonItem())
+                        CustomUITextField(location: $itemLocation, closeKeyboard: $closeKeyboard).done(button: UIBarButtonItem())
                         scrollTarget = noteDetail.order
                     }
                     changeMemorizedState(id: noteDetail.id)
@@ -251,7 +246,7 @@ extension NoteDetailView {
                     }
                 }
                 else {
-                    NoteDetailTextField("Term", $note.term[noteDetail.order], noteDetail.order, 0, bodyColor: .textFieldBodyColor, strokeColor: .tTextFieldStrokeColor)
+                    NoteDetailTextField("Term", $note.term[noteDetail.order], ItemLocation(noteDetail.order, 0), bodyColor: .textFieldBodyColor, strokeColor: .tTextFieldStrokeColor)
                 }
             case 1:
                 if isTextField == false {
@@ -264,7 +259,7 @@ extension NoteDetailView {
                     }
                 }
                 else {
-                    NoteDetailTextField("Definition", $note.definition[noteDetail.order], noteDetail.order, 1, bodyColor: .textFieldBodyColor, strokeColor: .dTextFieldStrokeColor)
+                    NoteDetailTextField("Definition", $note.definition[noteDetail.order], ItemLocation(noteDetail.order, 1), bodyColor: .textFieldBodyColor, strokeColor: .dTextFieldStrokeColor)
                 }
                 
             default:
@@ -284,13 +279,13 @@ extension NoteDetailView {
             .modifier(NoteDetailListModifier(bodyColor: bodyColor, strokeColor: strokeColor))
     }
     
-    func NoteDetailTextField(_ title: String, _ text: Binding<String>, _ row: Int, _ col: Int, bodyColor: Color, strokeColor: Color) -> some View {
-
-        var responder: Bool {
-            return row == selectedRow && col == selectedCol
+    func NoteDetailTextField(_ title: String, _ text: Binding<String>, _ itemLocation: ItemLocation, bodyColor: Color, strokeColor: Color) -> some View {
+        
+        var responder: Bool {       // Keyboard Toolbar에서 열간 이동하기 위해 필요
+            return self.itemLocation == itemLocation
         }
         
-        return CustomTextFieldWithToolbar(title: title, text: text, selectedRow: $selectedRow, selectedCol: $selectedCol, isEnabled: $isTextField, closeKeyboard: $closeKeyboard, col: col, isFirstResponder: responder)
+        return CustomTextFieldWithToolbar(title: title, text: text, location: $itemLocation, isEnabled: $isTextField, closeKeyboard: $closeKeyboard, col: itemLocation.col, isFirstResponder: responder)
             .padding(.horizontal)
             .modifier(NoteDetailListModifier(bodyColor: bodyColor, strokeColor: strokeColor, lineWidth: 1.0))
     }

@@ -22,14 +22,12 @@ struct CustomTextFieldWithToolbar: UIViewRepresentable {
     class Coordinator: NSObject, UITextFieldDelegate {
 
         @Binding var text: String
-        @Binding var selectedRow: Int
-        @Binding var selectedCol: Int
+        @Binding var location: ItemLocation
         @Binding var closeKeyboard: Bool
 
-        init(text: Binding<String>, selectedRow: Binding<Int>, selectedCol: Binding<Int>, closeKeyboard: Binding<Bool>) {
+        init(text: Binding<String>, location: Binding<ItemLocation>, closeKeyboard: Binding<Bool>) {
             _text = text
-            _selectedRow = selectedRow
-            _selectedCol = selectedCol
+            _location = location
             _closeKeyboard = closeKeyboard
         }
 
@@ -42,8 +40,7 @@ struct CustomTextFieldWithToolbar: UIViewRepresentable {
 
     var title: String = ""              // Placeholder
     @Binding var text: String
-    @Binding var selectedRow: Int
-    @Binding var selectedCol: Int
+    @Binding var location: ItemLocation
     @Binding var isEnabled: Bool
     @Binding var closeKeyboard: Bool
     let col: Int
@@ -51,7 +48,7 @@ struct CustomTextFieldWithToolbar: UIViewRepresentable {
     var isFirstResponder: Bool = false
 
     func makeUIView(context: UIViewRepresentableContext<CustomTextFieldWithToolbar>) -> UITextField {
-        let textField = CustomUITextField(selectedRow: $selectedRow, selectedCol: $selectedCol, closeKeyboard: $closeKeyboard)
+        let textField = CustomUITextField(location: $location, closeKeyboard: $closeKeyboard)
         textField.placeholder = title
         textField.delegate = context.coordinator
         textField.autocapitalizationType = .none
@@ -85,7 +82,7 @@ struct CustomTextFieldWithToolbar: UIViewRepresentable {
     }
 
     func makeCoordinator() -> CustomTextFieldWithToolbar.Coordinator {
-        return Coordinator(text: $text, selectedRow: $selectedRow, selectedCol: $selectedCol, closeKeyboard: $closeKeyboard)
+        return Coordinator(text: $text, location: $location, closeKeyboard: $closeKeyboard)
     }
 
     func updateUIView(_ uiView: UITextField, context: UIViewRepresentableContext<CustomTextFieldWithToolbar>) {
@@ -106,14 +103,12 @@ class CustomUITextField: UITextField {
     
     let numberOfRows: Int = 0
     let numberOfCols: Int = 2
-    @Binding var selectedRow: Int
-    @Binding var selectedCol: Int
+    @Binding var location: ItemLocation
     @Binding var closeKeyboard: Bool
     
     
-    init(selectedRow: Binding<Int>, selectedCol: Binding<Int>, closeKeyboard: Binding<Bool>) {
-        _selectedRow = selectedRow
-        _selectedCol = selectedCol
+    init(location: Binding<ItemLocation>, closeKeyboard: Binding<Bool>) {
+        _location = location
         _closeKeyboard = closeKeyboard
         super.init(frame: .zero)
     }
@@ -123,33 +118,32 @@ class CustomUITextField: UITextField {
     }
     
     @objc func moveLeft(button: UIBarButtonItem) -> Void {
-        if selectedCol > 0 {
-            self.selectedCol -= 1
+        if location.col > 0 {
+            self.location.col -= 1
         }
     }
     
     @objc func moveRight(button: UIBarButtonItem) -> Void {
-        if selectedCol < numberOfCols - 1 {
-            self.selectedCol += 1
+        if location.col < numberOfCols - 1 {
+            self.location.col += 1
         }
     }
     
     @objc func moveDown(button: UIBarButtonItem) -> Void {
-        if selectedRow < numberOfRows - 1 {
-            self.selectedRow += 1
+        if location.row < numberOfRows - 1 {
+            self.location.row += 1
         }
     }
     
     @objc func moveUp(button: UIBarButtonItem) -> Void {
-        if selectedRow > 0 {
-            self.selectedRow -= 1
+        if location.row > 0 {
+            self.location.row -= 1
         }
     }
     
     @objc func done(button: UIBarButtonItem) -> Void {
 //        self.resignFirstResponder()
-        selectedRow = -1
-        selectedCol = -1
+        location = ItemLocation()
         closeKeyboard = true
     }
 }

@@ -45,6 +45,7 @@
 		34D88F60256D2A68009B10AF /* VoCapUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D88F5F256D2A68009B10AF /* VoCapUITests.swift */; };
 		34E02AAD25FE1B30005AA07D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 34E02AAF25FE1B30005AA07D /* Localizable.strings */; };
 		34E5B30025DBE08A00CB6D17 /* MakeNoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34E5B2FF25DBE08A00CB6D17 /* MakeNoteView.swift */; };
+		34EAC47E26B7FEBC00B6C300 /* ItemLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34EAC47D26B7FEBC00B6C300 /* ItemLocation.swift */; };
 		34F89BF525F308070067AAD7 /* ResetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34F89BF425F308070067AAD7 /* ResetView.swift */; };
 		34F990A925ED417D00E3710A /* CustomTextAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34F990A825ED417D00E3710A /* CustomTextAlert.swift */; };
 		34FEA28326B32C5800E6FDDC /* NoteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34FEA28226B32C5800E6FDDC /* NoteButton.swift */; };
@@ -119,6 +120,7 @@
 		34E02AB525FE1BD4005AA07D /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		34E02AB625FE1BE0005AA07D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		34E5B2FF25DBE08A00CB6D17 /* MakeNoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeNoteView.swift; sourceTree = "<group>"; };
+		34EAC47D26B7FEBC00B6C300 /* ItemLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemLocation.swift; sourceTree = "<group>"; };
 		34F89BF425F308070067AAD7 /* ResetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetView.swift; sourceTree = "<group>"; };
 		34F990A825ED417D00E3710A /* CustomTextAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextAlert.swift; sourceTree = "<group>"; };
 		34FEA28226B32C5800E6FDDC /* NoteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteButton.swift; sourceTree = "<group>"; };
@@ -258,6 +260,7 @@
 			children = (
 				340CEBD126B405100020D035 /* TextFieldType.swift */,
 				3416A6FF26B52E4100BB1A26 /* ItemControl.swift */,
+				34EAC47D26B7FEBC00B6C300 /* ItemLocation.swift */,
 				34D5B91725A1EC3B0071326A /* NoteDetail.swift */,
 				3414F3B125F25B3F00BFB516 /* NoteDetailView.swift */,
 			);
@@ -536,6 +539,7 @@
 				3445EBED25C9851B00D16915 /* CustomTextFieldWithToolbar.swift in Sources */,
 				3473344B25DD522A00A11151 /* ContactUsView.swift in Sources */,
 				34858A49266645B50078F503 /* Note+CoreDataProperties.swift in Sources */,
+				34EAC47E26B7FEBC00B6C300 /* ItemLocation.swift in Sources */,
 				344FF41D25FF7106009B7E03 /* StringExtension.swift in Sources */,
 				34FEA28326B32C5800E6FDDC /* NoteButton.swift in Sources */,
 				34FEA28B26B3309700E6FDDC /* TipView.swift in Sources */,
