@@ -14,7 +14,6 @@ struct ItemControl {
     var hideMemorized: Bool = false
     
     var isScaled = Phase()
-    var isScaledArray: [Bool] = []
 
     struct Phase {
         var left: Bool = false

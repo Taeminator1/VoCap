@@ -21,6 +21,7 @@ struct NoteDetailView: View {
     @State var selection = Set<UUID>()
     
     @State var itemControl = ItemControl()
+    @State var isScaledArray: [Bool] = []
     
     @State var isTextField: Bool = false
     @State var isEditButton : Bool = true
@@ -198,7 +199,7 @@ extension NoteDetailView {
         tmpNoteDetails.append(NoteDetail(order: index, term: note.term[index], definition: note.definition[index]))
         saveContext()
     
-        itemControl.isScaledArray.append(false)
+        isScaledArray.append(false)
     }
 }
 
@@ -298,9 +299,9 @@ extension NoteDetailView {
         Rectangle()
             .foregroundColor(screenColor)
             .frame(width: initWidth)
-            .scaleEffect(x: isScreen && !itemControl.isScaledArray[order] ? finalWidth / initWidth : 1.0, y: 1.0, anchor: anchor)
+            .scaleEffect(x: isScreen && !isScaledArray[order] ? finalWidth / initWidth : 1.0, y: 1.0, anchor: anchor)
             .onTapGesture{}                 // Scroll 되게 하려면 필요(해당 자리에)
-            .modifier(CustomGestureModifier(isPressed: $itemControl.isScaledArray[order], f: { }))
+            .modifier(CustomGestureModifier(isPressed: $isScaledArray[order], f: { }))
     }
 }
 
@@ -384,7 +385,7 @@ extension NoteDetailView {
         for i in 0..<note.term.count {
             tmpNoteDetails.append(NoteDetail(order: i, term: note.term[i], definition: note.definition[i], isMemorized: note.isMemorized[i]))
             
-            itemControl.isScaledArray.append(false)
+            isScaledArray.append(false)
         }
     }
     
@@ -436,7 +437,7 @@ extension NoteDetailView {
                         note.isMemorized.remove(at: index)
                         
                         tmpNoteDetails.remove(at: index)
-                        itemControl.isScaledArray.remove(at: index)
+                        isScaledArray.remove(at: index)
                     }
                 }
                 saveContext()
@@ -458,7 +459,7 @@ extension NoteDetailView {
         note.isMemorized.remove(atOffsets: offsets)
 
         tmpNoteDetails.remove(atOffsets: offsets)
-        itemControl.isScaledArray.remove(atOffsets: offsets)
+        isScaledArray.remove(atOffsets: offsets)
         
         saveContext()
         
