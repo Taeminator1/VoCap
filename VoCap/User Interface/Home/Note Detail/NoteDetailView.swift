@@ -8,6 +8,11 @@
 import SwiftUI
 import GoogleMobileAds
 
+enum Column: Int {
+    case term = 0
+    case definition
+}
+
 struct NoteDetailView: View {
     @Environment(\.managedObjectContext) private var viewContext
     
@@ -83,11 +88,11 @@ struct NoteDetailView: View {
                         menuButton
                         
                         // BottomBar
-                        showingTermsButton
+                        showingButton(.term)
                         spacer
                         shuffleButton
                         spacer
-                        showingDefsButton
+                        showingButton(.definition)
                     }
                     .environment(\.editMode, self.$editMode)          // 해당 위치에 없으면 editMode 안 먹힘
                 }
@@ -200,7 +205,7 @@ extension NoteDetailView {
         else {
             HStack {
                 ForEach(0 ..< 2) { col in
-                    noteDetailCell(noteDetail, col)
+                    noteDetailCell(noteDetail, Column(rawValue: col) ?? .term)
                         .onTapGesture {
                             itemLocation = ItemLocation(noteDetail.order, col)  // col 할당 관련해서, 여기 있으면 Keyboard 뒤에 View가 안 없어지는 경우 생김
                             if isEditMode { scrollTarget = noteDetail.order }
@@ -224,38 +229,34 @@ extension NoteDetailView {
         }
     }
     
-    func noteDetailCell(_ noteDetail: NoteDetail, _ selectedCol: Int) -> some View {
+    func noteDetailCell(_ noteDetail: NoteDetail, _ selectedCol: Column) -> some View {
         return ZStack {
             switch selectedCol {
-            case 0:
+            case .term:
                 if isEditMode == false {
-                    noteDetailText(noteDetail.term, bodyColor: .textBodyColor, strokeColor: .tTextStrokeColor)
+                    noteDetailText(noteDetail.term, bodyColor: .textBodyColor, strokeColor: .tScreenColor)
                     GeometryReader { geometry in
                         HStack {
-                            noteDetailScreen(noteDetail.order, finalWidth: geometry.size.width, screenColor: .tScreenColor, isScreen: itemControl.screen.left, anchor: .leading)
-                            Spacer()
+                            noteDetailScreen(noteDetail.order, geometry.size.width, .tScreenColor, itemControl.screen.left, anchor: .leading)
                         }
                     }
                 }
                 else {
                     NoteDetailTextField("Term", $note.term[noteDetail.order], ItemLocation(noteDetail.order, 0), bodyColor: .textFieldBodyColor, strokeColor: .tTextFieldStrokeColor)
                 }
-            case 1:
+            case .definition:
                 if isEditMode == false {
-                    noteDetailText(noteDetail.definition, bodyColor: .textBodyColor, strokeColor: .dTextStrokeColor)
+                    noteDetailText(noteDetail.definition, bodyColor: .textBodyColor, strokeColor: .dScreenColor)
                     GeometryReader { geometry in
                         HStack {
                             Spacer()
-                            noteDetailScreen(noteDetail.order, finalWidth: geometry.size.width, screenColor: .dScreenColor, isScreen: itemControl.screen.right, anchor: .trailing)     // 여기는 + 1 안함
+                            noteDetailScreen(noteDetail.order, geometry.size.width, .dScreenColor, itemControl.screen.right, anchor: .trailing)     // 여기는 + 1 안함
                         }
                     }
                 }
                 else {
                     NoteDetailTextField("Definition", $note.definition[noteDetail.order], ItemLocation(noteDetail.order, 1), bodyColor: .textFieldBodyColor, strokeColor: .dTextFieldStrokeColor)
                 }
-                
-            default:
-                Text("Error")
             }
         }
     }
@@ -272,20 +273,17 @@ extension NoteDetailView {
     }
     
     func NoteDetailTextField(_ title: String, _ text: Binding<String>, _ itemLocation: ItemLocation, bodyColor: Color, strokeColor: Color) -> some View {
-        
-        // Keyboard Toolbar에서 열간 이동하기 위해 필요
-        var responder: Bool { self.itemLocation == itemLocation }
-        
-        return CustomTextFieldWithToolbar(title: title, text: text, location: $itemLocation, isEnabled: $isEditMode, closeKeyboard: $closeKeyboard, col: itemLocation.col, isFirstResponder: responder)
+        // Keyboard Toolbar에서 열간 이동하기 위해 isFirstResponder 필요
+        return CustomTextFieldWithToolbar(title: title, text: text, location: $itemLocation, isEnabled: $isEditMode, closeKeyboard: $closeKeyboard, col: itemLocation.col, isFirstResponder: self.itemLocation == itemLocation)
             .padding(.horizontal)
             .modifier(NoteDetailListModifier(bodyColor: bodyColor, strokeColor: strokeColor, lineWidth: 1.0))
     }
     
-    func noteDetailScreen(_ order: Int, initWidth: CGFloat = 4.0, finalWidth: CGFloat, screenColor: Color, isScreen: Bool, anchor: UnitPoint) -> some View {
+    func noteDetailScreen(_ order: Int, initalWidth: CGFloat = 4.0, _ stretchedWidth: CGFloat, _ screenColor: Color, _ isScreen: Bool, anchor: UnitPoint) -> some View {
         Rectangle()
             .foregroundColor(screenColor)
-            .frame(width: initWidth)
-            .scaleEffect(x: isScreen && !isScaledArray[order] ? finalWidth / initWidth : 1.0, y: 1.0, anchor: anchor)
+            .frame(width: initalWidth)
+            .scaleEffect(x: isScreen && !isScaledArray[order] ? stretchedWidth / initalWidth : 1.0, y: 1.0, anchor: anchor)
             .onTapGesture{}                 // Scroll 되게 하려면 필요(해당 자리에)
             .modifier(CustomGestureModifier(isPressed: $isScaledArray[order], f: { }))
     }
@@ -313,7 +311,7 @@ extension NoteDetailView {
         ToolbarItem(placement: .bottomBar) { Spacer() }
     }
     
-    var showingTermsButton: some ToolbarContent {
+    func showingButton(_ Column: Column) -> some ToolbarContent {
         ToolbarItem(placement: .bottomBar) {
             Button(action: {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
@@ -321,12 +319,15 @@ extension NoteDetailView {
                         isDisableds[1].toggle()
                     }
                 }
-                
-                itemControl.toggleLeft()
-                
+                Column == .term ? itemControl.toggleLeft() : itemControl.toggleRight()
             }) {
                 if editMode == .inactive {
-                    itemControl.screen.left == true ? Image("arrow.right.on").imageScale(.large) : Image("arrow.right.off").imageScale(.large)
+                    switch(Column) {
+                    case .term:
+                        itemControl.screen.left ? Image("arrow.right.on").imageScale(.large) : Image("arrow.right.off").imageScale(.large)
+                    case .definition:
+                        itemControl.screen.right ? Image("arrow.left.on").imageScale(.large) : Image("arrow.left.off").imageScale(.large)
+                    }
                 }
             }
         }
@@ -336,26 +337,7 @@ extension NoteDetailView {
         ToolbarItem(placement: .bottomBar) {
             Button(action: { shuffle() }) {
                 if editMode == .inactive {
-                    itemControl.isShuffled == true ? Image("shuffle.on").imageScale(.large) : Image("shuffle.off").imageScale(.large)
-                }
-            }
-        }
-    }
-    
-    var showingDefsButton: some ToolbarContent {
-        ToolbarItem(placement: .bottomBar) {
-            Button(action: {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                    withAnimation {
-                        isDisableds[1].toggle()
-                    }
-                }
-                
-                itemControl.toggleRight()
-                
-            }) {
-                if editMode == .inactive {
-                    itemControl.screen.right == true ? Image("arrow.left.on").imageScale(.large) : Image("arrow.left.off").imageScale(.large)
+                    itemControl.isShuffled ? Image("shuffle.on").imageScale(.large) : Image("shuffle.off").imageScale(.large)
                 }
             }
         }
@@ -370,20 +352,13 @@ extension NoteDetailView {
         
         for i in 0..<note.term.count {
             tmpNoteDetails.append(NoteDetail(order: i, term: note.term[i], definition: note.definition[i], isMemorized: note.isMemorized[i]))
-            
             isScaledArray.append(false)
         }
     }
     
     func shuffle() -> Void {
         itemControl.isShuffled.toggle()
-        
-        if itemControl.isShuffled == true {
-            tmpNoteDetails.shuffle()
-        }
-        else {
-            tmpNoteDetails = tmpNoteDetails.sorted(by: { $0.order < $1.order })
-        }
+        itemControl.isShuffled ? tmpNoteDetails.shuffle() : tmpNoteDetails.sort { $0.order < $1.order }
     }
 }
 

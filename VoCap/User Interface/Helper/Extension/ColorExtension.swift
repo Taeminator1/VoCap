@@ -27,11 +27,9 @@ extension Color {
     static let textBodyColor = Color(UIColor.systemGray6)
     static let textFieldBodyColor = Color(UIColor.clear)
     
-    static let tTextStrokeColor = Color(UIColor.systemBlue)
     static let tScreenColor = Color(UIColor.systemBlue)
     static let tTextFieldStrokeColor = Color(UIColor.systemBlue)
     
-    static let dTextStrokeColor = Color(UIColor.systemGreen)
     static let dScreenColor = Color(UIColor.systemGreen)
     static let dTextFieldStrokeColor = Color(UIColor.systemGreen)
 }
