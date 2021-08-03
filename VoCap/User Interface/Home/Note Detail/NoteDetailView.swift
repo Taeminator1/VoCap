@@ -18,31 +18,24 @@ struct NoteDetailView: View {
     @State var editMode: EditMode = .inactive
     @State var selection = Set<UUID>()
     
+    @State var itemLocation = ItemLocation()
     @State var itemControl = ItemControl()
     @State var isScaledArray: [Bool] = []
     
-    @State var isTextField: Bool = false
-    @State var isEditButton : Bool = true
-    @State var isAddButton: Bool = true
+    @State var isEditMode: Bool = false
+    @State var closeKeyboard: Bool = true
     @State var showingAddItemAlert: Bool = false
     
     @State var scrollTarget: Int?
-    
-    @State var itemLocation = ItemLocation()
-    @State var closeKeyboard: Bool = true
-    
     @State var listFrame: CGFloat = 0.0
     
 //    let limitedNumberOfItems: Int = 500
-    
     @Binding var isDisableds: [Bool]
     
     @State var orientation = UIDevice.current.orientation
     let orientationChanged = NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)
             .makeConnectable()
             .autoconnect()
-    
-    let alertController = UIAlertController(title: "Alert", message: "Please enter text", preferredStyle: .alert)
     
     var body: some View {
         VStack {
@@ -60,18 +53,7 @@ struct NoteDetailView: View {
                         .deleteDisabled(itemControl.isShuffled || editMode == .active)             // Shuffle 상태일 때 delete 못하게 함
                     }
                     .animation(.default)
-                    .alert(isPresented: $showingAddItemAlert, TextAlert(title: "Add Item".localized, message: "Enter a term and a definition to memorize. ".localized, action: { term, definition  in
-                        if let term = term, let definition = definition {
-//                            if (term != "" || definition != "") && note.term.count < limitedNumberOfItems {
-                                addItem(term, definition)
-
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {         // 딜레이 안 주면 추가한 목록이 안 보임
-                                    scrollTarget = note.term.count - 1
-                                }
-                                showingAddItemAlert = true
-//                            }
-                        }
-                    }))
+                    .alert(isPresented: $showingAddItemAlert, textAlert)
     //                .frame(height: listFrame)
                     .onChange(of: scrollTarget) { target in
                         if let target = target {
@@ -93,9 +75,7 @@ struct NoteDetailView: View {
                         }
                     }
                     .onDisappear() {
-                        for i in 0..<isDisableds.count {
-                            isDisableds[i] = false
-                        }
+                        isDisableds = isDisableds.map { _ in false }
                     }
                     .navigationBarTitle("\(note.title!)", displayMode: .inline)
                     .toolbar {
@@ -134,11 +114,26 @@ extension NoteDetailView {
         }
     }
   
+    var textAlert: TextAlert {
+        TextAlert(title: "Add Item".localized, message: "Enter a term and a definition to memorize. ".localized, action: { term, definition  in
+            if let term = term, let definition = definition {
+                if (term != "" || definition != "") {
+//                if (term != "" || definition != "") && note.term.count < limitedNumberOfItems {
+                    addItem(term, definition)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {         // 딜레이 안 주면 추가한 목록이 안 보임
+                        scrollTarget = note.term.count - 1
+                    }
+                    showingAddItemAlert = true
+                }
+            }
+        })
+    }
+    
     var editItemButton: some View {
         Button(action: {
+            itemLocation = ItemLocation()
             itemControl = ItemControl()
             
-            itemLocation = ItemLocation()
             closeKeyboard = false
             
             if itemControl.isShuffled { shuffle() }
@@ -147,8 +142,7 @@ extension NoteDetailView {
             selection = Set<UUID>()
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {            // for animation
-                isTextField = true
-                isEditButton = true
+                isEditMode = true
             }
         }) {
             Label("Edit item", systemImage: "pencil")
@@ -157,15 +151,13 @@ extension NoteDetailView {
     
     var doneButton: some View {
         Button(action: {
-            isEditButton = false
-            isTextField = false
+            isEditMode = false
             
             editMode = .inactive
             selection = Set<UUID>()
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {            // 없으면 Keyboard 뒤 배경 안 사라짐
                 closeKeyboard = true
-                isEditButton = true
             }
             
             saveContext()
@@ -211,7 +203,7 @@ extension NoteDetailView {
                     noteDetailCell(noteDetail, col)
                         .onTapGesture {
                             itemLocation = ItemLocation(noteDetail.order, col)  // col 할당 관련해서, 여기 있으면 Keyboard 뒤에 View가 안 없어지는 경우 생김
-                            if isTextField { scrollTarget = noteDetail.order }
+                            if isEditMode { scrollTarget = noteDetail.order }
                         }
                 }
                 
@@ -236,7 +228,7 @@ extension NoteDetailView {
         return ZStack {
             switch selectedCol {
             case 0:
-                if isTextField == false {
+                if isEditMode == false {
                     noteDetailText(noteDetail.term, bodyColor: .textBodyColor, strokeColor: .tTextStrokeColor)
                     GeometryReader { geometry in
                         HStack {
@@ -249,7 +241,7 @@ extension NoteDetailView {
                     NoteDetailTextField("Term", $note.term[noteDetail.order], ItemLocation(noteDetail.order, 0), bodyColor: .textFieldBodyColor, strokeColor: .tTextFieldStrokeColor)
                 }
             case 1:
-                if isTextField == false {
+                if isEditMode == false {
                     noteDetailText(noteDetail.definition, bodyColor: .textBodyColor, strokeColor: .dTextStrokeColor)
                     GeometryReader { geometry in
                         HStack {
@@ -281,11 +273,10 @@ extension NoteDetailView {
     
     func NoteDetailTextField(_ title: String, _ text: Binding<String>, _ itemLocation: ItemLocation, bodyColor: Color, strokeColor: Color) -> some View {
         
-        var responder: Bool {       // Keyboard Toolbar에서 열간 이동하기 위해 필요
-            return self.itemLocation == itemLocation
-        }
+        // Keyboard Toolbar에서 열간 이동하기 위해 필요
+        var responder: Bool { self.itemLocation == itemLocation }
         
-        return CustomTextFieldWithToolbar(title: title, text: text, location: $itemLocation, isEnabled: $isTextField, closeKeyboard: $closeKeyboard, col: itemLocation.col, isFirstResponder: responder)
+        return CustomTextFieldWithToolbar(title: title, text: text, location: $itemLocation, isEnabled: $isEditMode, closeKeyboard: $closeKeyboard, col: itemLocation.col, isFirstResponder: responder)
             .padding(.horizontal)
             .modifier(NoteDetailListModifier(bodyColor: bodyColor, strokeColor: strokeColor, lineWidth: 1.0))
     }
@@ -306,8 +297,8 @@ extension NoteDetailView {
         ToolbarItem(placement: .navigationBarTrailing) {
             if editMode == .inactive {
                 Menu {
-                    addItemButton.disabled(isAddButton == false)
-                    editItemButton.disabled(isEditButton == false)
+                    addItemButton
+                    editItemButton
                     hideMemorizedButton
                 }
                 label: { Label("", systemImage: "ellipsis.circle").imageScale(.large) }
@@ -411,8 +402,7 @@ extension NoteDetailView {
     var deleteMemorizedButton: some View {      // TextField를 없애면 에러 발생
         Button(action: {
             if editMode != .inactive {
-                isEditButton = false
-                isTextField = false
+                isEditMode = false
                 
                 editMode = .inactive
             }
@@ -440,8 +430,6 @@ extension NoteDetailView {
                 for i in 0..<note.term.count { tmpNoteDetails[i].order = i }
                 
                 selection = Set<UUID>()
-                
-                isEditButton = true
             }
         }) {
             Text("Delete Memorized")
