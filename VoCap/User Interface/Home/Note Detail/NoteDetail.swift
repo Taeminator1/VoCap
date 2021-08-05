@@ -14,4 +14,11 @@ struct NoteDetail: Identifiable {
     var term: String = ""
     var definition: String = ""
     var isMemorized: Bool = false
+
+    init(order: Int, _ term: String, _ definition: String, _ isMemorized: Bool = false) {
+        self.order = order
+        self.term = term
+        self.definition = definition
+        self.isMemorized = isMemorized
+    }
 }

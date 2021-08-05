@@ -92,6 +92,7 @@ struct NoteDetailView: View {
                         spacer
                         shuffleButton
                         spacer
+                        deleteMemorizedButton
                         showingButton(.definition)
                     }
                     .environment(\.editMode, self.$editMode)          // 해당 위치에 없으면 editMode 안 먹힘
@@ -122,8 +123,7 @@ extension NoteDetailView {
     var textAlert: TextAlert {
         TextAlert(title: "Add Item".localized, message: "Enter a term and a definition to memorize. ".localized, action: { term, definition  in
             if let term = term, let definition = definition {
-                if (term != "" || definition != "") {
-//                if (term != "" || definition != "") && note.term.count < limitedNumberOfItems {
+                if (term != "" || definition != "") {           // && note.term.count < limitedNumberOfItems
                     addItem(term, definition)
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {         // 딜레이 안 주면 추가한 목록이 안 보임
                         scrollTarget = note.term.count - 1
@@ -183,15 +183,10 @@ extension NoteDetailView {
         }
     }
     
-    func addItem(_ term: String, _ definitino: String) {
-        note.term.append(term)
-        note.definition.append(definitino)
-        note.isMemorized.append(false)
-        
-        let index = note.term.count - 1
-        tmpNoteDetails.append(NoteDetail(order: index, term: note.term[index], definition: note.definition[index]))
+    func addItem(_ term: String, _ definition: String) {
+        note.appendItem(term, definition)
+        tmpNoteDetails.append(NoteDetail(order: note.itemCount - 1, term, definition))
         saveContext()
-    
         isScaledArray.append(false)
     }
 }
@@ -311,7 +306,7 @@ extension NoteDetailView {
         ToolbarItem(placement: .bottomBar) { Spacer() }
     }
     
-    func showingButton(_ Column: Column) -> some ToolbarContent {
+    func showingButton(_ column: Column) -> some ToolbarContent {
         ToolbarItem(placement: .bottomBar) {
             Button(action: {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
@@ -319,10 +314,10 @@ extension NoteDetailView {
                         isDisableds[1].toggle()
                     }
                 }
-                Column == .term ? itemControl.toggleLeft() : itemControl.toggleRight()
+                column == .term ? itemControl.toggleLeft() : itemControl.toggleRight()
             }) {
                 if editMode == .inactive {
-                    switch(Column) {
+                    switch(column) {
                     case .term:
                         itemControl.screen.left ? Image("arrow.right.on").imageScale(.large) : Image("arrow.right.off").imageScale(.large)
                     case .definition:
@@ -342,6 +337,16 @@ extension NoteDetailView {
             }
         }
     }
+    
+    var deleteMemorizedButton: some ToolbarContent {
+        ToolbarItem(placement: .bottomBar) {
+            Button(action: { deleteMemorized() }) {
+                if editMode == .active {
+                    Text("Delete Memorized")
+                }
+            }
+        }
+    }
 }
 
 
@@ -351,7 +356,7 @@ extension NoteDetailView {
         tmpNoteDetails = [NoteDetail]()
         
         for i in 0..<note.term.count {
-            tmpNoteDetails.append(NoteDetail(order: i, term: note.term[i], definition: note.definition[i], isMemorized: note.isMemorized[i]))
+            tmpNoteDetails.append(NoteDetail(order: i, note.term[i], note.definition[i], note.isMemorized[i]))
             isScaledArray.append(false)
         }
     }
@@ -374,55 +379,38 @@ extension NoteDetailView {
         }
     }
     
-    var deleteMemorizedButton: some View {      // TextField를 없애면 에러 발생
-        Button(action: {
-            if editMode != .inactive {
-                isEditMode = false
-                
-                editMode = .inactive
+    func deleteMemorized() -> Void {      // TextField를 없애면 에러 발생
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {            // 없으면 Keyboard 뒤 배경 안 사라짐
+            for i in 0..<note.term.count {
+                if note.isMemorized[i] == true {
+                    selection.insert(tmpNoteDetails[i].id)
+                }
             }
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {            // 없으면 Keyboard 뒤 배경 안 사라짐
-                
-                for i in 0..<note.term.count {
-                    if note.isMemorized[i] == true {
-                        selection.insert(tmpNoteDetails[i].id)
-                    }
+            for id in selection {
+                if let index = tmpNoteDetails.lastIndex(where: { $0.id == id })  {
+                    note.removeItem(at: index)
+                    
+                    tmpNoteDetails.remove(at: index)
+                    isScaledArray.remove(at: index)
                 }
-                
-                for id in selection {
-                    if let index = tmpNoteDetails.lastIndex(where: { $0.id == id })  {
-                        note.term.remove(at: index)
-                        note.definition.remove(at: index)
-                        note.isMemorized.remove(at: index)
-                        
-                        tmpNoteDetails.remove(at: index)
-                        isScaledArray.remove(at: index)
-                    }
-                }
-                saveContext()
-                
-                for i in 0..<note.term.count { tmpNoteDetails[i].order = i }
-                
-                selection = Set<UUID>()
             }
-        }) {
-            Text("Delete Memorized")
+            saveContext()
+            
+            for i in 0..<note.term.count { tmpNoteDetails[i].order = i }
+            
+            selection = Set<UUID>()
         }
     }
     
-    func deleteItem(at offsets: IndexSet) {         // edit 상태에서 마지막꺼 지우면 에러 발생
-        note.term.remove(atOffsets: offsets)
-        note.definition.remove(atOffsets: offsets)
-        note.isMemorized.remove(atOffsets: offsets)
-
+    func deleteItem(atOffsets offsets: IndexSet) {         // edit 상태에서 마지막꺼 지우면 에러 발생
+        note.removeItem(atOffsets: offsets)
         tmpNoteDetails.remove(atOffsets: offsets)
         isScaledArray.remove(atOffsets: offsets)
-        
         saveContext()
         
         // shuffle 상태에서 삭제하면 해당 구문이 return 못하게 함(shuffle 상태에서는 delete 못하게 함)
-        for i in 0..<note.term.count {
+        for i in 0 ..< note.term.count {
             tmpNoteDetails[i].order = i
         }
     }
