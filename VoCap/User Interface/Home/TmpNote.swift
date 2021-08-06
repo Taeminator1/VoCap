@@ -1,5 +1,5 @@
 //
-//  MakeNoteView2.swift
+//  TmpNote.swift
 //  VoCap
 //
 //  Created by 윤태민 on 12/28/20.

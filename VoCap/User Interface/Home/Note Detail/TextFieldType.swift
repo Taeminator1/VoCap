@@ -8,6 +8,6 @@
 import Foundation
 
 enum TextFieldType: Int {
-    case Term = 0
-    case Definition = 1
+    case term = 0
+    case definition = 1
 }

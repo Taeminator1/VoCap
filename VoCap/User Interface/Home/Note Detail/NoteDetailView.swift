@@ -8,11 +8,6 @@
 import SwiftUI
 import GoogleMobileAds
 
-enum Column: Int {
-    case term = 0
-    case definition
-}
-
 struct NoteDetailView: View {
     @Environment(\.managedObjectContext) private var viewContext
     
@@ -200,7 +195,7 @@ extension NoteDetailView {
         else {
             HStack {
                 ForEach(0 ..< 2) { col in
-                    noteDetailCell(noteDetail, Column(rawValue: col) ?? .term)
+                    noteDetailCell(noteDetail, TextFieldType(rawValue: col) ?? .term)
                         .onTapGesture {
                             itemLocation = ItemLocation(noteDetail.order, col)  // col 할당 관련해서, 여기 있으면 Keyboard 뒤에 View가 안 없어지는 경우 생김
                             if isEditMode { scrollTarget = noteDetail.order }
@@ -224,7 +219,7 @@ extension NoteDetailView {
         }
     }
     
-    func noteDetailCell(_ noteDetail: NoteDetail, _ selectedCol: Column) -> some View {
+    func noteDetailCell(_ noteDetail: NoteDetail, _ selectedCol: TextFieldType) -> some View {
         return ZStack {
             switch selectedCol {
             case .term:
@@ -306,7 +301,7 @@ extension NoteDetailView {
         ToolbarItem(placement: .bottomBar) { Spacer() }
     }
     
-    func showingButton(_ column: Column) -> some ToolbarContent {
+    func showingButton(_ column: TextFieldType) -> some ToolbarContent {
         ToolbarItem(placement: .bottomBar) {
             Button(action: {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
@@ -347,6 +342,11 @@ extension NoteDetailView {
             }
         }
     }
+    
+    func shuffle() -> Void {
+        itemControl.isShuffled.toggle()
+        itemControl.isShuffled ? tmpNoteDetails.shuffle() : tmpNoteDetails.sort { $0.order < $1.order }
+    }
 }
 
 
@@ -355,15 +355,10 @@ extension NoteDetailView {
     func copyNoteDetails() {
         tmpNoteDetails = [NoteDetail]()
         
-        for i in 0..<note.term.count {
-            tmpNoteDetails.append(NoteDetail(order: i, note.term[i], note.definition[i], note.isMemorized[i]))
+        for i in 0 ..< note.itemCount {
+            tmpNoteDetails.append(NoteDetail(order: i, note.findItem(at: i)))
             isScaledArray.append(false)
         }
-    }
-    
-    func shuffle() -> Void {
-        itemControl.isShuffled.toggle()
-        itemControl.isShuffled ? tmpNoteDetails.shuffle() : tmpNoteDetails.sort { $0.order < $1.order }
     }
 }
 
@@ -409,10 +404,7 @@ extension NoteDetailView {
         isScaledArray.remove(atOffsets: offsets)
         saveContext()
         
-        // shuffle 상태에서 삭제하면 해당 구문이 return 못하게 함(shuffle 상태에서는 delete 못하게 함)
-        for i in 0 ..< note.term.count {
-            tmpNoteDetails[i].order = i
-        }
+        Array(0 ..< note.itemCount).forEach { tmpNoteDetails[$0].order = $0 }
     }
     
     func changeMemorizedState(id: UUID) {

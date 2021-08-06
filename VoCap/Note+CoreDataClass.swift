@@ -32,4 +32,8 @@ public class Note: NSManagedObject {
         self.definition.remove(at: i)
         self.isMemorized.remove(at: i)
     }
+    
+    func findItem(at i: Int) -> (term: String, definition: String, isMemorized: Bool) {
+        return (term[i], definition[i], isMemorized[i])
+    }
 }
