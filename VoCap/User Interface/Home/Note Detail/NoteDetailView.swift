@@ -29,7 +29,7 @@ struct NoteDetailView: View {
     @State var listFrame: CGFloat = 0.0
     
 //    let limitedNumberOfItems: Int = 500
-    @Binding var isDisableds: [Bool]
+    @Binding var tipControls: [TipControl]
     
     @State var orientation = UIDevice.current.orientation
     let orientationChanged = NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)
@@ -69,12 +69,12 @@ struct NoteDetailView: View {
                         
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                             withAnimation {
-                                isDisableds[0].toggle()
+                                tipControls[TipType.tip0.rawValue].makeViewDisabled()
                             }
                         }
                     }
                     .onDisappear() {
-                        isDisableds = isDisableds.map { _ in false }
+                        Array(0 ..< TipType.allCases.count).forEach { tipControls[$0].makeViewEnabled() }
                     }
                     .navigationBarTitle("\(note.title!)", displayMode: .inline)
                     .toolbar {
@@ -98,7 +98,7 @@ struct NoteDetailView: View {
             self.orientation = UIDevice.current.orientation
 //            print(orientation.isLandscape)
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {         // 딜레이 안 주면 연속해서 Rotate했을 때, .bottom Toolbar 사라지는 문제 재발
-                isDisableds[0].toggle()
+//                tipControls[TipType.tip0.rawValue].makeViewToggle()
             }
         }
     }
@@ -303,7 +303,7 @@ extension NoteDetailView {
             Button(action: {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                     withAnimation {
-                        isDisableds[1].toggle()
+                        tipControls[TipType.tip1.rawValue].makeViewDisabled()
                     }
                 }
                 column == .term ? itemControl.toggleLeft() : itemControl.toggleRight()

@@ -14,7 +14,7 @@ struct SettingsView: View {
     
     @State var isContactUsPresented: Bool = false
     
-    @Binding var isTipsPresented: [Bool]
+    @Binding var tipControls: [TipControl]
     
     var body: some View {
         NavigationView {
@@ -55,7 +55,7 @@ private extension SettingsView {
     
     var reset: some View {
         Section() {
-            NavigationLink(destination: ResetView(isSettingsPresented: $isSettingsPresented, isTipsPresented: $isTipsPresented)) {
+            NavigationLink(destination: ResetView(isPresent: $isSettingsPresented, tipControls: $tipControls)) {
                 Text("Reset")
             }
         }
@@ -65,7 +65,7 @@ private extension SettingsView {
 
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
-        SettingsView(isSettingsPresented: .constant(true), isTipsPresented: .constant([false, false]))
+        SettingsView(isSettingsPresented: .constant(true), tipControls: .constant([TipControl(.tip0), TipControl(.tip1)]))
             .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
     }
 }

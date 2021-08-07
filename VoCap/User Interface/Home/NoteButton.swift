@@ -14,7 +14,7 @@ struct NoteButton: View {
     @Binding var order: Int?
     
     @Binding var hideNumber: Bool
-    @Binding var isDisableds: [Bool]
+    @Binding var tipControls: [TipControl]
     
     let note: Note
     
@@ -34,7 +34,7 @@ struct NoteButton: View {
                 }
             }
             
-            NavigationLink(destination: NoteDetailView(note: note, isDisableds: $isDisableds), tag: note.id!, selection: $id) {
+            NavigationLink(destination: NoteDetailView(note: note, tipControls: $tipControls), tag: note.id!, selection: $id) {
                 EmptyView()
             }
             .frame(width: 0).hidden()

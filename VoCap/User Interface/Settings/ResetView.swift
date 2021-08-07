@@ -15,12 +15,12 @@ struct ResetView: View {
         animation: .default)
     var notes: FetchedResults<Note>
     
-    @Binding var isSettingsPresented: Bool
+    @Binding var isPresent: Bool
     
     @State var showingResetTipsSheet: Bool = false
     @State var showingEraseSheet: Bool = false
     
-    @Binding var isTipsPresented: [Bool]
+    @Binding var tipControls: [TipControl]
     
     var body: some View {
         List {
@@ -50,7 +50,7 @@ extension ResetView {
     var resetTipsSettingsActionSheet: ActionSheet {
         ActionSheet(title: Text("This will make tips be presented again. "), 
                     buttons: [
-                        .destructive(Text("Reset Tips Settings"), action: { resetTipsSettings() }),
+                        .destructive(Text("Reset Tips Settings"), action: { tipControls.forEach { $0.reset() }}),
                         .cancel(Text("Cancel"))]
         )
     }
@@ -66,20 +66,12 @@ extension ResetView {
 
 // MARK: - Modify notes
 extension ResetView {
-    func resetTipsSettings() {
-        isTipsPresented[0] = false
-        UserDefaults.standard.set(self.isTipsPresented[0], forKey: "Tip0")
-        
-        isTipsPresented[1] = false
-        UserDefaults.standard.set(self.isTipsPresented[1], forKey: "Tip1")
-    }
-    
     func deleteAllData() {
         
         Array(0 ..< notes.count).forEach { viewContext.delete(notes[$0]) }
         saveContext()
         
-        isSettingsPresented = false
+        isPresent = false
     }
     
     func saveContext() {
@@ -94,6 +86,6 @@ extension ResetView {
 
 struct ResetView_Previews: PreviewProvider {
     static var previews: some View {
-        ResetView(isSettingsPresented: .constant(true), isTipsPresented: .constant([false, false]))
+        ResetView(isPresent: .constant(true), tipControls: .constant([TipControl(.tip0), TipControl(.tip1)]))
     }
 }

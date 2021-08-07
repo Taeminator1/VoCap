@@ -24,11 +24,9 @@ struct HomeView: View {
     @State var noteRowOrder: Int?
     
     @State var isSettingsPresented: Bool = false
+    @State var tipControls: [TipControl] = [TipControl(.tip0), TipControl(.tip1)]
     
     @State var hideNoteDetailsNumber: Bool = false
-    
-    @State var isDisableds: [Bool] = [false, false]
-    @State var isTipsPresented: [Bool] = [UserDefaults.standard.bool(forKey: "Tip0"), UserDefaults.standard.bool(forKey: "Tip1")]
     
     var body: some View {
         ZStack {
@@ -70,13 +68,11 @@ struct HomeView: View {
                 UITableView.appearance().showsVerticalScrollIndicator = false
             }
             .sheet(isPresented: $isSettingsPresented) {
-                SettingsView(isSettingsPresented: $isSettingsPresented, isTipsPresented: $isTipsPresented)
+                SettingsView(isSettingsPresented: $isSettingsPresented, tipControls: $tipControls)
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
             }
             
-            ForEach(0 ..< isTipsPresented.count) {
-                TipView(isDisableds: $isDisableds, isPresenteds: $isTipsPresented, order: $0)
-            }
+            ForEach(0 ..< tipControls.count) { TipView(order: $0, tipControls: $tipControls) }
         }
         .accentColor(.mainColor)
     }
@@ -100,7 +96,7 @@ extension HomeView {
                 }
             }
             
-            NavigationLink(destination: NoteDetailView(note: note, isDisableds: $isDisableds), tag: note.id!, selection: $noteRowSelection) {
+            NavigationLink(destination: NoteDetailView(note: note, tipControls: $tipControls), tag: note.id!, selection: $noteRowSelection) {
                 EmptyView()
             }
             .frame(width: 0).hidden()

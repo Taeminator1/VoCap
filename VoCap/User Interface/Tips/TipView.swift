@@ -10,23 +10,17 @@ import SwiftUI
 struct TipView: View {
     @Environment(\.colorScheme) var colorScheme
     
-    @Binding var isDisableds: [Bool]
-    @Binding var isPresenteds: [Bool]
-    
     let order: Int
+    @Binding var tipControls: [TipControl]
     
     var body: some View {
         Group {
-            if isDisableds[order] && !isPresenteds[order] {
+            if tipControls[order].isPresented {
                 Rectangle()
                     .fill(Color.black.opacity(0.4))
                     .ignoresSafeArea()
                     .overlay(
-                        Button(action: {
-                            isDisableds[order].toggle()
-                            isPresenteds[order] = true
-                            UserDefaults.standard.set(self.isPresenteds[order], forKey: "Tip\(order)")
-                        }) {
+                        Button(action: { tipControls[order].makeTipDisabled() }) {
                             tip
                         }
                         .buttonStyle(PlainButtonStyle())
