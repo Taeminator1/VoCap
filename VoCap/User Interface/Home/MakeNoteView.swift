@@ -71,30 +71,13 @@ extension MakeNoteView {
 // MARK: - Tool Bar Items
 extension MakeNoteView {
     var cancelButton: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarLeading) {
-            Button(action: cancel) {
-                Text("Cancel")
-            }
+        CancelButton() {
+            note.isEqual(dNote) ? (isPresented = false) : (showingCancelSheet = true)
         }
     }
     
-    func cancel() {
-        if note.isEqual(dNote) {
-            isPresented = false
-        }
-        else {
-            showingCancelSheet = true
-        }
-    }
-    
-//    @ViewBuilder            // for conditionally view
     var doneSaveButton: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarTrailing) {
-            Button(action: { onComplete(note) }) {
-                noteRowOrder == nil ? Text("Save") : Text("Done")
-            }
-            .disabled(noteRowOrder != nil && note.isEqual(dNote))
-        }
+        DoneButton(title: (noteRowOrder == nil ? "Save" : "Done"), isDisabled: (noteRowOrder != nil && note.isEqual(dNote))) { onComplete(note) }
     }
 }
 

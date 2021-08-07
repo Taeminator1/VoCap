@@ -22,9 +22,7 @@ struct SettingsView: View {
                 contactUs
                 reset
             }
-//            .listStyle(GroupedListStyle())
             .listStyle(InsetGroupedListStyle())
-            .environment(\.horizontalSizeClass, .regular)               // 이건 뭐지?
             .navigationBarTitle("Settings", displayMode: .inline)
             .toolbar {
                 doneButton
@@ -38,22 +36,12 @@ struct SettingsView: View {
 // MARK: - Tool Bar Items
 private extension SettingsView {
     var doneButton: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarTrailing) {
-            Button(action: { isSettingsPresented = false }) {
-                Text("Done")
-            }
-        }
+        DoneButton() { isSettingsPresented = false }
     }
 }
 
 // MARK: - View of List
 private extension SettingsView {
-    var others: some View {
-        Section() {
-            Text("Others")
-        }
-    }
-    
     var contactUs: some View {
         Section() {
             Button(action: { isContactUsPresented = true }) {

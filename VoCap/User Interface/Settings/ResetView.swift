@@ -76,9 +76,7 @@ extension ResetView {
     
     func deleteAllData() {
         
-        for i in 0..<notes.count {
-            viewContext.delete(notes[i])
-        }
+        Array(0 ..< notes.count).forEach { viewContext.delete(notes[$0]) }
         saveContext()
         
         isSettingsPresented = false
