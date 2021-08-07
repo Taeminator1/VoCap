@@ -20,7 +20,6 @@ struct NoteDetailView: View {
     
     @State var itemLocation = ItemLocation()
     @State var itemControl = ItemControl()
-    @State var isScaledArray: [Bool] = []
     
     @State var isEditMode: Bool = false
     @State var closeKeyboard: Bool = true
@@ -118,10 +117,10 @@ extension NoteDetailView {
     var textAlert: TextAlert {
         TextAlert(title: "Add Item".localized, message: "Enter a term and a definition to memorize. ".localized, action: { term, definition  in
             if let term = term, let definition = definition {
-                if (term != "" || definition != "") {           // && note.term.count < limitedNumberOfItems
+                if (term != "" || definition != "") {           // && note.itemCount < limitedNumberOfItems
                     addItem(term, definition)
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {         // 딜레이 안 주면 추가한 목록이 안 보임
-                        scrollTarget = note.term.count - 1
+                        scrollTarget = note.itemCount - 1
                     }
                     showingAddItemAlert = true
                 }
@@ -162,11 +161,10 @@ extension NoteDetailView {
             
             saveContext()
             
-            for i in 0..<note.term.count {
-                tmpNoteDetails[i].term = note.term[i]
-                tmpNoteDetails[i].definition = note.definition[i]
+            Array(0 ..< note.itemCount).forEach {
+                tmpNoteDetails[$0].term = note.term[$0]
+                tmpNoteDetails[$0].definition = note.definition[$0]
             }
-            
         }) {
             Text("Done")
         }
@@ -182,7 +180,6 @@ extension NoteDetailView {
         note.appendItem(term, definition)
         tmpNoteDetails.append(NoteDetail(order: note.itemCount - 1, term, definition))
         saveContext()
-        isScaledArray.append(false)
     }
 }
 
@@ -273,9 +270,9 @@ extension NoteDetailView {
         Rectangle()
             .foregroundColor(screenColor)
             .frame(width: initalWidth)
-            .scaleEffect(x: isScreen && !isScaledArray[order] ? stretchedWidth / initalWidth : 1.0, y: 1.0, anchor: anchor)
+            .scaleEffect(x: isScreen && !tmpNoteDetails[order].isScaled ? stretchedWidth / initalWidth : 1.0, y: 1.0, anchor: anchor)
             .onTapGesture{}                 // Scroll 되게 하려면 필요(해당 자리에)
-            .modifier(CustomGestureModifier(isPressed: $isScaledArray[order], f: { }))
+            .modifier(CustomGestureModifier(isPressed: $tmpNoteDetails[order].isScaled, f: { }))
     }
 }
 
@@ -355,10 +352,7 @@ extension NoteDetailView {
     func copyNoteDetails() {
         tmpNoteDetails = [NoteDetail]()
         
-        for i in 0 ..< note.itemCount {
-            tmpNoteDetails.append(NoteDetail(order: i, note.findItem(at: i)))
-            isScaledArray.append(false)
-        }
+        Array(0 ..< note.itemCount).forEach { tmpNoteDetails.append(NoteDetail(order: $0, note.findItem(at: $0))) }
     }
 }
 
@@ -376,23 +370,21 @@ extension NoteDetailView {
     
     func deleteMemorized() -> Void {      // TextField를 없애면 에러 발생
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {            // 없으면 Keyboard 뒤 배경 안 사라짐
-            for i in 0..<note.term.count {
-                if note.isMemorized[i] == true {
-                    selection.insert(tmpNoteDetails[i].id)
+            Array(0 ..< note.itemCount).forEach {
+                if note.isMemorized[$0] {
+                    selection.insert(tmpNoteDetails[$0].id)
                 }
             }
             
-            for id in selection {
+            selection.forEach { id in
                 if let index = tmpNoteDetails.lastIndex(where: { $0.id == id })  {
                     note.removeItem(at: index)
-                    
                     tmpNoteDetails.remove(at: index)
-                    isScaledArray.remove(at: index)
                 }
             }
             saveContext()
             
-            for i in 0..<note.term.count { tmpNoteDetails[i].order = i }
+            Array(0 ..< note.itemCount).forEach { tmpNoteDetails[$0].order = $0 }
             
             selection = Set<UUID>()
         }
@@ -401,7 +393,6 @@ extension NoteDetailView {
     func deleteItem(atOffsets offsets: IndexSet) {         // edit 상태에서 마지막꺼 지우면 에러 발생
         note.removeItem(atOffsets: offsets)
         tmpNoteDetails.remove(atOffsets: offsets)
-        isScaledArray.remove(atOffsets: offsets)
         saveContext()
         
         Array(0 ..< note.itemCount).forEach { tmpNoteDetails[$0].order = $0 }

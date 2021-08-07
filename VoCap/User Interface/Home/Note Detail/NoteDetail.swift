@@ -10,17 +10,17 @@ import SwiftUI
 
 /// 단어장의 각 목록을 위한 객체
 struct NoteDetail: Identifiable {
-    var id: UUID = UUID()                    // Shuffle 해도 변하지 않음 -> Delete시 갱신안하게 하기 위함
-    var order: Int = -1                      // NoteDetail의 List에 나오는 순서
+    var id: UUID = UUID()                   // Shuffle 해도 변하지 않음 -> Delete시 갱신안하게 하기 위함
+    var order: Int = -1                     // NoteDetail의 List에 나오는 순서
+    var isScaled: Bool = false              // 각 item의 Scale 여부 확인
     var term: String = ""
     var definition: String = ""
     var isMemorized: Bool = false
 
-    init(order: Int, _ term: String, _ definition: String, _ isMemorized: Bool = false) {
+    init(order: Int, _ term: String, _ definition: String) {
         self.order = order
         self.term = term
         self.definition = definition
-        self.isMemorized = isMemorized
     }
     
     init(order: Int, _ item: (term: String, definition: String, isMemorized: Bool)) {
