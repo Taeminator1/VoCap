@@ -5,6 +5,12 @@
 //  Created by 윤태민 on 12/2/20.
 //
 
+//  Initial screen of the App:
+//  - Add a new note.
+//  - Edit a exiting note.
+//  - Access each note.
+//  - Settings
+
 import SwiftUI
 import CoreData
 
@@ -35,8 +41,7 @@ struct HomeView: View {
                     AddNoteButton(isPresent: $isMakeNotePresented, isEditMode: $isEditMode)
                     
                     ForEach(notes) {
-                        noteList($0)
-//                        NoteButton(isPresented: $isMakeNotePresented, isEditMode: $isEditMode, id: $noteRowSelection, order: $noteRowOrder, hideNumber: $hideNoteDetailsNumber, isDisableds: $isDisableds, note: $0)
+                        NoteButton(isPresented: $isMakeNotePresented, isEditMode: $isEditMode, id: $noteRowSelection, order: $noteRowOrder, hideNumber: $hideNoteDetailsNumber, tipControls: $tipControls, note: $0)
                     }
                     .onDelete(perform: deleteItems)
                     .onMove(perform: moveItems)
@@ -78,34 +83,6 @@ struct HomeView: View {
     }
 }
 
-// MARK: - Note List
-extension HomeView {
-    func noteList(_ note: Note) -> some View {
-        HStack {
-            Button(action: {
-                if isEditMode == .inactive || isEditMode == .transient {
-                    self.noteRowSelection = note.id     // 왜 noteRowSelection에 !붙일 때랑 안 붙일 때 다르지?
-                }
-                else {
-                    self.noteRowOrder = Int(note.order)
-                    self.isMakeNotePresented = true
-                }
-            }) {
-                VStack() {
-                    NoteRow(title: note.title!, colorIndex: note.colorIndex, totalNumber: Int16(note.term.count), memorizedNumber: Int16(countTrues(note.isMemorized)), hideNoteDetailsNumber: $hideNoteDetailsNumber)
-                }
-            }
-            
-            NavigationLink(destination: NoteDetailView(note: note, tipControls: $tipControls), tag: note.id!, selection: $noteRowSelection) {
-                EmptyView()
-            }
-            .frame(width: 0).hidden()
-        }
-        .listModifier()
-        .buttonStyle(PlainButtonStyle())            // .active 상태 일 때 버튼 눌릴 수 있도록 함
-    }
-}
-
 // MARK: - Toolbar Items
 extension HomeView {
     var editButton: some ToolbarContent {
@@ -143,7 +120,7 @@ extension HomeView {
 }
 
 // MARK: - Modify NoteRows
-private extension HomeView {
+extension HomeView {
     func editNote(_ note: TmpNote) {
         notes[noteRowOrder!].title = note.title
         notes[noteRowOrder!].colorIndex = Int16(note.colorIndex)
@@ -221,14 +198,6 @@ extension HomeView {
             notes[start].order = Int16(destination)
         }
         
-    }
-    
-    func countTrues(_ arr: [Bool]) -> Int {
-        var result: Int = 0
-        for i in 0..<arr.count {
-            if arr[i] { result += 1 }
-        }
-        return result
     }
 }
 

@@ -5,6 +5,8 @@
 //  Created by 윤태민 on 7/30/21.
 //
 
+//  Button for note in HomeView
+
 import SwiftUI
 
 struct NoteButton: View {
@@ -21,12 +23,12 @@ struct NoteButton: View {
     var body: some View {
         HStack {
             Button(action: {
-                if isEditMode == .inactive || isEditMode == .transient {    // When Edit Button has been not pressed
-                    id = note.id                         // 왜 noteRowSelection에 !붙일 때랑 안 붙일 때 다르지?
-                }
-                else {                                                      // When Edit Button has been pressed by user
+                switch(isEditMode) {
+                case .active:
                     order = Int(note.order)
                     isPresented = true
+                default:
+                    id = note.id
                 }
             }) {
                 VStack() {
@@ -43,11 +45,8 @@ struct NoteButton: View {
         .buttonStyle(PlainButtonStyle())            // .active 상태 일 때 버튼 눌릴 수 있도록 함
     }
     
+    // Count memorized item in note.
     func countTrues(_ arr: [Bool]) -> Int {
-        var result: Int = 0
-        for i in 0..<arr.count {
-            if arr[i] { result += 1 }
-        }
-        return result
+        return arr.compactMap { $0 ? $0 : nil }.count
     }
 }
