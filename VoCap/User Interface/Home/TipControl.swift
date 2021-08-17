@@ -42,4 +42,8 @@ struct TipControl {
     mutating func makeViewDisabled() {
         self.isDisabled = true
     }
+    
+    mutating func makeViewToggle() {
+        self.isDisabled = self.isDisabled ? false : true
+    }
 }

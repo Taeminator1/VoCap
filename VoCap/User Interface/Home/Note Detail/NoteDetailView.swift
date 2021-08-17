@@ -5,13 +5,15 @@
 //  Created by 윤태민 on 12/9/20.
 //
 
+//  Inside of each note.
+
 import SwiftUI
 import GoogleMobileAds
 
 struct NoteDetailView: View {
     @Environment(\.managedObjectContext) private var viewContext
     
-    @ObservedObject var note: Note          // @State할 때는, 값이 바뀌어도 갱신이 안 됨,
+    @ObservedObject var note: Note
     
     @State var tmpNoteDetails: [NoteDetail] = []
     
@@ -21,7 +23,6 @@ struct NoteDetailView: View {
     @State var itemLocation = ItemLocation()
     @State var itemControl = ItemControl()
     
-    @State var isEditMode: Bool = false
     @State var closeKeyboard: Bool = true
     @State var showingAddItemAlert: Bool = false
     
@@ -39,12 +40,11 @@ struct NoteDetailView: View {
     var body: some View {
         VStack {
             GADBannerViewController()
-                .frame(width: kGADAdSizeBanner.size.width, height: kGADAdSizeBanner.size.height)        // Frame 사이즈 변경 가능(실제 앱 구동하는 것 보고 변경 여부 결정)
+                .frame(width: kGADAdSizeBanner.size.width, height: kGADAdSizeBanner.size.height)
             
             GeometryReader { geometry in
                 ScrollViewReader { proxy in
-//                    List(selection: $selection) {
-                    List {
+                    List {      // List(selection: $selection) {
                         ForEach(tmpNoteDetails) { noteDetail in
                             noteDetailRow(noteDetail)
                         }
@@ -53,11 +53,9 @@ struct NoteDetailView: View {
                     }
                     .animation(.default)
                     .alert(isPresented: $showingAddItemAlert, textAlert)
-    //                .frame(height: listFrame)
-                    .onChange(of: scrollTarget) { target in
-                        if let target = target {
+                    .onChange(of: scrollTarget) {
+                        if let target = $0 {
                             scrollTarget = nil
-    //                        withAnimation { proxy.scrollTo(tmpNoteDetails[target].id, anchor: .bottom) }
                             withAnimation { proxy.scrollTo(tmpNoteDetails[target].id) }
                         }
                     }
@@ -89,16 +87,14 @@ struct NoteDetailView: View {
                         deleteMemorizedButton
                         showingButton(.definition)
                     }
-                    .environment(\.editMode, self.$editMode)          // 해당 위치에 없으면 editMode 안 먹힘
                 }
             }
             .accentColor(.mainColor)
         }
-        .onReceive(orientationChanged) { _ in                   // XxTextAlert을 추가하면 rotate 시, .bottom Toolbar가 사라져 방지하기 위함
+        .onReceive(orientationChanged) { _ in
             self.orientation = UIDevice.current.orientation
-//            print(orientation.isLandscape)
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {         // 딜레이 안 주면 연속해서 Rotate했을 때, .bottom Toolbar 사라지는 문제 재발
-//                tipControls[TipType.tip0.rawValue].makeViewToggle()
+                tipControls[TipType.tip0.rawValue].makeViewToggle()
             }
         }
     }
@@ -137,11 +133,9 @@ extension NoteDetailView {
             
             if itemControl.isShuffled { shuffle() }
             
-            editMode = .active
-            selection = Set<UUID>()
-            
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {            // for animation
-                isEditMode = true
+                editMode = .active
+                selection = Set<UUID>()
             }
         }) {
             Label("Edit item", systemImage: "pencil")
@@ -150,8 +144,6 @@ extension NoteDetailView {
     
     var doneButton: some View {
         Button(action: {
-            isEditMode = false
-            
             editMode = .inactive
             selection = Set<UUID>()
             
@@ -195,7 +187,7 @@ extension NoteDetailView {
                     noteDetailCell(noteDetail, TextFieldType(rawValue: col) ?? .term)
                         .onTapGesture {
                             itemLocation = ItemLocation(noteDetail.order, col)  // col 할당 관련해서, 여기 있으면 Keyboard 뒤에 View가 안 없어지는 경우 생김
-                            if isEditMode { scrollTarget = noteDetail.order }
+                            if editMode == .active { scrollTarget = noteDetail.order }
                         }
                 }
                 
@@ -220,7 +212,7 @@ extension NoteDetailView {
         return ZStack {
             switch selectedCol {
             case .term:
-                if isEditMode == false {
+                if editMode == .inactive {
                     noteDetailText(noteDetail.term, bodyColor: .textBodyColor, strokeColor: .tScreenColor)
                     GeometryReader { geometry in
                         HStack {
@@ -232,7 +224,7 @@ extension NoteDetailView {
                     NoteDetailTextField("Term", $note.term[noteDetail.order], ItemLocation(noteDetail.order, 0), bodyColor: .textFieldBodyColor, strokeColor: .tTextFieldStrokeColor)
                 }
             case .definition:
-                if isEditMode == false {
+                if editMode == .inactive {
                     noteDetailText(noteDetail.definition, bodyColor: .textBodyColor, strokeColor: .dScreenColor)
                     GeometryReader { geometry in
                         HStack {
@@ -261,7 +253,7 @@ extension NoteDetailView {
     
     func NoteDetailTextField(_ title: String, _ text: Binding<String>, _ itemLocation: ItemLocation, bodyColor: Color, strokeColor: Color) -> some View {
         // Keyboard Toolbar에서 열간 이동하기 위해 isFirstResponder 필요
-        return CustomTextFieldWithToolbar(title: title, text: text, location: $itemLocation, isEnabled: $isEditMode, closeKeyboard: $closeKeyboard, col: itemLocation.col, isFirstResponder: self.itemLocation == itemLocation)
+        return CustomTextFieldWithToolbar(title: title, text: text, location: $itemLocation, closeKeyboard: $closeKeyboard, col: itemLocation.col, isFirstResponder: self.itemLocation == itemLocation)
             .padding(.horizontal)
             .modifier(NoteDetailListModifier(bodyColor: bodyColor, strokeColor: strokeColor, lineWidth: 1.0))
     }
@@ -350,8 +342,6 @@ extension NoteDetailView {
 // MARK: - Other Functions
 extension NoteDetailView {
     func copyNoteDetails() {
-        tmpNoteDetails = [NoteDetail]()
-        
         Array(0 ..< note.itemCount).forEach { tmpNoteDetails.append(NoteDetail(order: $0, note.findItem(at: $0))) }
     }
 }

@@ -41,7 +41,6 @@ struct CustomTextFieldWithToolbar: UIViewRepresentable {
     var title: String = ""              // Placeholder
     @Binding var text: String
     @Binding var location: ItemLocation
-    @Binding var isEnabled: Bool
     @Binding var closeKeyboard: Bool
     let col: Int
     
