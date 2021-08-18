@@ -22,10 +22,10 @@ struct CustomTextFieldWithToolbar: UIViewRepresentable {
     class Coordinator: NSObject, UITextFieldDelegate {
 
         @Binding var text: String
-        @Binding var location: ItemLocation
+        @Binding var location: CellLocation
         @Binding var closeKeyboard: Bool
 
-        init(text: Binding<String>, location: Binding<ItemLocation>, closeKeyboard: Binding<Bool>) {
+        init(text: Binding<String>, location: Binding<CellLocation>, closeKeyboard: Binding<Bool>) {
             _text = text
             _location = location
             _closeKeyboard = closeKeyboard
@@ -40,7 +40,7 @@ struct CustomTextFieldWithToolbar: UIViewRepresentable {
 
     var title: String = ""              // Placeholder
     @Binding var text: String
-    @Binding var location: ItemLocation
+    @Binding var location: CellLocation
     @Binding var closeKeyboard: Bool
     let col: Int
     
@@ -102,11 +102,11 @@ class CustomUITextField: UITextField {
     
     let numberOfRows: Int = 0
     let numberOfCols: Int = 2
-    @Binding var location: ItemLocation
+    @Binding var location: CellLocation
     @Binding var closeKeyboard: Bool
     
     
-    init(location: Binding<ItemLocation>, closeKeyboard: Binding<Bool>) {
+    init(location: Binding<CellLocation>, closeKeyboard: Binding<Bool>) {
         _location = location
         _closeKeyboard = closeKeyboard
         super.init(frame: .zero)
@@ -142,7 +142,7 @@ class CustomUITextField: UITextField {
     
     @objc func done(button: UIBarButtonItem) -> Void {
 //        self.resignFirstResponder()
-        location = ItemLocation()
+        location = CellLocation()
         closeKeyboard = true
     }
 }

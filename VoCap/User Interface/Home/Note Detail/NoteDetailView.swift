@@ -18,9 +18,8 @@ struct NoteDetailView: View {
     @State var tmpNoteDetails: [NoteDetail] = []
     
     @State var editMode: EditMode = .inactive
-    @State var selection = Set<UUID>()
     
-    @State var itemLocation = ItemLocation()
+    @State var cellLocation = CellLocation()
     @State var itemControl = ItemControl()
     
     @State var closeKeyboard: Bool = true
@@ -29,13 +28,13 @@ struct NoteDetailView: View {
     @State var scrollTarget: Int?
     @State var listFrame: CGFloat = 0.0
     
-//    let limitedNumberOfItems: Int = 500
     @Binding var tipControls: [TipControl]
     
     @State var orientation = UIDevice.current.orientation
     let orientationChanged = NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)
             .makeConnectable()
             .autoconnect()
+    let limitedNumberOfItems: Int = 500
     
     var body: some View {
         VStack {
@@ -44,12 +43,12 @@ struct NoteDetailView: View {
             
             GeometryReader { geometry in
                 ScrollViewReader { proxy in
-                    List {      // List(selection: $selection) {
+                    List {
                         ForEach(tmpNoteDetails) { noteDetail in
                             noteDetailRow(noteDetail)
                         }
                         .onDelete(perform: deleteItem)
-                        .deleteDisabled(itemControl.isShuffled || editMode == .active)             // Shuffle 상태일 때 delete 못하게 함
+                        .deleteDisabled(itemControl.isShuffled || editMode == .active)
                     }
                     .animation(.default)
                     .alert(isPresented: $showingAddItemAlert, textAlert)
@@ -72,7 +71,7 @@ struct NoteDetailView: View {
                         }
                     }
                     .onDisappear() {
-                        Array(0 ..< TipType.allCases.count).forEach { tipControls[$0].makeViewEnabled() }
+                        Array(0 ..< tipControls.count).forEach { tipControls[$0].makeViewEnabled() }
                     }
                     .navigationBarTitle("\(note.title!)", displayMode: .inline)
                     .toolbar {
@@ -103,39 +102,40 @@ struct NoteDetailView: View {
 // MARK: - Menu
 extension NoteDetailView {
     var addItemButton: some View {
-        Button(action: {
-            showingAddItemAlert = true
-        }) {
+        Button(action: { showingAddItemAlert = true }) {
             Label("Add Item", systemImage: "plus")
         }
     }
   
     var textAlert: TextAlert {
-        TextAlert(title: "Add Item".localized, message: "Enter a term and a definition to memorize. ".localized, action: { term, definition  in
+        TextAlert(title: "Add Item".localized, message: "Enter a term and a definition to memorize. ".localized) { term, definition  in
             if let term = term, let definition = definition {
-                if (term != "" || definition != "") {           // && note.itemCount < limitedNumberOfItems
+                if (note.itemCount < limitedNumberOfItems && term != "" || definition != "") {
                     addItem(term, definition)
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {         // 딜레이 안 주면 추가한 목록이 안 보임
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                         scrollTarget = note.itemCount - 1
                     }
-                    showingAddItemAlert = true
+                    showingAddItemAlert = true                               // To continue add item.
                 }
             }
-        })
+        }
+    }
+    
+    func addItem(_ term: String, _ definition: String) {
+        note.appendItem(term, definition)
+        tmpNoteDetails.append(NoteDetail(order: note.itemCount - 1, term, definition))
+        saveContext()
     }
     
     var editItemButton: some View {
         Button(action: {
-            itemLocation = ItemLocation()
+            cellLocation = CellLocation()
             itemControl = ItemControl()
             
-            closeKeyboard = false
+            if itemControl.isShuffled { shuffle() }                         // If items are shuffled, return back.
             
-            if itemControl.isShuffled { shuffle() }
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {            // for animation
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {        // for animation
                 editMode = .active
-                selection = Set<UUID>()
             }
         }) {
             Label("Edit item", systemImage: "pencil")
@@ -145,12 +145,10 @@ extension NoteDetailView {
     var doneButton: some View {
         Button(action: {
             editMode = .inactive
-            selection = Set<UUID>()
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {            // 없으면 Keyboard 뒤 배경 안 사라짐
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {        // 없으면 Keyboard 뒤 배경 안 사라짐
                 closeKeyboard = true
             }
-            
             saveContext()
             
             Array(0 ..< note.itemCount).forEach {
@@ -164,36 +162,29 @@ extension NoteDetailView {
     
     var hideMemorizedButton: some View {
         Button(action: { itemControl.hideMemorized.toggle() }) {
-            itemControl.hideMemorized == true ? Label("Show Memorized", systemImage: "eye") : Label("Hide Memorized", systemImage: "eye.slash")
+            itemControl.hideMemorized ? Label("Show Memorized", systemImage: "eye") : Label("Hide Memorized", systemImage: "eye.slash")
         }
-    }
-    
-    func addItem(_ term: String, _ definition: String) {
-        note.appendItem(term, definition)
-        tmpNoteDetails.append(NoteDetail(order: note.itemCount - 1, term, definition))
-        saveContext()
     }
 }
 
+
 extension NoteDetailView {
-    @ViewBuilder        // 없으면 Function declares an opaque return type ... error 발생
+    @ViewBuilder       
     func noteDetailRow(_ noteDetail: NoteDetail) -> some View {
-        if noteDetail.isMemorized && itemControl.hideMemorized {
-            EmptyView()
-        }
-        else {
+        if !(noteDetail.isMemorized && itemControl.hideMemorized) {
             HStack {
                 ForEach(0 ..< 2) { col in
                     noteDetailCell(noteDetail, TextFieldType(rawValue: col) ?? .term)
                         .onTapGesture {
-                            itemLocation = ItemLocation(noteDetail.order, col)  // col 할당 관련해서, 여기 있으면 Keyboard 뒤에 View가 안 없어지는 경우 생김
+                            cellLocation = CellLocation(noteDetail.order, col)
                             if editMode == .active { scrollTarget = noteDetail.order }
                         }
                 }
                 
                 Button(action: {
                     if editMode == .active {
-                        CustomUITextField(location: $itemLocation, closeKeyboard: $closeKeyboard).done(button: UIBarButtonItem())
+                        CustomUITextField(location: $cellLocation, closeKeyboard: $closeKeyboard)
+                            .done(button: UIBarButtonItem())
                         scrollTarget = noteDetail.order
                     }
                     changeMemorizedState(id: noteDetail.id)
@@ -217,11 +208,12 @@ extension NoteDetailView {
                     GeometryReader { geometry in
                         HStack {
                             noteDetailScreen(noteDetail.order, geometry.size.width, .tScreenColor, itemControl.screen.left, anchor: .leading)
+                            Spacer()
                         }
                     }
                 }
                 else {
-                    NoteDetailTextField("Term", $note.term[noteDetail.order], ItemLocation(noteDetail.order, 0), bodyColor: .textFieldBodyColor, strokeColor: .tTextFieldStrokeColor)
+                    NoteDetailTextField("Term", $note.term[noteDetail.order], CellLocation(noteDetail.order, 0), bodyColor: .textFieldBodyColor, strokeColor: .tTextFieldStrokeColor)
                 }
             case .definition:
                 if editMode == .inactive {
@@ -229,12 +221,12 @@ extension NoteDetailView {
                     GeometryReader { geometry in
                         HStack {
                             Spacer()
-                            noteDetailScreen(noteDetail.order, geometry.size.width, .dScreenColor, itemControl.screen.right, anchor: .trailing)     // 여기는 + 1 안함
+                            noteDetailScreen(noteDetail.order, geometry.size.width, .dScreenColor, itemControl.screen.right, anchor: .trailing)
                         }
                     }
                 }
                 else {
-                    NoteDetailTextField("Definition", $note.definition[noteDetail.order], ItemLocation(noteDetail.order, 1), bodyColor: .textFieldBodyColor, strokeColor: .dTextFieldStrokeColor)
+                    NoteDetailTextField("Definition", $note.definition[noteDetail.order], CellLocation(noteDetail.order, 1), bodyColor: .textFieldBodyColor, strokeColor: .dTextFieldStrokeColor)
                 }
             }
         }
@@ -251,9 +243,9 @@ extension NoteDetailView {
             .modifier(NoteDetailListModifier(bodyColor: bodyColor, strokeColor: strokeColor))
     }
     
-    func NoteDetailTextField(_ title: String, _ text: Binding<String>, _ itemLocation: ItemLocation, bodyColor: Color, strokeColor: Color) -> some View {
+    func NoteDetailTextField(_ title: String, _ text: Binding<String>, _ cellLocation: CellLocation, bodyColor: Color, strokeColor: Color) -> some View {
         // Keyboard Toolbar에서 열간 이동하기 위해 isFirstResponder 필요
-        return CustomTextFieldWithToolbar(title: title, text: text, location: $itemLocation, closeKeyboard: $closeKeyboard, col: itemLocation.col, isFirstResponder: self.itemLocation == itemLocation)
+        return CustomTextFieldWithToolbar(title: title, text: text, location: $cellLocation, closeKeyboard: $closeKeyboard, col: cellLocation.col, isFirstResponder: self.cellLocation == cellLocation)
             .padding(.horizontal)
             .modifier(NoteDetailListModifier(bodyColor: bodyColor, strokeColor: strokeColor, lineWidth: 1.0))
     }
@@ -342,7 +334,9 @@ extension NoteDetailView {
 // MARK: - Other Functions
 extension NoteDetailView {
     func copyNoteDetails() {
-        Array(0 ..< note.itemCount).forEach { tmpNoteDetails.append(NoteDetail(order: $0, note.findItem(at: $0))) }
+        Array(0 ..< note.itemCount).forEach {
+            tmpNoteDetails.append(NoteDetail(order: $0, note.findItem(at: $0)))
+        }
     }
 }
 
@@ -359,6 +353,8 @@ extension NoteDetailView {
     }
     
     func deleteMemorized() -> Void {      // TextField를 없애면 에러 발생
+        var selection = Set<UUID>()
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {            // 없으면 Keyboard 뒤 배경 안 사라짐
             Array(0 ..< note.itemCount).forEach {
                 if note.isMemorized[$0] {
@@ -375,8 +371,6 @@ extension NoteDetailView {
             saveContext()
             
             Array(0 ..< note.itemCount).forEach { tmpNoteDetails[$0].order = $0 }
-            
-            selection = Set<UUID>()
         }
     }
     

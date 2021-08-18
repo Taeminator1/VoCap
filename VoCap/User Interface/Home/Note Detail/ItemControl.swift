@@ -5,6 +5,11 @@
 //  Created by 윤태민 on 7/31/21.
 //
 
+//  For state property to control item in note.
+//  - is blocked
+//  - is shuffled
+//  - is hide momorized items
+
 import Foundation
 import SwiftUI
 
