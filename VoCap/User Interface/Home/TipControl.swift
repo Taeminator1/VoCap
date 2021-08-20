@@ -8,9 +8,9 @@
 import Foundation
 import SwiftUI
 
-enum TipType: Int, CaseIterable {
-    case tip0 = 0
-    case tip1 = 1
+enum TipType: Int {
+    case tip0 = 0       // Tip for how to add item.
+    case tip1 = 1       // Tip for how to glnace item.
 }
 
 struct TipControl {

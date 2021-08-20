@@ -41,7 +41,8 @@ struct HomeView: View {
                     AddNoteButton(isPresent: $isMakeNotePresented, isEditMode: $isEditMode)
                     
                     ForEach(notes) {
-                        NoteButton(isPresented: $isMakeNotePresented, isEditMode: $isEditMode, id: $noteRowSelection, order: $noteRowOrder, hideNumber: $hideNoteDetailsNumber, tipControls: $tipControls, note: $0)
+                        noteList($0)
+//                        NoteButton(isPresented: $isMakeNotePresented, isEditMode: $isEditMode, id: $noteRowSelection, order: $noteRowOrder, hideNumber: $hideNoteDetailsNumber, isDisableds: $isDisableds, note: $0)
                     }
                     .onDelete(perform: deleteItems)
                     .onMove(perform: moveItems)
@@ -128,21 +129,12 @@ extension HomeView {
         notes[noteRowOrder!].isAutoCheck = note.isAutoCheck
         notes[noteRowOrder!].memo = note.memo
         
-        saveContext()
+        viewContext.saveContext()
     }
     
     func addNote(_ note: TmpNote) {
         withAnimation {
-            let newNote = Note(context: viewContext)
-            newNote.id = UUID()
-            newNote.title = note.title
-            newNote.colorIndex = Int16(note.colorIndex)
-            newNote.isWidget = note.isWidget
-            newNote.isAutoCheck = note.isAutoCheck
-            newNote.memo = note.memo
-
-            saveContext()
-            makeOrder()             // 간단하게 바꿔도 될 듯
+            _ = Note(context: viewContext, tmpNote: note)
             saveContext()
         }
     }
@@ -150,9 +142,6 @@ extension HomeView {
     func deleteItems(offsets: IndexSet) {
         withAnimation {
             offsets.map { notes[$0] }.forEach(viewContext.delete)
-
-            saveContext()
-            makeOrder()
             saveContext()
         }
     }
@@ -160,44 +149,36 @@ extension HomeView {
     func moveItems(from source: IndexSet, to destination: Int) {
         withAnimation {
             arrangeOrder(start: source.map({$0}).first!, destination: destination)
-            saveContext()
-        }
-    }
-    
-    func saveContext() {
-        do {
-            try viewContext.save()
-        } catch {
-            let nsError = error as NSError
-            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
         }
     }
 }
 
 // MARK: - Other Functions
 extension HomeView {
-    func makeOrder() {
+    func saveContext() {
+        viewContext.saveContext()
         for i in 0..<notes.count {
             notes[i].order = Int16(i)
         }
+        viewContext.saveContext()
     }
     
     func arrangeOrder(start: Int, destination: Int) {
         if start == destination { return }
         
         if start < destination {
-            for i in (start + 1)..<destination {
+            for i in (start + 1) ..< destination {
                 notes[i].order -= 1
             }
             notes[start].order = Int16(destination - 1)
         }
         else {
-            for i in destination..<start {
+            for i in destination ..< start {
                 notes[i].order += 1
             }
             notes[start].order = Int16(destination)
         }
-        
+        viewContext.saveContext()
     }
 }
 
@@ -210,5 +191,43 @@ struct HomeView_Previews: PreviewProvider {
             .previewDevice("iPhone XR")
 //            .previewDevice("iPhone SE (2nd generation)")
 //            .preferredColorScheme(.dark)
+    }
+}
+
+
+
+// MARK: - Note List
+extension HomeView {
+    func noteList(_ note: Note) -> some View {
+        HStack {
+            Button(action: {
+                if isEditMode == .inactive || isEditMode == .transient {
+                    self.noteRowSelection = note.id     // 왜 noteRowSelection에 !붙일 때랑 안 붙일 때 다르지?
+                }
+                else {
+                    self.noteRowOrder = Int(note.order)
+                    self.isMakeNotePresented = true
+                }
+            }) {
+                VStack() {
+                    NoteRow(title: note.title!, colorIndex: note.colorIndex, totalNumber: Int16(note.term.count), memorizedNumber: Int16(countTrues(note.isMemorized)), hideNoteDetailsNumber: $hideNoteDetailsNumber)
+                }
+            }
+            
+            NavigationLink(destination: NoteDetailView(note: note, tipControls: $tipControls), tag: note.id!, selection: $noteRowSelection) {
+                EmptyView()
+            }
+            .frame(width: 0).hidden()
+        }
+        .listModifier()
+        .buttonStyle(PlainButtonStyle())            // .active 상태 일 때 버튼 눌릴 수 있도록 함
+    }
+    
+    func countTrues(_ arr: [Bool]) -> Int {
+        var result: Int = 0
+        for i in 0..<arr.count {
+            if arr[i] { result += 1 }
+        }
+        return result
     }
 }

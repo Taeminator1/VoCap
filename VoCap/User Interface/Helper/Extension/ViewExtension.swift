@@ -10,7 +10,7 @@ import SwiftUI
 extension View {
     func listModifier(verticalpadding: CGFloat = -1.0) -> some View {
         self
-            .modifier(ListModifier(verticalPadding: verticalpadding))
+            .modifier(HomeListModifier(verticalPadding: verticalpadding))
     }
 }
 

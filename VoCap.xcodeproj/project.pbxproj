@@ -18,6 +18,7 @@
 		3416A70026B52E4100BB1A26 /* ItemControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3416A6FF26B52E4100BB1A26 /* ItemControl.swift */; };
 		3423403525EFC47000A04176 /* GifView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3423403425EFC47000A04176 /* GifView.swift */; };
 		342693C725FCDDE5000A5E4E /* AdMobView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342693C625FCDDE5000A5E4E /* AdMobView.swift */; };
+		342A05C226CFE62B00A9CDD8 /* NSManagedObjectContextExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342A05C126CFE62B00A9CDD8 /* NSManagedObjectContextExtension.swift */; };
 		34346F4C2604ACDC003279D7 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 34346F4B2604ACDC003279D7 /* Launch Screen.storyboard */; };
 		3444A05125FB70BF0008CE14 /* HowToGlanceItem_light.gif in Resources */ = {isa = PBXBuildFile; fileRef = 3444A04F25FB70BE0008CE14 /* HowToGlanceItem_light.gif */; };
 		3445EBED25C9851B00D16915 /* CustomTextFieldWithToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3445EBEC25C9851B00D16915 /* CustomTextFieldWithToolbar.swift */; };
@@ -84,6 +85,7 @@
 		3416A6FF26B52E4100BB1A26 /* ItemControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemControl.swift; sourceTree = "<group>"; };
 		3423403425EFC47000A04176 /* GifView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GifView.swift; sourceTree = "<group>"; };
 		342693C625FCDDE5000A5E4E /* AdMobView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdMobView.swift; sourceTree = "<group>"; };
+		342A05C126CFE62B00A9CDD8 /* NSManagedObjectContextExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSManagedObjectContextExtension.swift; sourceTree = "<group>"; };
 		34346F3C2604A7B5003279D7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		34346F4B2604ACDC003279D7 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		3444A04F25FB70BE0008CE14 /* HowToGlanceItem_light.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = HowToGlanceItem_light.gif; sourceTree = "<group>"; };
@@ -245,6 +247,7 @@
 				34A5B648257E522A0023D1AC /* ColorExtension.swift */,
 				344FF41C25FF7106009B7E03 /* StringExtension.swift */,
 				34871BF026A3FF06004640BD /* ViewExtension.swift */,
+				342A05C126CFE62B00A9CDD8 /* NSManagedObjectContextExtension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -555,6 +558,7 @@
 				34858A49266645B50078F503 /* Note+CoreDataProperties.swift in Sources */,
 				34EAC47E26B7FEBC00B6C300 /* ItemLocation.swift in Sources */,
 				344FF41D25FF7106009B7E03 /* StringExtension.swift in Sources */,
+				342A05C226CFE62B00A9CDD8 /* NSManagedObjectContextExtension.swift in Sources */,
 				34FEA28326B32C5800E6FDDC /* NoteButton.swift in Sources */,
 				34FEA28B26B3309700E6FDDC /* TipView.swift in Sources */,
 				34D88F47256D2A68009B10AF /* Persistence.swift in Sources */,

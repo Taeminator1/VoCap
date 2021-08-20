@@ -65,9 +65,7 @@ struct NoteDetailView: View {
                         listFrame = geometry.size.height > geometry.size.width ? geometry.size.height : geometry.size.width             // 없으면 .bottomBar 없어짐...
                         
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                            withAnimation {
-                                tipControls[TipType.tip0.rawValue].makeViewDisabled()
-                            }
+                            tipControls[TipType.tip0.rawValue].makeViewDisabled()
                         }
                     }
                     .onDisappear() {
@@ -124,7 +122,7 @@ extension NoteDetailView {
     func addItem(_ term: String, _ definition: String) {
         note.appendItem(term, definition)
         tmpNoteDetails.append(NoteDetail(order: note.itemCount - 1, term, definition))
-        saveContext()
+        viewContext.saveContext()
     }
     
     var editItemButton: some View {
@@ -149,7 +147,7 @@ extension NoteDetailView {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {        // 없으면 Keyboard 뒤 배경 안 사라짐
                 closeKeyboard = true
             }
-            saveContext()
+            viewContext.saveContext()
             
             Array(0 ..< note.itemCount).forEach {
                 tmpNoteDetails[$0].term = note.term[$0]
@@ -169,11 +167,11 @@ extension NoteDetailView {
 
 
 extension NoteDetailView {
-    @ViewBuilder       
+    @ViewBuilder
     func noteDetailRow(_ noteDetail: NoteDetail) -> some View {
         if !(noteDetail.isMemorized && itemControl.hideMemorized) {
             HStack {
-                ForEach(0 ..< 2) { col in
+                ForEach(0 ..< TextFieldType.allCases.count) { col in
                     noteDetailCell(noteDetail, TextFieldType(rawValue: col) ?? .term)
                         .onTapGesture {
                             cellLocation = CellLocation(noteDetail.order, col)
@@ -188,14 +186,13 @@ extension NoteDetailView {
                         scrollTarget = noteDetail.order
                     }
                     changeMemorizedState(id: noteDetail.id)
-                    closeKeyboard = true            // 없으면 키보드 잔상 남음
+                    closeKeyboard = true                // 없으면 키보드 잔상 남음
                 }) {
                     noteDetail.isMemorized == true ? Image(systemName: "checkmark.square.fill").imageScale(.large) : Image(systemName: "square").imageScale(.large)
                 }
-                .buttonStyle(PlainButtonStyle())        // TextField 상태일 때, 경계부분 누르면 버튼이 눌리는 현상 막기 위해
+                .buttonStyle(PlainButtonStyle())
             }
-            .padding()
-            .modifier(ListModifier(verticalPadding: -5))
+            .modifier(NoteDetailListModifier(verticalPadding: -5))
         }
     }
     
@@ -236,25 +233,20 @@ extension NoteDetailView {
 extension NoteDetailView {
     func noteDetailText(_ text: String, bodyColor: Color, strokeColor: Color) -> some View {
         Text(text)
-            .font(.body)
-            .minimumScaleFactor(0.8)
-            .lineLimit(2)
-            .padding(.horizontal)
-            .modifier(NoteDetailListModifier(bodyColor: bodyColor, strokeColor: strokeColor))
+            .modifier(NoteDetailCellModifier2(bodyColor: bodyColor, strokeColor: strokeColor))
     }
     
     func NoteDetailTextField(_ title: String, _ text: Binding<String>, _ cellLocation: CellLocation, bodyColor: Color, strokeColor: Color) -> some View {
         // Keyboard Toolbar에서 열간 이동하기 위해 isFirstResponder 필요
         return CustomTextFieldWithToolbar(title: title, text: text, location: $cellLocation, closeKeyboard: $closeKeyboard, col: cellLocation.col, isFirstResponder: self.cellLocation == cellLocation)
-            .padding(.horizontal)
-            .modifier(NoteDetailListModifier(bodyColor: bodyColor, strokeColor: strokeColor, lineWidth: 1.0))
+            .modifier(NoteDetailCellModifier(bodyColor: bodyColor, strokeColor: strokeColor, lineWidth: 1.0))
     }
     
-    func noteDetailScreen(_ order: Int, initalWidth: CGFloat = 4.0, _ stretchedWidth: CGFloat, _ screenColor: Color, _ isScreen: Bool, anchor: UnitPoint) -> some View {
+    func noteDetailScreen(_ order: Int, initialWidth: CGFloat = 4.0, _ stretchedWidth: CGFloat, _ screenColor: Color, _ isScreen: Bool, anchor: UnitPoint) -> some View {
         Rectangle()
             .foregroundColor(screenColor)
-            .frame(width: initalWidth)
-            .scaleEffect(x: isScreen && !tmpNoteDetails[order].isScaled ? stretchedWidth / initalWidth : 1.0, y: 1.0, anchor: anchor)
+            .frame(width: initialWidth)
+            .scaleEffect(x: isScreen && !tmpNoteDetails[order].isScaled ? stretchedWidth / initialWidth : 1.0, y: 1.0, anchor: anchor)
             .onTapGesture{}                 // Scroll 되게 하려면 필요(해당 자리에)
             .modifier(CustomGestureModifier(isPressed: $tmpNoteDetails[order].isScaled, f: { }))
     }
@@ -343,15 +335,6 @@ extension NoteDetailView {
 
 // MARK: - Modify NoteDetails
 extension NoteDetailView {
-    func saveContext() {
-        do {
-            try viewContext.save()
-        } catch {
-            let nsError = error as NSError
-            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-        }
-    }
-    
     func deleteMemorized() -> Void {      // TextField를 없애면 에러 발생
         var selection = Set<UUID>()
         
@@ -368,7 +351,7 @@ extension NoteDetailView {
                     tmpNoteDetails.remove(at: index)
                 }
             }
-            saveContext()
+            viewContext.saveContext()
             
             Array(0 ..< note.itemCount).forEach { tmpNoteDetails[$0].order = $0 }
         }
@@ -377,7 +360,7 @@ extension NoteDetailView {
     func deleteItem(atOffsets offsets: IndexSet) {         // edit 상태에서 마지막꺼 지우면 에러 발생
         note.removeItem(atOffsets: offsets)
         tmpNoteDetails.remove(atOffsets: offsets)
-        saveContext()
+        viewContext.saveContext()
         
         Array(0 ..< note.itemCount).forEach { tmpNoteDetails[$0].order = $0 }
     }
@@ -387,7 +370,7 @@ extension NoteDetailView {
             tmpNoteDetails[index].isMemorized.toggle()
             
             note.isMemorized[tmpNoteDetails[index].order] = tmpNoteDetails[index].isMemorized
-            saveContext()
+            viewContext.saveContext()
         }
     }
 }
@@ -401,4 +384,3 @@ extension NoteDetailView {
 //            .previewDevice("iPhone XR")
 //    }
 //}
-

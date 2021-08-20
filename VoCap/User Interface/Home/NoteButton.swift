@@ -41,7 +41,7 @@ struct NoteButton: View {
             }
             .frame(width: 0).hidden()
         }
-        .listModifier()
+        .modifier(HomeListModifier())
         .buttonStyle(PlainButtonStyle())            // .active 상태 일 때 버튼 눌릴 수 있도록 함
     }
     

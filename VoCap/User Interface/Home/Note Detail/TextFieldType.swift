@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum TextFieldType: Int {
+enum TextFieldType: Int, CaseIterable {
     case term = 0
     case definition = 1
 }

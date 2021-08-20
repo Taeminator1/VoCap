@@ -8,7 +8,7 @@
 import SwiftUI
 
 // MARK: - HomeView
-struct ListModifier: ViewModifier {
+struct HomeListModifier: ViewModifier {
     var verticalPadding: CGFloat = -1.0             // 가장 상단에 Saperator 가리기 위해
     
     func body(content: Content) -> some View {
@@ -75,6 +75,16 @@ struct VisibilityStyle: ViewModifier {
 
 // MARK: - NoteDetail
 struct NoteDetailListModifier: ViewModifier {
+    var verticalPadding: CGFloat = -1.0
+    
+    func body(content: Content) -> some View {
+        content
+            .padding()                              // Seperator 가리기 위해
+            .modifier(HomeListModifier(verticalPadding: verticalPadding))
+    }
+}
+
+struct NoteDetailCellModifier: ViewModifier {
 
     var bodyColor: Color = Color.clear
     var strokeColor: Color
@@ -85,6 +95,7 @@ struct NoteDetailListModifier: ViewModifier {
     
     func body(content: Content) -> some View {
         content
+            .padding(.horizontal)
             .frame(idealWidth: width, maxWidth: width, idealHeight: height, maxHeight: height, alignment: .leading)
             .overlay(
                 RoundedRectangle(cornerRadius: cornerRadius)
@@ -94,12 +105,18 @@ struct NoteDetailListModifier: ViewModifier {
             .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
     }
 }
-struct NoteDetailEditorModifier: ViewModifier {
+
+struct NoteDetailCellModifier2: ViewModifier {
+    
+    var bodyColor: Color = Color.clear
+    var strokeColor: Color
     
     func body(content: Content) -> some View {
         content
-            .textFieldStyle(RoundedBorderTextFieldStyle())
-            .autocapitalization(.none)
+            .font(.body)
+            .minimumScaleFactor(0.8)
+            .lineLimit(2)
+            .modifier(NoteDetailCellModifier(bodyColor: bodyColor, strokeColor: strokeColor))
     }
 }
 
