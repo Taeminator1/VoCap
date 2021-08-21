@@ -21,28 +21,30 @@ struct NoteButton: View {
     let note: Note
     
     var body: some View {
-        HStack {
-            Button(action: {
-                switch(isEditMode) {
-                case .active:
-                    order = Int(note.order)
-                    isPresented = true
-                default:
-                    id = note.id
+        if note.title != nil {
+            HStack {
+                Button(action: {
+                    switch(isEditMode) {
+                    case .active:
+                        order = Int(note.order)
+                        isPresented = true
+                    default:
+                        id = note.id
+                    }
+                }) {
+                    VStack() {
+                        NoteRow(title: note.title!, colorIndex: note.colorIndex, totalNumber: Int16(note.term.count), memorizedNumber: Int16(countTrues(note.isMemorized)), hideNoteDetailsNumber: $hideNumber)
+                    }
                 }
-            }) {
-                VStack() {
-                    NoteRow(title: note.title!, colorIndex: note.colorIndex, totalNumber: Int16(note.term.count), memorizedNumber: Int16(countTrues(note.isMemorized)), hideNoteDetailsNumber: $hideNumber)
+                
+                NavigationLink(destination: NoteDetailView(note: note, tipControls: $tipControls), tag: note.id!, selection: $id) {
+                    EmptyView()
                 }
+                .frame(width: 0).hidden()
             }
-            
-            NavigationLink(destination: NoteDetailView(note: note, tipControls: $tipControls), tag: note.id!, selection: $id) {
-                EmptyView()
-            }
-            .frame(width: 0).hidden()
+            .modifier(HomeListModifier())
+            .buttonStyle(PlainButtonStyle())            // .active 상태 일 때 버튼 눌릴 수 있도록 함
         }
-        .modifier(HomeListModifier())
-        .buttonStyle(PlainButtonStyle())            // .active 상태 일 때 버튼 눌릴 수 있도록 함
     }
     
     // Count memorized item in note.

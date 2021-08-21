@@ -37,3 +37,15 @@ struct CancelButton: ToolbarContentButton {
         }
     }
 }
+
+struct TestButton: ToolbarContentButton {
+    var action: () -> Void
+    
+    var body: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            Button(action: { action() }) {
+                Text("Test")
+            }
+        }
+    }
+}

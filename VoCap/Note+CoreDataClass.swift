@@ -42,11 +42,14 @@ extension Note {
     convenience init(context moc: NSManagedObjectContext, tmpNote: TmpNote) {
         self.init(context: moc)
         self.id = UUID()
+        self.assignNote(context: moc, tmpNote: tmpNote)
+    }
+    
+    func assignNote(context moc: NSManagedObjectContext, tmpNote: TmpNote) {
         self.title = tmpNote.title
         self.colorIndex = Int16(tmpNote.colorIndex)
         self.isWidget = tmpNote.isWidget
         self.isAutoCheck = tmpNote.isAutoCheck
         self.memo = tmpNote.memo
-//        self.order = Int16(itemCount + 1)
     }
 }
