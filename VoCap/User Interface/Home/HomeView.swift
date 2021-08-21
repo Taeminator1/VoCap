@@ -46,9 +46,6 @@ struct HomeView: View {
                     .onDelete(perform: deleteNote)
                     .onMove(perform: moteNote)
                 }
-                .ignoresSafeArea(.keyboard)             // NoteDetailView에서의 키보드 잔상 없어지게 하기 위해(Toolbar에는 잔상 생김)
-                .animation(.default)                    // 해당 자리에 있어야 함
-                .listStyle(PlainListStyle())                        // 안해주면 Add Note 누를 때, title bar button 초기 색이 하얗게 됨
                 .navigationBarTitle("VoCap", displayMode: .inline)
                 .sheet(isPresented: $isMakeNotePresented) {
                     let tmpNote = noteRowOrder == nil ? TmpNote() : TmpNote(note: notes[noteRowOrder!])
@@ -59,16 +56,19 @@ struct HomeView: View {
                 }
                 .toolbar {
                     // NavigationBar
-//                    TestButton() { notes.forEach { print($0.order) } }
+                    TestButton(placement: .navigationBarLeading) { notes.forEach { print($0.order) } }
                     editButton
                     
                     // BottomBar
-                    spacer
+                    Separator(placement: .bottomBar)
                     settingsButton
                 }
-                .environment(\.editMode, self.$isEditMode)          // 없으면 Edit 오류 생김(해당 위치에 있어야 함)
+                .ignoresSafeArea(.keyboard)                 // NoteDetailView에서의 키보드 잔상 없애기 위해
+                .animation(.default)                        // 해당 자리에 있어야 함
+                .listStyle(PlainListStyle())                // title bar button 초기 색 변경 방지
+                .environment(\.editMode, self.$isEditMode)  // 없으면 Edit 오류 생김(해당 위치에 있어야 함)
             }
-            .navigationViewStyle(StackNavigationViewStyle())        // 없으면 View전환할 때마다 Tool Bar 로딩되는데 시간이 걸림
+            .navigationViewStyle(StackNavigationViewStyle())    // View전환할 때마다 Tool Bar 로딩 시간 없애기 위해
             .onAppear() {
                 isMakeNotePresented = false
                 UITableView.appearance().showsVerticalScrollIndicator = false
@@ -86,29 +86,11 @@ struct HomeView: View {
 
 // MARK: - Toolbar Items
 extension HomeView {
-
     var editButton: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarTrailing) {
-            Button(action: {                // localize 위해 EditButton() 안 씀
-                if isEditMode == .inactive  { isEditMode = .active }
-                else                        { isEditMode = .inactive }
-            }) {
-                if isEditMode == .inactive  { Text("Edit") }
-                else                        { Text("Done") }
-            }
-            .onAppear() {
-                if isEditMode == .inactive || isEditMode == .transient {    // When Edit Button has been not pressed
-                    hideNoteDetailsNumber = false
-                }
-                else {                                                      // When Edit Button has been pressed by user
-                    hideNoteDetailsNumber = true
-                }
-            }
+        EditButton(placement: .navigationBarTrailing, isEditMode: $isEditMode) {
+            isEditMode.toggle()
+            hideNoteDetailsNumber = isEditMode == .inactive ? false : true
         }
-    }
-    
-    var spacer: some ToolbarContent {
-        ToolbarItem(placement: .bottomBar) { Spacer() }
     }
     
     var settingsButton: some ToolbarContent {
@@ -121,7 +103,7 @@ extension HomeView {
     }
 }
 
-// MARK: - Modify NoteRows
+// MARK: - Modify Note rows
 extension HomeView {
     func editNote(_ note: TmpNote) {
         notes[noteRowOrder!].assignNote(context: viewContext, tmpNote: note)
@@ -147,10 +129,7 @@ extension HomeView {
             arrangeOrder(start: source.map({$0}).first!, end: destination)
         }
     }
-}
-
-// MARK: - Other Functions
-extension HomeView {
+    
     func makeOrder() {
         viewContext.saveContext()
         for i in 0..<notes.count {
@@ -177,6 +156,7 @@ extension HomeView {
         viewContext.saveContext()
     }
 }
+
 
 
 // MARK: - Preivew

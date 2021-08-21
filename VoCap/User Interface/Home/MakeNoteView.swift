@@ -33,7 +33,6 @@ struct MakeNoteView: View {
             .navigationBarTitle(noteRowOrder == nil ? "Add Note" : "Edit Note", displayMode: .inline)
             .actionSheet(isPresented: $showingCancelSheet) { actionSheet }
             .toolbar {
-                // NavigationBar
                 cancelButton
                 doneSaveButton
             }
@@ -71,13 +70,13 @@ extension MakeNoteView {
 // MARK: - Tool Bar Items
 extension MakeNoteView {
     var cancelButton: some ToolbarContent {
-        CancelButton() {
+        CancelButton(placement: .navigationBarLeading) {
             note.isEqual(dNote) ? (isPresented = false) : (showingCancelSheet = true)
         }
     }
     
     var doneSaveButton: some ToolbarContent {
-        DoneButton(title: (noteRowOrder == nil ? "Save" : "Done"), isDisabled: (noteRowOrder != nil && note.isEqual(dNote))) { onComplete(note) }
+        DoneButton(placement: .navigationBarTrailing, title: (noteRowOrder == nil ? "Save" : "Done"), isDisabled: (noteRowOrder != nil && note.isEqual(dNote))) { onComplete(note) }
     }
 }
 

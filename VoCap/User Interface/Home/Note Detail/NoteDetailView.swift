@@ -78,9 +78,9 @@ struct NoteDetailView: View {
                         
                         // BottomBar
                         showingButton(.term)
-                        spacer
+                        Separator(placement: .bottomBar)
                         shuffleButton
-                        spacer
+                        Separator(placement: .bottomBar)
                         deleteMemorizedButton
                         showingButton(.definition)
                     }
@@ -93,74 +93,6 @@ struct NoteDetailView: View {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {         // 딜레이 안 주면 연속해서 Rotate했을 때, .bottom Toolbar 사라지는 문제 재발
                 tipControls[TipType.tip0.rawValue].makeViewToggle()
             }
-        }
-    }
-}
-
-// MARK: - Menu
-extension NoteDetailView {
-    var addItemButton: some View {
-        Button(action: { showingAddItemAlert = true }) {
-            Label("Add Item", systemImage: "plus")
-        }
-    }
-  
-    var textAlert: TextAlert {
-        TextAlert(title: "Add Item".localized, message: "Enter a term and a definition to memorize. ".localized) { term, definition  in
-            if let term = term, let definition = definition {
-                if (note.itemCount < limitedNumberOfItems && term != "" || definition != "") {
-                    addItem(term, definition)
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        scrollTarget = note.itemCount - 1
-                    }
-                    showingAddItemAlert = true                               // To continue add item.
-                }
-            }
-        }
-    }
-    
-    func addItem(_ term: String, _ definition: String) {
-        note.appendItem(term, definition)
-        tmpNoteDetails.append(NoteDetail(order: note.itemCount - 1, term, definition))
-        viewContext.saveContext()
-    }
-    
-    var editItemButton: some View {
-        Button(action: {
-            cellLocation = CellLocation()
-            itemControl = ItemControl()
-            
-            if itemControl.isShuffled { shuffle() }                         // If items are shuffled, return back.
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {        // for animation
-                editMode = .active
-            }
-        }) {
-            Label("Edit item", systemImage: "pencil")
-        }
-    }
-    
-    var doneButton: some View {
-        Button(action: {
-            editMode = .inactive
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {        // 없으면 Keyboard 뒤 배경 안 사라짐
-                closeKeyboard = true
-            }
-            viewContext.saveContext()
-            
-            Array(0 ..< note.itemCount).forEach {
-                tmpNoteDetails[$0].term = note.term[$0]
-                tmpNoteDetails[$0].definition = note.definition[$0]
-            }
-        }) {
-            Text("Done")
-        }
-    }
-    
-    var hideMemorizedButton: some View {
-        Button(action: { itemControl.hideMemorized.toggle() }) {
-            itemControl.hideMemorized ? Label("Show Memorized", systemImage: "eye") : Label("Hide Memorized", systemImage: "eye.slash")
         }
     }
 }
@@ -270,10 +202,6 @@ extension NoteDetailView {
         }
     }
     
-    var spacer: some ToolbarContent {
-        ToolbarItem(placement: .bottomBar) { Spacer() }
-    }
-    
     func showingButton(_ column: TextFieldType) -> some ToolbarContent {
         ToolbarItem(placement: .bottomBar) {
             Button(action: {
@@ -323,6 +251,75 @@ extension NoteDetailView {
 }
 
 
+// MARK: - Menu
+extension NoteDetailView {
+    var addItemButton: some View {
+        Button(action: { showingAddItemAlert = true }) {
+            Label("Add Item", systemImage: "plus")
+        }
+    }
+  
+    var textAlert: TextAlert {
+        TextAlert(title: "Add Item".localized, message: "Enter a term and a definition to memorize. ".localized) { term, definition  in
+            if let term = term, let definition = definition {
+                if (note.itemCount < limitedNumberOfItems && term != "" || definition != "") {
+                    addItem(term, definition)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        scrollTarget = note.itemCount - 1
+                    }
+                    showingAddItemAlert = true                               // To continue add item.
+                }
+            }
+        }
+    }
+    
+    func addItem(_ term: String, _ definition: String) {
+        note.appendItem(term, definition)
+        tmpNoteDetails.append(NoteDetail(order: note.itemCount - 1, term, definition))
+        viewContext.saveContext()
+    }
+    
+    var editItemButton: some View {
+        Button(action: {
+            cellLocation = CellLocation()
+            itemControl = ItemControl()
+            
+            if itemControl.isShuffled { shuffle() }             // If items are shuffled, return back.
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {        // for animation
+                editMode = .active
+            }
+        }) {
+            Label("Edit item", systemImage: "pencil")
+        }
+    }
+    
+    var doneButton: some View {
+        Button(action: {
+            editMode = .inactive
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {        // 없으면 Keyboard 뒤 배경 안 사라짐
+                closeKeyboard = true
+            }
+            viewContext.saveContext()
+            
+            Array(0 ..< note.itemCount).forEach {
+                tmpNoteDetails[$0].term = note.term[$0]
+                tmpNoteDetails[$0].definition = note.definition[$0]
+            }
+        }) {
+            Text("Done")
+        }
+    }
+    
+    var hideMemorizedButton: some View {
+        Button(action: { itemControl.hideMemorized.toggle() }) {
+            itemControl.hideMemorized ? Label("Show Memorized", systemImage: "eye") : Label("Hide Memorized", systemImage: "eye.slash")
+        }
+    }
+}
+
+
 // MARK: - Other Functions
 extension NoteDetailView {
     func copyNoteDetails() {
@@ -333,7 +330,7 @@ extension NoteDetailView {
 }
 
 
-// MARK: - Modify NoteDetails
+// MARK: - Modify NoteDetails rows
 extension NoteDetailView {
     func deleteMemorized() -> Void {      // TextField를 없애면 에러 발생
         var selection = Set<UUID>()
@@ -384,3 +381,4 @@ extension NoteDetailView {
 //            .previewDevice("iPhone XR")
 //    }
 //}
+

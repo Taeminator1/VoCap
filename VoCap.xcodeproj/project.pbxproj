@@ -11,6 +11,7 @@
 		340491F225779D4300CD1BD7 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 340491F125779D4300CD1BD7 /* SettingsView.swift */; };
 		3404B4C6258784890021CDAE /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3404B4C5258784890021CDAE /* CustomTextField.swift */; };
 		3408A24526BE20D9000CA01F /* ToolbarContentButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3408A24426BE20D9000CA01F /* ToolbarContentButton.swift */; };
+		340A21AE26D0EC6000A4CD38 /* EditModeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 340A21AD26D0EC6000A4CD38 /* EditModeExtension.swift */; };
 		340CEBD226B405100020D035 /* TextFieldType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 340CEBD126B405100020D035 /* TextFieldType.swift */; };
 		3413DDF726B327E30002120C /* AddNoteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3413DDF626B327E30002120C /* AddNoteButton.swift */; };
 		3414F3B225F25B3F00BFB516 /* NoteDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3414F3B125F25B3F00BFB516 /* NoteDetailView.swift */; };
@@ -78,6 +79,7 @@
 		340491F125779D4300CD1BD7 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		3404B4C5258784890021CDAE /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		3408A24426BE20D9000CA01F /* ToolbarContentButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarContentButton.swift; sourceTree = "<group>"; };
+		340A21AD26D0EC6000A4CD38 /* EditModeExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditModeExtension.swift; sourceTree = "<group>"; };
 		340CEBD126B405100020D035 /* TextFieldType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldType.swift; sourceTree = "<group>"; };
 		3413DDF626B327E30002120C /* AddNoteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNoteButton.swift; sourceTree = "<group>"; };
 		3414F3B125F25B3F00BFB516 /* NoteDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetailView.swift; sourceTree = "<group>"; };
@@ -248,6 +250,7 @@
 				344FF41C25FF7106009B7E03 /* StringExtension.swift */,
 				34871BF026A3FF06004640BD /* ViewExtension.swift */,
 				342A05C126CFE62B00A9CDD8 /* NSManagedObjectContextExtension.swift */,
+				340A21AD26D0EC6000A4CD38 /* EditModeExtension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -558,6 +561,7 @@
 				34858A49266645B50078F503 /* Note+CoreDataProperties.swift in Sources */,
 				34EAC47E26B7FEBC00B6C300 /* ItemLocation.swift in Sources */,
 				344FF41D25FF7106009B7E03 /* StringExtension.swift in Sources */,
+				340A21AE26D0EC6000A4CD38 /* EditModeExtension.swift in Sources */,
 				342A05C226CFE62B00A9CDD8 /* NSManagedObjectContextExtension.swift in Sources */,
 				34FEA28326B32C5800E6FDDC /* NoteButton.swift in Sources */,
 				34FEA28B26B3309700E6FDDC /* TipView.swift in Sources */,

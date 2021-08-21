@@ -36,7 +36,7 @@ struct SettingsView: View {
 // MARK: - Tool Bar Items
 private extension SettingsView {
     var doneButton: some ToolbarContent {
-        DoneButton() { isSettingsPresented = false }
+        DoneButton(placement: .navigationBarTrailing) { isSettingsPresented = false }
     }
 }
 
