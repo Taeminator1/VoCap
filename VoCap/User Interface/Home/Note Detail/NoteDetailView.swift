@@ -81,7 +81,6 @@ struct NoteDetailView: View {
                         Separator(placement: .bottomBar)
                         shuffleButton
                         Separator(placement: .bottomBar)
-                        deleteMemorizedButton
                         showingButton(.definition)
                     }
                 }
@@ -193,6 +192,7 @@ extension NoteDetailView {
                     addItemButton
                     editItemButton
                     hideMemorizedButton
+                    deleteMemorizedButton
                 }
                 label: { Label("", systemImage: "ellipsis.circle").imageScale(.large) }
             }
@@ -229,16 +229,6 @@ extension NoteDetailView {
             Button(action: { shuffle() }) {
                 if editMode == .inactive {
                     itemControl.isShuffled ? Image("shuffle.on").imageScale(.large) : Image("shuffle.off").imageScale(.large)
-                }
-            }
-        }
-    }
-    
-    var deleteMemorizedButton: some ToolbarContent {
-        ToolbarItem(placement: .bottomBar) {
-            Button(action: { deleteMemorized() }) {
-                if editMode == .active {
-                    Text("Delete Memorized")
                 }
             }
         }
@@ -290,7 +280,7 @@ extension NoteDetailView {
                 editMode = .active
             }
         }) {
-            Label("Edit item", systemImage: "pencil")
+            Label("Edit Item", systemImage: "pencil")
         }
     }
     
@@ -317,6 +307,32 @@ extension NoteDetailView {
             itemControl.hideMemorized ? Label("Show Memorized", systemImage: "eye") : Label("Hide Memorized", systemImage: "eye.slash")
         }
     }
+    
+    var deleteMemorizedButton: some View {
+        Button(action: {
+            deleteMemorized()
+        }) {
+            Label("Delete Memorized", systemImage: "trash")
+        }
+    }
+    
+    func deleteMemorized() -> Void {
+        var selection = Set<UUID>()
+        
+        Array(0 ..< note.itemCount).forEach {
+            if note.isMemorized[$0] {
+                selection.insert(tmpNoteDetails[$0].id)
+            }
+        }
+        
+        selection.forEach { id in
+            if let index = tmpNoteDetails.firstIndex(where: { $0.id == id })  {
+                note.removeItem(at: index)
+                tmpNoteDetails.remove(at: index)
+            }
+        }
+        makeOrder()
+    }
 }
 
 
@@ -332,34 +348,10 @@ extension NoteDetailView {
 
 // MARK: - Modify NoteDetails rows
 extension NoteDetailView {
-    func deleteMemorized() -> Void {      // TextField를 없애면 에러 발생
-        var selection = Set<UUID>()
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {            // 없으면 Keyboard 뒤 배경 안 사라짐
-            Array(0 ..< note.itemCount).forEach {
-                if note.isMemorized[$0] {
-                    selection.insert(tmpNoteDetails[$0].id)
-                }
-            }
-            
-            selection.forEach { id in
-                if let index = tmpNoteDetails.lastIndex(where: { $0.id == id })  {
-                    note.removeItem(at: index)
-                    tmpNoteDetails.remove(at: index)
-                }
-            }
-            viewContext.saveContext()
-            
-            Array(0 ..< note.itemCount).forEach { tmpNoteDetails[$0].order = $0 }
-        }
-    }
-    
-    func deleteItem(atOffsets offsets: IndexSet) {         // edit 상태에서 마지막꺼 지우면 에러 발생
+    func deleteItem(atOffsets offsets: IndexSet) {
         note.removeItem(atOffsets: offsets)
         tmpNoteDetails.remove(atOffsets: offsets)
-        viewContext.saveContext()
-        
-        Array(0 ..< note.itemCount).forEach { tmpNoteDetails[$0].order = $0 }
+        makeOrder()
     }
     
     func changeMemorizedState(id: UUID) {
@@ -369,6 +361,12 @@ extension NoteDetailView {
             note.isMemorized[tmpNoteDetails[index].order] = tmpNoteDetails[index].isMemorized
             viewContext.saveContext()
         }
+    }
+    
+    func makeOrder() {
+        viewContext.saveContext()
+        Array(0 ..< note.itemCount).forEach { tmpNoteDetails[$0].order = $0 }
+        viewContext.saveContext()
     }
 }
 

@@ -132,9 +132,7 @@ extension HomeView {
     
     func makeOrder() {
         viewContext.saveContext()
-        for i in 0..<notes.count {
-            notes[i].order = Int16(i)
-        }
+        Array(0 ..< notes.count).forEach { notes[$0].order = Int16($0) }
         viewContext.saveContext()
     }
     
