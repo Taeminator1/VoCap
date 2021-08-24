@@ -127,7 +127,7 @@ struct TipModifier: ViewModifier {
     
     func body(content: Content) -> some View {
         content
-            .frame(width: TipInfo.viewSizes[order].width, height: TipInfo.viewSizes[order].height)
+            .frame(width: TipInfo.tips[order].viewSize.width, height: TipInfo.tips[order].viewSize.height)
             .cornerRadius(12)
     }
 }

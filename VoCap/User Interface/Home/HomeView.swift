@@ -78,7 +78,7 @@ struct HomeView: View {
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
             }
             
-            ForEach(0 ..< tipControls.count) { TipView(order: $0, tipControls: $tipControls) }
+            ForEach(0 ..< tipControls.count) { TipView(tiptype: TipType(rawValue: $0)!, tipControls: $tipControls) }
         }
         .accentColor(.mainColor)
     }

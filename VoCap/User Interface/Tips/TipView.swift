@@ -5,24 +5,24 @@
 //  Created by 윤태민 on 7/30/21.
 //
 
+//  View for tip.
+
 import SwiftUI
 
 struct TipView: View {
     @Environment(\.colorScheme) var colorScheme
     
-    let order: Int
+    let tiptype: TipType
     @Binding var tipControls: [TipControl]
     
     var body: some View {
         Group {
-            if tipControls[order].isPresented {
+            if tipControls[tiptype.rawValue].isPresented {
                 Rectangle()
                     .fill(Color.black.opacity(0.4))
                     .ignoresSafeArea()
                     .overlay(
-                        Button(action: { tipControls[order].makeTipDisabled() }) {
-                            tip
-                        }
+                        Button(action: { tipControls[tiptype.rawValue].makeTipDisabled() }) { tip }
                         .buttonStyle(PlainButtonStyle())
                     )
             }
@@ -34,14 +34,13 @@ struct TipView: View {
 }
 
 extension TipView {
-    var tip: some View {
+    private var tip: some View {
         ZStack {
-//            // Tip 띄어진 상태에서 mode 변경하면 반영 안 됨
-//            GifView(fileName: "\(TipInfo.fileNames[info.order])_\(colorScheme)")
+//            GifView(fileName: "\(TipInfo.fileNames[info.order])_\(colorScheme)")      Tip 띄어진 상태에서 Dark/Light 변경하면 반영 안 됨
             
-            if colorScheme == .light { GifView(fileName: "\(TipInfo.fileNames[order])_\(colorScheme)") }
-            else                     { GifView(fileName: "\(TipInfo.fileNames[order])_\(colorScheme)") }
+            if colorScheme == .light { GifView(fileName: "\(TipInfo.tips[tiptype.rawValue].fileName)_\(colorScheme)") }
+            else                     { GifView(fileName: "\(TipInfo.tips[tiptype.rawValue].fileName)_\(colorScheme)") }
         }
-        .modifier(TipModifier(order: order))
+        .modifier(TipModifier(order: tiptype.rawValue))
     }
 }

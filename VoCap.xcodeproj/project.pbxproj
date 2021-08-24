@@ -17,6 +17,7 @@
 		3414F3B225F25B3F00BFB516 /* NoteDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3414F3B125F25B3F00BFB516 /* NoteDetailView.swift */; };
 		34152FB7259A08A5007E4953 /* TmpNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34152FB6259A08A5007E4953 /* TmpNote.swift */; };
 		3416A70026B52E4100BB1A26 /* ItemControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3416A6FF26B52E4100BB1A26 /* ItemControl.swift */; };
+		341D2D7C26D527E50088713A /* TipControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 341D2D7B26D527E50088713A /* TipControl.swift */; };
 		3423403525EFC47000A04176 /* GifView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3423403425EFC47000A04176 /* GifView.swift */; };
 		342693C725FCDDE5000A5E4E /* AdMobView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342693C625FCDDE5000A5E4E /* AdMobView.swift */; };
 		342A05C226CFE62B00A9CDD8 /* NSManagedObjectContextExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342A05C126CFE62B00A9CDD8 /* NSManagedObjectContextExtension.swift */; };
@@ -24,7 +25,6 @@
 		3444A05125FB70BF0008CE14 /* HowToGlanceItem_light.gif in Resources */ = {isa = PBXBuildFile; fileRef = 3444A04F25FB70BE0008CE14 /* HowToGlanceItem_light.gif */; };
 		3445EBED25C9851B00D16915 /* CustomTextFieldWithToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3445EBEC25C9851B00D16915 /* CustomTextFieldWithToolbar.swift */; };
 		344FF41D25FF7106009B7E03 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 344FF41C25FF7106009B7E03 /* StringExtension.swift */; };
-		3459B46226BE882600D5BCD4 /* TipControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3459B46126BE882600D5BCD4 /* TipControl.swift */; };
 		3459D8F925DE8764002A9817 /* CustomSheetDismiss.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3459D8F825DE8764002A9817 /* CustomSheetDismiss.swift */; };
 		3473344B25DD522A00A11151 /* ContactUsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3473344A25DD522A00A11151 /* ContactUsView.swift */; };
 		34858A49266645B50078F503 /* Note+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34858A47266645B50078F503 /* Note+CoreDataProperties.swift */; };
@@ -85,6 +85,7 @@
 		3414F3B125F25B3F00BFB516 /* NoteDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetailView.swift; sourceTree = "<group>"; };
 		34152FB6259A08A5007E4953 /* TmpNote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TmpNote.swift; sourceTree = "<group>"; };
 		3416A6FF26B52E4100BB1A26 /* ItemControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemControl.swift; sourceTree = "<group>"; };
+		341D2D7B26D527E50088713A /* TipControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipControl.swift; sourceTree = "<group>"; };
 		3423403425EFC47000A04176 /* GifView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GifView.swift; sourceTree = "<group>"; };
 		342693C625FCDDE5000A5E4E /* AdMobView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdMobView.swift; sourceTree = "<group>"; };
 		342A05C126CFE62B00A9CDD8 /* NSManagedObjectContextExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSManagedObjectContextExtension.swift; sourceTree = "<group>"; };
@@ -93,7 +94,6 @@
 		3444A04F25FB70BE0008CE14 /* HowToGlanceItem_light.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = HowToGlanceItem_light.gif; sourceTree = "<group>"; };
 		3445EBEC25C9851B00D16915 /* CustomTextFieldWithToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextFieldWithToolbar.swift; sourceTree = "<group>"; };
 		344FF41C25FF7106009B7E03 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
-		3459B46126BE882600D5BCD4 /* TipControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipControl.swift; sourceTree = "<group>"; };
 		3459D8F825DE8764002A9817 /* CustomSheetDismiss.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSheetDismiss.swift; sourceTree = "<group>"; };
 		3473343D25DD503F00A11151 /* VoCap_bridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VoCap_bridge.h; sourceTree = "<group>"; };
 		3473344A25DD522A00A11151 /* ContactUsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactUsView.swift; sourceTree = "<group>"; };
@@ -179,7 +179,6 @@
 		340491DF25779CEB00CD1BD7 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				3459B46126BE882600D5BCD4 /* TipControl.swift */,
 				340491E425779D2C00CD1BD7 /* HomeView.swift */,
 				3413DDF626B327E30002120C /* AddNoteButton.swift */,
 				34FEA28226B32C5800E6FDDC /* NoteButton.swift */,
@@ -226,6 +225,7 @@
 			children = (
 				3423403425EFC47000A04176 /* GifView.swift */,
 				34871BCD26A3F1DD004640BD /* TipInfo.swift */,
+				341D2D7B26D527E50088713A /* TipControl.swift */,
 				34FEA28A26B3309700E6FDDC /* TipView.swift */,
 				34A32AEB26033E2C004E8C17 /* gif */,
 			);
@@ -578,9 +578,9 @@
 				34A5B63A257E3AC60023D1AC /* NoteRow.swift in Sources */,
 				3459D8F925DE8764002A9817 /* CustomSheetDismiss.swift in Sources */,
 				3490ED8125A48EE400DB1B2F /* ViewModifierInheritance.swift in Sources */,
-				3459B46226BE882600D5BCD4 /* TipControl.swift in Sources */,
 				34F89BF525F308070067AAD7 /* ResetView.swift in Sources */,
 				34A5B649257E522A0023D1AC /* ColorExtension.swift in Sources */,
+				341D2D7C26D527E50088713A /* TipControl.swift in Sources */,
 				3414F3B225F25B3F00BFB516 /* NoteDetailView.swift in Sources */,
 				34F990A925ED417D00E3710A /* CustomTextAlert.swift in Sources */,
 				3404B4C6258784890021CDAE /* CustomTextField.swift in Sources */,

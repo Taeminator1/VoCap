@@ -5,12 +5,19 @@
 //  Created by 윤태민 on 7/18/21.
 //
 
-import Foundation
+//  Basic info for tip: Each element consists of fileName and viewSize
+
 import SwiftUI
 
 struct TipInfo {
-    static let fileNames: [String] = ["HowToAddItem", "HowToGlanceItem"]
-    static let viewSizes: [(width: CGFloat, height: CGFloat)] = [(300.0, 350.0), (280.0, 210.0)]
+    static let tips: [Tip] = [
+        Tip(fileName: "HowToAddItem",       viewSize: (300.0, 350.0)),
+        Tip(fileName: "HowToGlanceItem",    viewSize: (280.0, 210.0))
+    ]
     
-    var order: Int = 0
+    struct Tip {
+        var fileName: String
+        var viewSize: (width: CGFloat, height: CGFloat)
+    }
 }
+

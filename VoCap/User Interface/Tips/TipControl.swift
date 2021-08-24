@@ -5,8 +5,9 @@
 //  Created by 윤태민 on 8/7/21.
 //
 
+//  Offer various methods to control tip:
+
 import Foundation
-import SwiftUI
 
 enum TipType: Int {
     case tip0 = 0       // Tip for how to add item.
