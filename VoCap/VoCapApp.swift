@@ -13,15 +13,8 @@ struct VoCapApp: App {
 
     var body: some Scene {
         WindowGroup {
-//            ContentView2()
-//            CustomGestureModifierExample()
-//            SettingsView()
-            HomeView().environment(\.managedObjectContext, persistenceController.container.viewContext)
-//            SwiftUIView()
-            
-//            AdMobView()
-            
-//            XxMakeNoteView(isAddNotePresented: .constant(true), isEditNotePresented: .constant(false)) { _,_,_,_,_ in }
+            HomeView()
+                .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
 }

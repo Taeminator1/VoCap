@@ -5,14 +5,19 @@
 //  Created by 윤태민 on 12/8/20.
 //
 
+//  To add or edit note:
+//  - Add Note: Don't need to fill out the form.
+//  - Edit Note: Need to change at least one thing.
+//  Things to do:
+//  - Add toggleConfig
+
 import SwiftUI
 
 struct MakeNoteView: View {
-    
     @State var note: TmpNote
-    @State var dNote: TmpNote = TmpNote()           // duplicated Note
+    @State var dNote: TmpNote = TmpNote()           // Duplicated Note to compare to prior note.
     
-    @Binding var noteRowOrder: Int?
+    @Binding var order: Int?                        // Optional type to tell functions, make or edit.
     @Binding var isPresented: Bool
     
     @State var shwoingWidgetAlert: Bool = false
@@ -25,27 +30,21 @@ struct MakeNoteView: View {
         NavigationView {
             List {
                 basicInfo
-                toggleConfig
+//                toggleConfig
                 others
             }
             .listStyle(InsetGroupedListStyle())
-            .environment(\.horizontalSizeClass, .regular)               // 이건 뭐지?
-            .navigationBarTitle(noteRowOrder == nil ? "Add Note" : "Edit Note", displayMode: .inline)
+            .environment(\.horizontalSizeClass, .regular)
+            .navigationBarTitle(order == nil ? "Add Note" : "Edit Note", displayMode: .inline)
             .actionSheet(isPresented: $showingCancelSheet) { actionSheet }
             .toolbar {
                 cancelButton
                 doneSaveButton
             }
         }
-        .onAppear() {
-            dNote = note
-        }
-        .onDisappear() {
-            noteRowOrder = nil
-        }
-        .allowAutoDismiss($showingCancelSheet, .constant(false)) {
-            return note.isEqual(dNote)
-        }
+        .onAppear() { dNote = note }
+        .onDisappear() { order = nil }
+        .allowAutoDismiss($showingCancelSheet, .constant(false)) { note.isEqual(dNote) }
         .accentColor(.mainColor)
     }
 }
@@ -63,7 +62,7 @@ extension MakeNoteView {
     }
     
     var actionSheetTitle: Text {
-        noteRowOrder == nil ? Text("Are you sure you want to discard this new note?") : Text("Are you sure you want to discard your changes?")
+        order == nil ? Text("Are you sure you want to discard this new note?") : Text("Are you sure you want to discard your changes?")
     }
 }
 
@@ -76,22 +75,20 @@ extension MakeNoteView {
     }
     
     var doneSaveButton: some ToolbarContent {
-        DoneButton(placement: .navigationBarTrailing, title: (noteRowOrder == nil ? "Save" : "Done"), isDisabled: (noteRowOrder != nil && note.isEqual(dNote))) { onComplete(note) }
+        DoneButton(placement: .navigationBarTrailing, title: (order == nil ? "Save" : "Done"), isDisabled: (order != nil && note.isEqual(dNote))) { onComplete(note) }
     }
 }
 
 // MARK: - View of List
 extension MakeNoteView {
-    
     var basicInfo: some View {
         Section() {
-            CustomTextField(title: "Title".localized, text: $note.title, isFirstResponder: noteRowOrder == nil)
+            CustomTextField(title: "Title".localized, text: $note.title, isFirstResponder: order == nil)
             
             // Group List에서 이상
             Picker(selection: $note.colorIndex, label: Text("Color")) {      // Need to check the style
                 ForEach (0..<myColor.colornames.count) {
                     Text(myColor.colornames[$0])
-//                        .tag(myColor.colornames[$0])                // 여기선 없어도 되는데, 용도가 있는 듯
                         .foregroundColor(myColor.colors[$0])
                 }
             }
@@ -137,8 +134,6 @@ extension MakeNoteView {
         Section() {
             VStack(alignment: .leading) {
                 Text("Memo")                       // Need to add multi line textfield
-
-//                TextField("", text: $note.memo)
                 TextEditor(text: $note.memo)
                     .frame(height: 150)
             }
@@ -149,6 +144,6 @@ extension MakeNoteView {
 
 struct MakeNoteView_Previews: PreviewProvider {
     static var previews: some View {
-        MakeNoteView(note: TmpNote(), noteRowOrder: .constant(nil), isPresented: .constant(false)) { _ in }
+        MakeNoteView(note: TmpNote(), order: .constant(nil), isPresented: .constant(false)) { _ in }
     }
 }

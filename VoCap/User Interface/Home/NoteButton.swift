@@ -5,19 +5,22 @@
 //  Created by 윤태민 on 7/30/21.
 //
 
-//  Button for note in HomeView
+//  Button to present the MakeNoteView to edit note.
+//  Button to enter the note:
+//  - Link with NoteDetailView
 
 import SwiftUI
 
 struct NoteButton: View {
-    @Binding var isPresented: Bool
     @Binding var isEditMode: EditMode
-    @Binding var id: UUID?
-    @Binding var order: Int?
     
-    @Binding var hideNumber: Bool
+    @Binding var order: Int?
+    @Binding var isPresented: Bool
+    
+    @State var id: UUID?                // For navigation link.
     @Binding var tipControls: [TipControl]
     
+    @Binding var hideNumber: Bool
     let note: Note
     
     var body: some View {
@@ -25,10 +28,10 @@ struct NoteButton: View {
             HStack {
                 Button(action: {
                     switch(isEditMode) {
-                    case .active:
+                    case .active:       // For MakeNoteView.
                         order = Int(note.order)
                         isPresented = true
-                    default:
+                    default:            // For NavigationLink
                         id = note.id
                     }
                 }) {
@@ -37,9 +40,7 @@ struct NoteButton: View {
                     }
                 }
                 
-                NavigationLink(destination: NoteDetailView(note: note, tipControls: $tipControls), tag: note.id!, selection: $id) {
-                    EmptyView()
-                }
+                NavigationLink(destination: NoteDetailView(note: note, tipControls: $tipControls), tag: note.id!, selection: $id) { EmptyView() }
                 .frame(width: 0).hidden()
             }
             .modifier(HomeListModifier())
@@ -50,5 +51,44 @@ struct NoteButton: View {
     // Count memorized item in note.
     func countTrues(_ arr: [Bool]) -> Int {
         return arr.compactMap { $0 ? $0 : nil }.count
+    }
+}
+
+struct NoteRow: View {
+    var title: String?
+    var colorIndex: Int16 = 0
+    var totalNumber: Int16 = 0
+    var memorizedNumber: Int16 = 0
+    
+    @Binding var hideNoteDetailsNumber: Bool
+    
+    var body: some View {
+        VStack() {
+            Spacer()
+            HStack() {
+                (totalNumber != 0 && totalNumber == memorizedNumber) ? Image(systemName: "checkmark.circle.fill") : Image(systemName: "circle")
+                Text(title!)
+                    .font(.title)
+                Spacer()
+            }
+            Spacer()
+            
+            HStack() {
+                Spacer()
+                Text("Number of Items: \(memorizedNumber) / \(totalNumber)")
+                    .font(.body)
+                    .modifier(VisibilityStyle(hidden: $hideNoteDetailsNumber))
+            }
+        }
+        .padding()
+        .modifier(NoteRowModifier(colorIndex: Int(colorIndex), height: 83))
+    }
+}
+
+// MARK: - Preivew
+struct NoteRow_Previews: PreviewProvider {
+    static var previews: some View {
+        NoteRow(title: "Example 1", hideNoteDetailsNumber: .constant(false))
+            .previewLayout(.sizeThatFits)
     }
 }

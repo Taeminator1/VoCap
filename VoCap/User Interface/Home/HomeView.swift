@@ -6,8 +6,10 @@
 //
 
 //  Initial screen of the App:
-//  - Add a new note.
-//  - Edit a exiting note.
+//  - Add Note
+//      - Press Add Note button on the top.
+//  - Edit Note
+//      - Press Edit button on the right of the navigation bar and press note you want to edit.
 //  - Access each note.
 //  - Settings
 
@@ -24,15 +26,13 @@ struct HomeView: View {
         animation: .default)
     private var notes: FetchedResults<Note>
     
-    @State var isMakeNotePresented: Bool = true         // 처음 실행할 때 MakeNoteView의 isEditNotePresented를 true로 변경해서 sheet를 띄우고 닫아야(NavigationView.onAppear()) 처음에 Edit시 note 가리키지 못하는 현상 막을 수 있음
+    @State var isMakeNotePresented: Bool = true
     @State var isEditMode: EditMode = .inactive
-    @State var noteRowSelection: UUID?
-    @State var noteRowOrder: Int?
+    @State var noteRowOrder: Int?                               // Optional type to tell functions, make or edit.
+    @State var hideNoteDetailsNumber: Bool = false
     
     @State var isSettingsPresented: Bool = false
     @State var tipControls: [TipControl] = [TipControl(.tip0), TipControl(.tip1)]
-    
-    @State var hideNoteDetailsNumber: Bool = false
     
     var body: some View {
         ZStack {
@@ -41,7 +41,7 @@ struct HomeView: View {
                     AddNoteButton(isPresent: $isMakeNotePresented, isEditMode: $isEditMode)
                     
                     ForEach(notes) {
-                        NoteButton(isPresented: $isMakeNotePresented, isEditMode: $isEditMode, id: $noteRowSelection, order: $noteRowOrder, hideNumber: $hideNoteDetailsNumber, tipControls: $tipControls, note: $0)
+                        NoteButton(isEditMode: $isEditMode, order: $noteRowOrder, isPresented: $isMakeNotePresented, tipControls: $tipControls, hideNumber: $hideNoteDetailsNumber, note: $0)
                     }
                     .onDelete(perform: deleteNote)
                     .onMove(perform: moteNote)
@@ -49,7 +49,7 @@ struct HomeView: View {
                 .navigationBarTitle("VoCap", displayMode: .inline)
                 .sheet(isPresented: $isMakeNotePresented) {
                     let tmpNote = noteRowOrder == nil ? TmpNote() : TmpNote(note: notes[noteRowOrder!])
-                    MakeNoteView(note: tmpNote, noteRowOrder: $noteRowOrder, isPresented: $isMakeNotePresented) { tmpNote in
+                    MakeNoteView(note: tmpNote, order: $noteRowOrder, isPresented: $isMakeNotePresented) { tmpNote in
                         self.noteRowOrder == nil ? self.addNote(tmpNote) : self.editNote(tmpNote)
                         self.isMakeNotePresented = false
                     }
@@ -63,14 +63,14 @@ struct HomeView: View {
                     Separator(placement: .bottomBar)
                     settingsButton
                 }
-                .ignoresSafeArea(.keyboard)                 // NoteDetailView에서의 키보드 잔상 없애기 위해
-                .animation(.default)                        // 해당 자리에 있어야 함
-                .listStyle(PlainListStyle())                // title bar button 초기 색 변경 방지
-                .environment(\.editMode, self.$isEditMode)  // 없으면 Edit 오류 생김(해당 위치에 있어야 함)
+                .ignoresSafeArea(.keyboard)                     // NoteDetailView에서의 키보드 잔상 없애기 위해
+                .animation(.default)                            // 해당 자리에 있어야 함
+                .listStyle(PlainListStyle())                    // title bar button 초기 색 변경 방지
+                .environment(\.editMode, self.$isEditMode)      // 없으면 Edit 오류 생김(해당 위치에 있어야 함)
             }
             .navigationViewStyle(StackNavigationViewStyle())    // View전환할 때마다 Tool Bar 로딩 시간 없애기 위해
             .onAppear() {
-                isMakeNotePresented = false
+                isMakeNotePresented = false                     // Toggle 시켜주지 않으면, 최초에 저장된 값 못 불러옴
                 UITableView.appearance().showsVerticalScrollIndicator = false
             }
             .sheet(isPresented: $isSettingsPresented) {
