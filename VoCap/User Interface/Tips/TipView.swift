@@ -5,8 +5,6 @@
 //  Created by 윤태민 on 7/30/21.
 //
 
-//  View for tip.
-
 import SwiftUI
 
 struct TipView: View {

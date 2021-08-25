@@ -6,8 +6,16 @@
 //
 
 //  Basic info for tip: Each element consists of fileName and viewSize
+//  If you want to add another tip:
+//  - Add case of TipType enumeration and
+//  - Add element of tips in TipInfo structure.
 
 import SwiftUI
+
+enum TipType: Int {
+    case tip0 = 0       // Tip for how to add item.
+    case tip1 = 1       // Tip for how to glnace item.
+}
 
 struct TipInfo {
     static let tips: [Tip] = [
@@ -20,4 +28,3 @@ struct TipInfo {
         var viewSize: (width: CGFloat, height: CGFloat)
     }
 }
-

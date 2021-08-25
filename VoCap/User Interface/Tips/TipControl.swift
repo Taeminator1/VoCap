@@ -5,14 +5,10 @@
 //  Created by 윤태민 on 8/7/21.
 //
 
-//  Offer various methods to control tip:
+//  Offer various methods to control tip.
+//  - reset: Make user default false
 
 import Foundation
-
-enum TipType: Int {
-    case tip0 = 0       // Tip for how to add item.
-    case tip1 = 1       // Tip for how to glnace item.
-}
 
 struct TipControl {
     private var tipType: TipType
