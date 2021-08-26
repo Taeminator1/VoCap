@@ -6,9 +6,9 @@
 //
 
 //  For state property to control item in note.
-//  - is blocked
-//  - is shuffled
-//  - is hide momorized items
+//  - Is it blocked?
+//  - Is it shuffled?
+//  - Is momorized items hide?
 
 import Foundation
 import SwiftUI

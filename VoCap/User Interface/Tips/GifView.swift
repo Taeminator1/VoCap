@@ -10,7 +10,7 @@ import FLAnimatedImage
 
 struct GifView: UIViewRepresentable {
     let animatedView = FLAnimatedImageView()
-    var fileName: String
+    let fileName: String
     
     func makeUIView(context: UIViewRepresentableContext<GifView>) -> UIView {
         let view = UIView()

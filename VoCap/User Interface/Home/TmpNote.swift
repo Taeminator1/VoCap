@@ -7,6 +7,7 @@
 
 //  Type for specific properties of the Note class.
 //  It is used to add or edit note.
+
 import SwiftUI
 
 struct TmpNote {

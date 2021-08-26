@@ -5,7 +5,9 @@
 //  Created by 윤태민 on 8/2/21.
 //
 
-//  Location of item(term or definition) in note.
+//  Location of item in note:
+//  - Term.
+//  - Definition.
 
 import Foundation
 import SwiftUI

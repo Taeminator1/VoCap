@@ -5,7 +5,17 @@
 //  Created by 윤태민 on 12/9/20.
 //
 
-//  Inside of each note.
+//  Inside of each note:
+//  - Menu
+//      - Add item.
+//      - Edit item.
+//      - Hide memorized.
+//      - Delete memorized.
+//  - List of Items
+//  - Block
+//      - Terms.
+//      - Definitions.
+//  - Shuffle
 
 import SwiftUI
 import GoogleMobileAds
@@ -15,22 +25,22 @@ struct NoteDetailView: View {
     
     @ObservedObject var note: Note
     
-    @State var tmpNoteDetails: [NoteDetail] = []
+    @State private var tmpNoteDetails: [NoteDetail] = []
     
-    @State var editMode: EditMode = .inactive
+    @State private var editMode: EditMode = .inactive
     
-    @State var cellLocation = CellLocation()
-    @State var itemControl = ItemControl()
+    @State private var cellLocation = CellLocation()
+    @State private var itemControl = ItemControl()
     
-    @State var closeKeyboard: Bool = true
-    @State var showingAddItemAlert: Bool = false
+    @State private var closeKeyboard: Bool = true
+    @State private var showingAddItemAlert: Bool = false
     
-    @State var scrollTarget: Int?
-    @State var listFrame: CGFloat = 0.0
+    @State private var scrollTarget: Int?
+    @State private var listFrame: CGFloat = 0.0
     
     @Binding var tipControls: [TipControl]
     
-    @State var orientation = UIDevice.current.orientation
+    @State private var orientation = UIDevice.current.orientation
     let orientationChanged = NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)
             .makeConnectable()
             .autoconnect()
@@ -62,7 +72,7 @@ struct NoteDetailView: View {
                         UITableView.appearance().showsVerticalScrollIndicator = false
                         
                         copyNoteDetails()
-                        listFrame = geometry.size.height > geometry.size.width ? geometry.size.height : geometry.size.width             // 없으면 .bottomBar 없어짐...
+                        listFrame = geometry.size.height > geometry.size.width ? geometry.size.height : geometry.size.width     // .bottomBar가 사라지는 것 방지
                         
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                             tipControls[TipType.tip0.rawValue].makeViewDisabled()
@@ -89,7 +99,7 @@ struct NoteDetailView: View {
         }
         .onReceive(orientationChanged) { _ in
             self.orientation = UIDevice.current.orientation
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {         // 딜레이 안 주면 연속해서 Rotate했을 때, .bottom Toolbar 사라지는 문제 재발
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {         // .bottomBar가 사라지는 것 방지
                 tipControls[TipType.tip0.rawValue].makeViewToggle()
             }
         }
@@ -97,7 +107,7 @@ struct NoteDetailView: View {
 }
 
 
-extension NoteDetailView {
+private extension NoteDetailView {
     @ViewBuilder
     func noteDetailRow(_ noteDetail: NoteDetail) -> some View {
         if !(noteDetail.isMemorized && itemControl.hideMemorized) {
@@ -117,7 +127,7 @@ extension NoteDetailView {
                         scrollTarget = noteDetail.order
                     }
                     changeMemorizedState(id: noteDetail.id)
-                    closeKeyboard = true                // 없으면 키보드 잔상 남음
+                    closeKeyboard = true                            // 키보드 잔상 방지
                 }) {
                     noteDetail.isMemorized == true ? Image(systemName: "checkmark.square.fill").imageScale(.large) : Image(systemName: "square").imageScale(.large)
                 }
@@ -161,7 +171,7 @@ extension NoteDetailView {
     }
 }
 
-extension NoteDetailView {
+private extension NoteDetailView {
     func noteDetailText(_ text: String, bodyColor: Color, strokeColor: Color) -> some View {
         Text(text)
             .modifier(NoteDetailCellModifier2(bodyColor: bodyColor, strokeColor: strokeColor))
@@ -178,13 +188,13 @@ extension NoteDetailView {
             .foregroundColor(screenColor)
             .frame(width: initialWidth)
             .scaleEffect(x: isScreen && !tmpNoteDetails[order].isScaled ? stretchedWidth / initialWidth : 1.0, y: 1.0, anchor: anchor)
-            .onTapGesture{}                 // Scroll 되게 하려면 필요(해당 자리에)
+            .onTapGesture{}                 // Scroll 위해 필요
             .modifier(CustomGestureModifier(isPressed: $tmpNoteDetails[order].isScaled, f: { }))
     }
 }
 
 // MARK: - Tool Bar Items
-extension NoteDetailView {
+private extension NoteDetailView {
     var menuButton: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             if editMode == .inactive {
@@ -242,7 +252,7 @@ extension NoteDetailView {
 
 
 // MARK: - Menu
-extension NoteDetailView {
+private extension NoteDetailView {
     var addItemButton: some View {
         Button(action: { showingAddItemAlert = true }) {
             Label("Add Item", systemImage: "plus")
@@ -276,7 +286,7 @@ extension NoteDetailView {
             
             if itemControl.isShuffled { shuffle() }             // If items are shuffled, return back.
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {        // for animation
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {        // For animation.
                 editMode = .active
             }
         }) {
@@ -288,7 +298,7 @@ extension NoteDetailView {
         Button(action: {
             editMode = .inactive
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {        // 없으면 Keyboard 뒤 배경 안 사라짐
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {        // 키보드 잔상 방지
                 closeKeyboard = true
             }
             viewContext.saveContext()
@@ -337,7 +347,7 @@ extension NoteDetailView {
 
 
 // MARK: - Other Functions
-extension NoteDetailView {
+private extension NoteDetailView {
     func copyNoteDetails() {
         Array(0 ..< note.itemCount).forEach {
             tmpNoteDetails.append(NoteDetail(order: $0, note.findItem(at: $0)))
@@ -347,7 +357,7 @@ extension NoteDetailView {
 
 
 // MARK: - Modify NoteDetails rows
-extension NoteDetailView {
+private extension NoteDetailView {
     func deleteItem(atOffsets offsets: IndexSet) {
         note.removeItem(atOffsets: offsets)
         tmpNoteDetails.remove(atOffsets: offsets)
@@ -369,14 +379,3 @@ extension NoteDetailView {
         viewContext.saveContext()
     }
 }
-
-
-//struct NoteDetailView_Previews: PreviewProvider {
-//
-//    static var previews: some View {
-//        NoteDetailView(note: Note())
-//            .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
-//            .previewDevice("iPhone XR")
-//    }
-//}
-

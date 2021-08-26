@@ -26,13 +26,13 @@ struct HomeView: View {
         animation: .default)
     private var notes: FetchedResults<Note>
     
-    @State var isMakeNotePresented: Bool = true
-    @State var isEditMode: EditMode = .inactive
-    @State var noteRowOrder: Int?                               // Optional type to tell functions, make or edit.
-    @State var hideNoteDetailsNumber: Bool = false
+    @State private var isMakeNotePresented: Bool = true
+    @State private var isEditMode: EditMode = .inactive
+    @State private var noteRowOrder: Int?                               // Optional type to tell functions, make or edit.
+    @State private var hideNoteDetailsNumber: Bool = false
     
-    @State var isSettingsPresented: Bool = false
-    @State var tipControls: [TipControl] = [TipControl(.tip0), TipControl(.tip1)]
+    @State private var isSettingsPresented: Bool = false
+    @State private var tipControls: [TipControl] = [TipControl(.tip0), TipControl(.tip1)]
     
     var body: some View {
         ZStack {
@@ -85,7 +85,7 @@ struct HomeView: View {
 }
 
 // MARK: - Toolbar Items
-extension HomeView {
+private extension HomeView {
     var editButton: some ToolbarContent {
         EditButton(placement: .navigationBarTrailing, isEditMode: $isEditMode) {
             isEditMode.toggle()
@@ -104,7 +104,7 @@ extension HomeView {
 }
 
 // MARK: - Modify Note rows
-extension HomeView {
+private extension HomeView {
     func editNote(_ note: TmpNote) {
         notes[noteRowOrder!].assignNote(context: viewContext, tmpNote: note)
         viewContext.saveContext()

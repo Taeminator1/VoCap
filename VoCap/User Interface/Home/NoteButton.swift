@@ -17,7 +17,7 @@ struct NoteButton: View {
     @Binding var order: Int?
     @Binding var isPresented: Bool
     
-    @State var id: UUID?                // For navigation link.
+    @State private var id: UUID?                // For navigation link.
     @Binding var tipControls: [TipControl]
     
     @Binding var hideNumber: Bool

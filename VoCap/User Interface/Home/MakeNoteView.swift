@@ -15,14 +15,14 @@ import SwiftUI
 
 struct MakeNoteView: View {
     @State var note: TmpNote
-    @State var dNote: TmpNote = TmpNote()           // Duplicated Note to compare to prior note.
+    @State private var dNote: TmpNote = TmpNote()           // Duplicated Note to compare to prior note.
     
     @Binding var order: Int?                        // Optional type to tell functions, make or edit.
     @Binding var isPresented: Bool
     
-    @State var shwoingWidgetAlert: Bool = false
-    @State var shwoingAutoCheckAlert: Bool = false
-    @State var showingCancelSheet: Bool = false
+    @State private var shwoingWidgetAlert: Bool = false
+    @State private var shwoingAutoCheckAlert: Bool = false
+    @State private var showingCancelSheet: Bool = false
     
     let onComplete: (TmpNote) -> Void
     

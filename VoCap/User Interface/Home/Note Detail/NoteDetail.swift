@@ -5,7 +5,7 @@
 //  Created by 윤태민 on 1/3/21.
 //
 
-//  Each item of Note
+//  Each item of Note.
 
 import Foundation
 import SwiftUI
