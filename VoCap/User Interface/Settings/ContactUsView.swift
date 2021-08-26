@@ -62,7 +62,7 @@ struct ContactUsView: View {
 // MARK: - Action Sheet
 extension ContactUsView {
     var actionSheet: ActionSheet {
-        ActionSheet(title: Text("Would you like to delete this message?"), 
+        ActionSheet(title: Text("Would you like to delete this message?"),
                     buttons: [
                         .destructive(Text("Delete"), action: {
                                         showingCancelSheet = false
@@ -100,8 +100,8 @@ extension ContactUsView {
         isSendingEmail = true
         let smtpSession = MCOSMTPSession()
         smtpSession.hostname = "smtp.gmail.com"
-        smtpSession.username = "vocap2021@gmail.com"
-        smtpSession.password = "cyzsar-xywsy9-zumZuc"
+        smtpSession.username = PersonalInfo.mailAddress
+        smtpSession.password = PersonalInfo.mailPassword
         smtpSession.port = 465
         smtpSession.authType = MCOAuthType.saslPlain
         smtpSession.connectionType = MCOConnectionType.TLS
@@ -114,8 +114,8 @@ extension ContactUsView {
         }
 
         let builder = MCOMessageBuilder()
-        builder.header.to = [MCOAddress(displayName: "", mailbox: "vocap2021@gmail.com")!]
-        builder.header.from = MCOAddress(displayName: "", mailbox: "vocap2021@gmail.com")
+        builder.header.to = [MCOAddress(displayName: "", mailbox: PersonalInfo.mailAddress)!]
+        builder.header.from = MCOAddress(displayName: "", mailbox: PersonalInfo.mailAddress)
         builder.header.subject = ""
         builder.htmlBody  = "<p>"
         builder.htmlBody += "Version Number: \(Bundle.main.infoDictionary!["CFBundleShortVersionString"] ?? "")<br>"
@@ -137,7 +137,6 @@ extension ContactUsView {
                 alertMessage = "Error"
                 showingAlert = true
             } else {
-//                print(builder.htmlBody!)
                 NSLog("Successfully sent email!")
                 alertMessage = "Success"
                 showingAlert = true
@@ -175,7 +174,6 @@ extension ContactUsView {
                     TextField("Source", text: $sourceLanguage)
                         .multilineTextAlignment(.center)
                     Image(systemName: "arrow.forward")
-//                    Text("to")
                     TextField("Target", text: $targetLanguage)
                         .multilineTextAlignment(.center)
                 }
@@ -199,14 +197,12 @@ extension ContactUsView {
         }
         .onReceive(orientationChanged) { _ in                   // content의 Frame size Height가 변경되는 것 방지
             self.orientation = UIDevice.current.orientation
-//            print(orientation.isLandscape)
             if orientation.isLandscape {
                 contentFrameHeight = 150.1
             }
             else {
                 contentFrameHeight = 150.0
             }
-//            print(contentFrameHeight)
         }
     }
     
