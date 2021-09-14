@@ -13,6 +13,7 @@
 		3408A24526BE20D9000CA01F /* ToolbarContentButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3408A24426BE20D9000CA01F /* ToolbarContentButton.swift */; };
 		340A21AE26D0EC6000A4CD38 /* EditModeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 340A21AD26D0EC6000A4CD38 /* EditModeExtension.swift */; };
 		340CEBD226B405100020D035 /* TextFieldType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 340CEBD126B405100020D035 /* TextFieldType.swift */; };
+		3412F5A326F0ABA100B75DF0 /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3412F5A226F0ABA100B75DF0 /* UserInfo.swift */; };
 		3413DDF726B327E30002120C /* AddNoteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3413DDF626B327E30002120C /* AddNoteButton.swift */; };
 		3414F3B225F25B3F00BFB516 /* NoteDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3414F3B125F25B3F00BFB516 /* NoteDetailView.swift */; };
 		34152FB7259A08A5007E4953 /* TmpNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34152FB6259A08A5007E4953 /* TmpNote.swift */; };
@@ -63,6 +64,7 @@
 		3408A24426BE20D9000CA01F /* ToolbarContentButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarContentButton.swift; sourceTree = "<group>"; };
 		340A21AD26D0EC6000A4CD38 /* EditModeExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditModeExtension.swift; sourceTree = "<group>"; };
 		340CEBD126B405100020D035 /* TextFieldType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldType.swift; sourceTree = "<group>"; };
+		3412F5A226F0ABA100B75DF0 /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 		3413DDF626B327E30002120C /* AddNoteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNoteButton.swift; sourceTree = "<group>"; };
 		3414F3B125F25B3F00BFB516 /* NoteDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetailView.swift; sourceTree = "<group>"; };
 		34152FB6259A08A5007E4953 /* TmpNote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TmpNote.swift; sourceTree = "<group>"; };
@@ -155,6 +157,7 @@
 			children = (
 				340491F125779D4300CD1BD7 /* SettingsView.swift */,
 				3473344A25DD522A00A11151 /* ContactUsView.swift */,
+				3412F5A226F0ABA100B75DF0 /* UserInfo.swift */,
 				34F89BF425F308070067AAD7 /* ResetView.swift */,
 			);
 			path = Settings;
@@ -433,6 +436,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3412F5A326F0ABA100B75DF0 /* UserInfo.swift in Sources */,
 				342693C725FCDDE5000A5E4E /* AdMobView.swift in Sources */,
 				3413DDF726B327E30002120C /* AddNoteButton.swift in Sources */,
 				3445EBED25C9851B00D16915 /* CustomTextFieldWithToolbar.swift in Sources */,

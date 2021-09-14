@@ -5,20 +5,18 @@
 //  Created by 윤태민 on 2/17/21.
 //
 
-//  make TextEditor limit length
-//  https://stackoverflow.com/questions/56476007/swiftui-textfield-max-length
+//  View for contacting us:
+//  - Input user info
+
+//  Reference:
+//  - Limit text length: https://stackoverflow.com/questions/56476007/swiftui-textfield-max-length
+
 import SwiftUI
 import Combine
 
 struct ContactUsView: View {
     @Binding var isContactUsPresented: Bool
-    
-    @State var addressForReply: String = ""
-    @State var region: String = ""
-    @State var sourceLanguage: String = ""
-    @State var targetLanguage: String = ""
-    @State var contents: String = ""
-    @State var contentsCount: Int = 0
+    @State var userInfo = UserInfo()
     
     @State var showingCancelSheet: Bool = false
     @State var showingAlert: Bool = false
@@ -26,8 +24,10 @@ struct ContactUsView: View {
     @State var isSendingEmail: Bool = false
     
     let textLimit: Int = 200
+    let defaultContentFrameHeight: CGFloat = 150.0
+    let landscapeContentFrameHeight: CGFloat = 120.0
     
-    @State var contentFrameHeight: CGFloat = 150
+    @State var contentFrameHeight: CGFloat = 0
     @State var orientation = UIDevice.current.orientation
     let orientationChanged = NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)
             .makeConnectable()
@@ -36,9 +36,9 @@ struct ContactUsView: View {
     var body: some View {
         NavigationView {
             List {
-                userInfo
+                userInfoBlock
                     .disabled(isSendingEmail == true)
-                content
+                contentBlock
                     .disabled(isSendingEmail == true)
             }
             .listStyle(InsetGroupedListStyle())
@@ -51,11 +51,12 @@ struct ContactUsView: View {
                 cancelButton
                 sendButton
             }
-            .allowAutoDismiss($showingCancelSheet, $isSendingEmail) {
-                return addressForReply == "" && region == "" && sourceLanguage == "" && targetLanguage == "" && contents == ""
-            }
+            .allowAutoDismiss($showingCancelSheet, $isSendingEmail) { userInfo.isDismissible }
         }
         .accentColor(.mainColor)
+        .onAppear() {
+            contentFrameHeight = orientation.isLandscape ? landscapeContentFrameHeight : defaultContentFrameHeight
+        }
     }
 }
 
@@ -75,24 +76,20 @@ extension ContactUsView {
 // MARK: - Tool Bar Items
 extension ContactUsView {
     var cancelButton: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarLeading) {
-            Button(action: cancel) { Text("Cancel") }
+        CancelButton(placement: .navigationBarLeading) {
+            if userInfo.isDismissible {
+                isContactUsPresented = false
+            }
+            else {
+                showingCancelSheet = true
+            }
         }
     }
     
     var sendButton: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button(action: sendEmail) { Text("Send") }
-                .disabled(contents == "" || isSendingEmail)
-        }
-    }
-    
-    func cancel() {
-        if addressForReply == "" && region == "" && sourceLanguage == "" && targetLanguage == "" && contents == "" {
-            isContactUsPresented = false
-        }
-        else {
-            showingCancelSheet = true
+                .disabled(!userInfo.isSendable || isSendingEmail)
         }
     }
     
@@ -121,12 +118,7 @@ extension ContactUsView {
         builder.htmlBody += "Version Number: \(Bundle.main.infoDictionary!["CFBundleShortVersionString"] ?? "")<br>"
         builder.htmlBody += "Build Number: \(Bundle.main.infoDictionary!["CFBundleVersion"] ?? "")<br>"
         builder.htmlBody += "<br>"
-        builder.htmlBody += "Address for reply: \(addressForReply)<br>"
-        builder.htmlBody += "Region: \(region)<br>"
-        builder.htmlBody += "Source Language: \(sourceLanguage)<br>"
-        builder.htmlBody += "Target Language: \(targetLanguage)<br>"
-        builder.htmlBody += "<br>"
-        builder.htmlBody += "Contents: \(contents)"
+        builder.htmlBody += userInfo.htmlBody
         builder.htmlBody += "</p>"
 
         let rfc822Data = builder.data()
@@ -135,26 +127,25 @@ extension ContactUsView {
             if (error != nil) {
                 NSLog("Error sending email: \(String(describing: error))")
                 alertMessage = "Error"
-                showingAlert = true
             } else {
                 NSLog("Successfully sent email!")
                 alertMessage = "Success"
-                showingAlert = true
             }
+            showingAlert = true
         }
     }
 }
 
 // MARK: - View of List
 extension ContactUsView {
-    var userInfo: some View {
+    var userInfoBlock: some View {
         Section(
             header: Text("User Info(Optional)")
                 .padding(.top)) {
                 HStack {
                     Text("Address for reply")
                         .font(.caption)
-                    TextField("vocap@example.com", text: $addressForReply)
+                    TextField("vocap@example.com", text: $userInfo.addressForReply)
                         .keyboardType(.emailAddress)
                         .autocapitalization(.none)
                         .multilineTextAlignment(.center)
@@ -163,7 +154,7 @@ extension ContactUsView {
             HStack {
                 Text("Region")
                     .font(.caption)
-                TextField("Country", text: $region)
+                TextField("Country", text: $userInfo.region)
                     .multilineTextAlignment(.center)
             }
             
@@ -171,49 +162,40 @@ extension ContactUsView {
                 Text("Language")
                     .font(.caption)
                 HStack {
-                    TextField("Source", text: $sourceLanguage)
+                    TextField("Source", text: $userInfo.sourceLanguage)
                         .multilineTextAlignment(.center)
                     Image(systemName: "arrow.forward")
-                    TextField("Target", text: $targetLanguage)
+                    TextField("Target", text: $userInfo.targetLanguage)
                         .multilineTextAlignment(.center)
                 }
             }
         }
     }
     
-    var content: some View {
+    var contentBlock: some View {
         Section(
             header: Text("Content(Required)"),
             footer: HStack {
                 Spacer()
-                Text("\(textLimit - contentsCount)")
+                Text("\(textLimit - userInfo.contents.count)")
             }) {
-            TextEditor(text: $contents)
+            TextEditor(text: $userInfo.contents)
                 .frame(height: contentFrameHeight)
-                .onChange(of: contents) { value in
-                    contentsCount = contents.count
+                .onReceive(Just(userInfo.contents)) { _ in
+                    if userInfo.contents.count > textLimit {
+                        userInfo.contents = String(userInfo.contents.prefix(textLimit))
+                    }
                 }
-                .onReceive(Just(contents)) { _ in limitText(textLimit)}
         }
-        .onReceive(orientationChanged) { _ in                   // content의 Frame size Height가 변경되는 것 방지
+        .onReceive(orientationChanged) { _ in
+            // content의 Frame 높이가 사라지는 것 방지.
             self.orientation = UIDevice.current.orientation
-            if orientation.isLandscape {
-                contentFrameHeight = 150.1
-            }
-            else {
-                contentFrameHeight = 150.0
-            }
-        }
-    }
-    
-    func limitText(_ upper: Int) {
-        if contents.count > upper {
-            contents = String(contents.prefix(upper))
+            contentFrameHeight = orientation.isLandscape ? landscapeContentFrameHeight : defaultContentFrameHeight
         }
     }
 }
 
-// MARK: - Others
+// MARK: - Alert
 extension ContactUsView {
     var sendEmailResultAlert: Alert {
         if alertMessage == "Success" {
