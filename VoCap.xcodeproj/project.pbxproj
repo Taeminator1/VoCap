@@ -21,6 +21,7 @@
 		341D2D7C26D527E50088713A /* TipControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 341D2D7B26D527E50088713A /* TipControl.swift */; };
 		3423403525EFC47000A04176 /* GifView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3423403425EFC47000A04176 /* GifView.swift */; };
 		342693C725FCDDE5000A5E4E /* AdMobView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342693C625FCDDE5000A5E4E /* AdMobView.swift */; };
+		3426DC7526F2005C00A755F7 /* ListCellStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3426DC7426F2005C00A755F7 /* ListCellStyle.swift */; };
 		342A05C226CFE62B00A9CDD8 /* NSManagedObjectContextExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342A05C126CFE62B00A9CDD8 /* NSManagedObjectContextExtension.swift */; };
 		3433814926D7BB2900D30329 /* PersonalInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3433814826D7BB2900D30329 /* PersonalInfo.swift */; };
 		34346F4C2604ACDC003279D7 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 34346F4B2604ACDC003279D7 /* Launch Screen.storyboard */; };
@@ -32,7 +33,6 @@
 		34858A49266645B50078F503 /* Note+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34858A47266645B50078F503 /* Note+CoreDataProperties.swift */; };
 		34858A4A266645B50078F503 /* Note+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34858A48266645B50078F503 /* Note+CoreDataClass.swift */; };
 		34871BCE26A3F1DD004640BD /* TipInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34871BCD26A3F1DD004640BD /* TipInfo.swift */; };
-		34871BF126A3FF06004640BD /* ViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34871BF026A3FF06004640BD /* ViewExtension.swift */; };
 		3490ED8125A48EE400DB1B2F /* ViewModifierInheritance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3490ED8025A48EE400DB1B2F /* ViewModifierInheritance.swift */; };
 		34A32AF02603443C004E8C17 /* HowToGlanceItem_dark.gif in Resources */ = {isa = PBXBuildFile; fileRef = 34A32AEF2603443C004E8C17 /* HowToGlanceItem_dark.gif */; };
 		34A32AF82603452B004E8C17 /* HowToAddItem_dark.gif in Resources */ = {isa = PBXBuildFile; fileRef = 34A32AF72603452B004E8C17 /* HowToAddItem_dark.gif */; };
@@ -72,6 +72,7 @@
 		341D2D7B26D527E50088713A /* TipControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipControl.swift; sourceTree = "<group>"; };
 		3423403425EFC47000A04176 /* GifView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GifView.swift; sourceTree = "<group>"; };
 		342693C625FCDDE5000A5E4E /* AdMobView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdMobView.swift; sourceTree = "<group>"; };
+		3426DC7426F2005C00A755F7 /* ListCellStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCellStyle.swift; sourceTree = "<group>"; };
 		342A05C126CFE62B00A9CDD8 /* NSManagedObjectContextExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSManagedObjectContextExtension.swift; sourceTree = "<group>"; };
 		3433814826D7BB2900D30329 /* PersonalInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonalInfo.swift; sourceTree = "<group>"; };
 		34346F3C2604A7B5003279D7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -85,7 +86,6 @@
 		34858A47266645B50078F503 /* Note+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Note+CoreDataProperties.swift"; path = "VoCap/Note+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		34858A48266645B50078F503 /* Note+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Note+CoreDataClass.swift"; path = "VoCap/Note+CoreDataClass.swift"; sourceTree = "<group>"; };
 		34871BCD26A3F1DD004640BD /* TipInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipInfo.swift; sourceTree = "<group>"; };
-		34871BF026A3FF06004640BD /* ViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtension.swift; sourceTree = "<group>"; };
 		3490ED8025A48EE400DB1B2F /* ViewModifierInheritance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModifierInheritance.swift; sourceTree = "<group>"; };
 		34A32AEF2603443C004E8C17 /* HowToGlanceItem_dark.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = HowToGlanceItem_dark.gif; sourceTree = "<group>"; };
 		34A32AF72603452B004E8C17 /* HowToAddItem_dark.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = HowToAddItem_dark.gif; sourceTree = "<group>"; };
@@ -183,6 +183,14 @@
 			path = ToolbarContents;
 			sourceTree = "<group>";
 		};
+		3426DC7226F1FF4300A755F7 /* View Modifiers */ = {
+			isa = PBXGroup;
+			children = (
+				3426DC7426F2005C00A755F7 /* ListCellStyle.swift */,
+			);
+			path = "View Modifiers";
+			sourceTree = "<group>";
+		};
 		34505B2425EFB0220029AC9F /* Tips */ = {
 			isa = PBXGroup;
 			children = (
@@ -211,7 +219,6 @@
 			children = (
 				34A5B648257E522A0023D1AC /* ColorExtension.swift */,
 				344FF41C25FF7106009B7E03 /* StringExtension.swift */,
-				34871BF026A3FF06004640BD /* ViewExtension.swift */,
 				342A05C126CFE62B00A9CDD8 /* NSManagedObjectContextExtension.swift */,
 				340A21AD26D0EC6000A4CD38 /* EditModeExtension.swift */,
 			);
@@ -221,10 +228,13 @@
 		34A95A3525823EB700592FA7 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
-				342693C625FCDDE5000A5E4E /* AdMobView.swift */,
 				34E02AAF25FE1B30005AA07D /* Localizable.strings */,
+				3433814826D7BB2900D30329 /* PersonalInfo.swift */,
+				342693C625FCDDE5000A5E4E /* AdMobView.swift */,
+				3426DC7226F1FF4300A755F7 /* View Modifiers */,
 				34BDA91525BDB83D0049A0A3 /* Inheritance */,
 				34A5B647257E52190023D1AC /* Extension */,
+				3404B4C4258784600021CDAE /* Custom Object */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -255,7 +265,6 @@
 			children = (
 				34858A48266645B50078F503 /* Note+CoreDataClass.swift */,
 				34858A47266645B50078F503 /* Note+CoreDataProperties.swift */,
-				3404B4C4258784600021CDAE /* Custom Object */,
 				34D88F3C256D2A65009B10AF /* VoCap */,
 				34D88F3B256D2A65009B10AF /* Products */,
 				3B287458E94E0AB404710A02 /* Pods */,
@@ -276,7 +285,6 @@
 			children = (
 				34D88F3D256D2A65009B10AF /* VoCapApp.swift */,
 				3473343D25DD503F00A11151 /* VoCap_bridge.h */,
-				3433814826D7BB2900D30329 /* PersonalInfo.swift */,
 				340491D625779CC200CD1BD7 /* User Interface */,
 				34D88F46256D2A68009B10AF /* Persistence.swift */,
 				34D88F41256D2A68009B10AF /* Assets.xcassets */,
@@ -440,6 +448,7 @@
 				342693C725FCDDE5000A5E4E /* AdMobView.swift in Sources */,
 				3413DDF726B327E30002120C /* AddNoteButton.swift in Sources */,
 				3445EBED25C9851B00D16915 /* CustomTextFieldWithToolbar.swift in Sources */,
+				3426DC7526F2005C00A755F7 /* ListCellStyle.swift in Sources */,
 				3473344B25DD522A00A11151 /* ContactUsView.swift in Sources */,
 				34858A49266645B50078F503 /* Note+CoreDataProperties.swift in Sources */,
 				34EAC47E26B7FEBC00B6C300 /* ItemLocation.swift in Sources */,
@@ -453,7 +462,6 @@
 				3408A24526BE20D9000CA01F /* ToolbarContentButton.swift in Sources */,
 				340491F225779D4300CD1BD7 /* SettingsView.swift in Sources */,
 				34E5B30025DBE08A00CB6D17 /* MakeNoteView.swift in Sources */,
-				34871BF126A3FF06004640BD /* ViewExtension.swift in Sources */,
 				34D88F3E256D2A65009B10AF /* VoCapApp.swift in Sources */,
 				34BDA92A25BDB91C0049A0A3 /* CustomGestureModifier.swift in Sources */,
 				340491E525779D2C00CD1BD7 /* HomeView.swift in Sources */,

@@ -28,10 +28,10 @@ struct NoteButton: View {
             HStack {
                 Button(action: {
                     switch(isEditMode) {
-                    case .active:       // For MakeNoteView.
+                    case .active:               // For MakeNoteView.
                         order = Int(note.order)
                         isPresented = true
-                    default:            // For NavigationLink
+                    default:                    // For NavigationLink.
                         id = note.id
                     }
                 }) {
@@ -43,7 +43,7 @@ struct NoteButton: View {
                 NavigationLink(destination: NoteDetailView(note: note, tipControls: $tipControls), tag: note.id!, selection: $id) { EmptyView() }
                 .frame(width: 0).hidden()
             }
-            .modifier(HomeListModifier())
+            .listCellStyle()
             .buttonStyle(PlainButtonStyle())            // .active 상태 일 때 버튼 눌릴 수 있도록 함
         }
     }

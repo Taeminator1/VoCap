@@ -133,7 +133,7 @@ private extension NoteDetailView {
                 }
                 .buttonStyle(PlainButtonStyle())
             }
-            .modifier(NoteDetailListModifier(verticalPadding: -5))
+            .listCellStyle(.noteDetailRow)
         }
     }
     

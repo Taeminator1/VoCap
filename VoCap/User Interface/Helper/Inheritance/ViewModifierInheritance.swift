@@ -7,20 +7,6 @@
 
 import SwiftUI
 
-// MARK: - HomeView
-struct HomeListModifier: ViewModifier {
-    var verticalPadding: CGFloat = -1.0             // 가장 상단에 Saperator 가리기 위해
-    
-    func body(content: Content) -> some View {
-        content
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .listRowInsets(EdgeInsets())
-            .background(Color(UIColor.systemBackground))
-            .padding(.vertical, verticalPadding)
-    }
-}
-
-
 // MARK: - NoteRow
 struct NoteRowModifier: ViewModifier {
     let colorIndex: Int
@@ -72,17 +58,6 @@ struct VisibilityStyle: ViewModifier {
    }
 }
 
-
-// MARK: - NoteDetail
-struct NoteDetailListModifier: ViewModifier {
-    var verticalPadding: CGFloat = -1.0
-    
-    func body(content: Content) -> some View {
-        content
-            .padding()                              // Seperator 가리기 위해
-            .modifier(HomeListModifier(verticalPadding: verticalPadding))
-    }
-}
 
 struct NoteDetailCellModifier: ViewModifier {
 
