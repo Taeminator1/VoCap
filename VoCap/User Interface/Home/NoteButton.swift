@@ -77,7 +77,7 @@ struct NoteRow: View {
                 Spacer()
                 Text("Number of Items: \(memorizedNumber) / \(totalNumber)")
                     .font(.body)
-                    .modifier(VisibilityStyle(hidden: $hideNoteDetailsNumber))
+                    .visibility($hideNoteDetailsNumber)
             }
         }
         .noteRowStyle(Int(colorIndex))

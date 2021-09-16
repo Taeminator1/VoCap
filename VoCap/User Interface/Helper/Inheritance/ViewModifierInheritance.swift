@@ -7,22 +7,6 @@
 
 import SwiftUI
 
-struct VisibilityStyle: ViewModifier {
-   
-   @Binding var hidden: Bool
-    
-   func body(content: Content) -> some View {
-      Group {
-         if hidden {
-            content.hidden()
-         } else {
-            content
-         }
-      }
-   }
-}
-
-
 struct NoteDetailCellModifier: ViewModifier {
 
     var bodyColor: Color = Color.clear

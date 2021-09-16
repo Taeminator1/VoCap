@@ -39,6 +39,7 @@
 		34A5B649257E522A0023D1AC /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A5B648257E522A0023D1AC /* ColorExtension.swift */; };
 		34B3248A26F34835006F0D27 /* NoteRowStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B3248926F34835006F0D27 /* NoteRowStyle.swift */; };
 		34B3248E26F34B31006F0D27 /* AddNoteRowStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B3248D26F34B31006F0D27 /* AddNoteRowStyle.swift */; };
+		34B3249126F34E73006F0D27 /* Visibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B3249026F34E73006F0D27 /* Visibility.swift */; };
 		34BDA91725BDB8590049A0A3 /* ButtonStyleInheritance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34BDA91625BDB8590049A0A3 /* ButtonStyleInheritance.swift */; };
 		34BDA92A25BDB91C0049A0A3 /* CustomGestureModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34BDA92925BDB91C0049A0A3 /* CustomGestureModifier.swift */; };
 		34D3E77F25FCB38A00A7C7C6 /* HowToAddItem_light.gif in Resources */ = {isa = PBXBuildFile; fileRef = 34D3E77E25FCB38A00A7C7C6 /* HowToAddItem_light.gif */; };
@@ -94,6 +95,7 @@
 		34A5B648257E522A0023D1AC /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 		34B3248926F34835006F0D27 /* NoteRowStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteRowStyle.swift; sourceTree = "<group>"; };
 		34B3248D26F34B31006F0D27 /* AddNoteRowStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNoteRowStyle.swift; sourceTree = "<group>"; };
+		34B3249026F34E73006F0D27 /* Visibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Visibility.swift; sourceTree = "<group>"; };
 		34BDA91625BDB8590049A0A3 /* ButtonStyleInheritance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyleInheritance.swift; sourceTree = "<group>"; };
 		34BDA92925BDB91C0049A0A3 /* CustomGestureModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomGestureModifier.swift; sourceTree = "<group>"; };
 		34D3E77E25FCB38A00A7C7C6 /* HowToAddItem_light.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = HowToAddItem_light.gif; sourceTree = "<group>"; };
@@ -193,6 +195,7 @@
 				3426DC7426F2005C00A755F7 /* ListRowStyle.swift */,
 				34B3248926F34835006F0D27 /* NoteRowStyle.swift */,
 				34B3248D26F34B31006F0D27 /* AddNoteRowStyle.swift */,
+				34B3249026F34E73006F0D27 /* Visibility.swift */,
 			);
 			path = "View Modifiers";
 			sourceTree = "<group>";
@@ -485,6 +488,7 @@
 				3404B4C6258784890021CDAE /* CustomTextField.swift in Sources */,
 				34D88F4A256D2A68009B10AF /* VoCap.xcdatamodeld in Sources */,
 				3423403525EFC47000A04176 /* GifView.swift in Sources */,
+				34B3249126F34E73006F0D27 /* Visibility.swift in Sources */,
 				34871BCE26A3F1DD004640BD /* TipInfo.swift in Sources */,
 				340CEBD226B405100020D035 /* TextFieldType.swift in Sources */,
 				3416A70026B52E4100BB1A26 /* ItemControl.swift in Sources */,
