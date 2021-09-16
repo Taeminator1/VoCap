@@ -16,7 +16,7 @@ struct AddNoteButton: View {
     var body: some View {
         Button(action: { isPresent = true }) { AddNoteRow() }
             .disabled(isEditMode == .inactive ? false : true)
-            .listCellStyle()
+            .listRowStyle()
             .buttonStyle(BorderlessButtonStyle())
     }
 }

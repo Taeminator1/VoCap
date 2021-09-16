@@ -7,19 +7,6 @@
 
 import SwiftUI
 
-// MARK: - NoteRow
-struct NoteRowModifier: ViewModifier {
-    let colorIndex: Int
-    let height: CGFloat
-    
-    func body(content: Content) -> some View {
-        content
-            .frame(height: height)
-            .background(myColor.colors[colorIndex])
-            .cornerRadius(10)
-            .padding(.all)
-    }
-}
 
 struct AddNoteRowModifier: ViewModifier {
     @Environment(\.colorScheme) var colorScheme

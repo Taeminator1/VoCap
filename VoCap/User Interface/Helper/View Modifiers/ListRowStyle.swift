@@ -1,11 +1,11 @@
 //
-//  ListCellStyle.swift
+//  ListRowStyle.swift
 //  VoCap
 //
 //  Created by 윤태민 on 9/15/21.
 //
 
-//  Modifier for cell style of list in VoCap:
+//  Modifier for row style of list in VoCap:
 //  - To hide separator on the top, the value of padding is at least -1.
 
 import SwiftUI
@@ -26,7 +26,7 @@ enum Padding: RawRepresentable {
     }
 }
 
-struct ListCellStyle: ViewModifier {
+struct ListRowStyle: ViewModifier {
     var padding: Padding = .defaultRow
     
     func body(content: Content) -> some View {
@@ -40,8 +40,8 @@ struct ListCellStyle: ViewModifier {
 }
 
 extension View {
-    func listCellStyle(_ padding: Padding = .defaultRow) -> some View {
+    func listRowStyle(_ padding: Padding = .defaultRow) -> some View {
         self
-            .modifier(ListCellStyle(padding: padding))
+            .modifier(ListRowStyle(padding: padding))
     }
 }

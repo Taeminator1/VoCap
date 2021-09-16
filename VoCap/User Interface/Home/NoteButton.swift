@@ -43,7 +43,7 @@ struct NoteButton: View {
                 NavigationLink(destination: NoteDetailView(note: note, tipControls: $tipControls), tag: note.id!, selection: $id) { EmptyView() }
                 .frame(width: 0).hidden()
             }
-            .listCellStyle()
+            .listRowStyle()
             .buttonStyle(PlainButtonStyle())            // .active 상태 일 때 버튼 눌릴 수 있도록 함
         }
     }
@@ -80,8 +80,7 @@ struct NoteRow: View {
                     .modifier(VisibilityStyle(hidden: $hideNoteDetailsNumber))
             }
         }
-        .padding()
-        .modifier(NoteRowModifier(colorIndex: Int(colorIndex), height: 83))
+        .noteRowStyle(Int(colorIndex))
     }
 }
 

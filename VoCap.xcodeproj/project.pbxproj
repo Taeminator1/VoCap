@@ -21,7 +21,7 @@
 		341D2D7C26D527E50088713A /* TipControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 341D2D7B26D527E50088713A /* TipControl.swift */; };
 		3423403525EFC47000A04176 /* GifView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3423403425EFC47000A04176 /* GifView.swift */; };
 		342693C725FCDDE5000A5E4E /* AdMobView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342693C625FCDDE5000A5E4E /* AdMobView.swift */; };
-		3426DC7526F2005C00A755F7 /* ListCellStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3426DC7426F2005C00A755F7 /* ListCellStyle.swift */; };
+		3426DC7526F2005C00A755F7 /* ListRowStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3426DC7426F2005C00A755F7 /* ListRowStyle.swift */; };
 		342A05C226CFE62B00A9CDD8 /* NSManagedObjectContextExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342A05C126CFE62B00A9CDD8 /* NSManagedObjectContextExtension.swift */; };
 		3433814926D7BB2900D30329 /* PersonalInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3433814826D7BB2900D30329 /* PersonalInfo.swift */; };
 		34346F4C2604ACDC003279D7 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 34346F4B2604ACDC003279D7 /* Launch Screen.storyboard */; };
@@ -37,6 +37,7 @@
 		34A32AF02603443C004E8C17 /* HowToGlanceItem_dark.gif in Resources */ = {isa = PBXBuildFile; fileRef = 34A32AEF2603443C004E8C17 /* HowToGlanceItem_dark.gif */; };
 		34A32AF82603452B004E8C17 /* HowToAddItem_dark.gif in Resources */ = {isa = PBXBuildFile; fileRef = 34A32AF72603452B004E8C17 /* HowToAddItem_dark.gif */; };
 		34A5B649257E522A0023D1AC /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A5B648257E522A0023D1AC /* ColorExtension.swift */; };
+		34B3248A26F34835006F0D27 /* NoteRowStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B3248926F34835006F0D27 /* NoteRowStyle.swift */; };
 		34BDA91725BDB8590049A0A3 /* ButtonStyleInheritance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34BDA91625BDB8590049A0A3 /* ButtonStyleInheritance.swift */; };
 		34BDA92A25BDB91C0049A0A3 /* CustomGestureModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34BDA92925BDB91C0049A0A3 /* CustomGestureModifier.swift */; };
 		34D3E77F25FCB38A00A7C7C6 /* HowToAddItem_light.gif in Resources */ = {isa = PBXBuildFile; fileRef = 34D3E77E25FCB38A00A7C7C6 /* HowToAddItem_light.gif */; };
@@ -72,7 +73,7 @@
 		341D2D7B26D527E50088713A /* TipControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipControl.swift; sourceTree = "<group>"; };
 		3423403425EFC47000A04176 /* GifView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GifView.swift; sourceTree = "<group>"; };
 		342693C625FCDDE5000A5E4E /* AdMobView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdMobView.swift; sourceTree = "<group>"; };
-		3426DC7426F2005C00A755F7 /* ListCellStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCellStyle.swift; sourceTree = "<group>"; };
+		3426DC7426F2005C00A755F7 /* ListRowStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListRowStyle.swift; sourceTree = "<group>"; };
 		342A05C126CFE62B00A9CDD8 /* NSManagedObjectContextExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSManagedObjectContextExtension.swift; sourceTree = "<group>"; };
 		3433814826D7BB2900D30329 /* PersonalInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonalInfo.swift; sourceTree = "<group>"; };
 		34346F3C2604A7B5003279D7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -90,6 +91,7 @@
 		34A32AEF2603443C004E8C17 /* HowToGlanceItem_dark.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = HowToGlanceItem_dark.gif; sourceTree = "<group>"; };
 		34A32AF72603452B004E8C17 /* HowToAddItem_dark.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = HowToAddItem_dark.gif; sourceTree = "<group>"; };
 		34A5B648257E522A0023D1AC /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
+		34B3248926F34835006F0D27 /* NoteRowStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteRowStyle.swift; sourceTree = "<group>"; };
 		34BDA91625BDB8590049A0A3 /* ButtonStyleInheritance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyleInheritance.swift; sourceTree = "<group>"; };
 		34BDA92925BDB91C0049A0A3 /* CustomGestureModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomGestureModifier.swift; sourceTree = "<group>"; };
 		34D3E77E25FCB38A00A7C7C6 /* HowToAddItem_light.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = HowToAddItem_light.gif; sourceTree = "<group>"; };
@@ -186,7 +188,8 @@
 		3426DC7226F1FF4300A755F7 /* View Modifiers */ = {
 			isa = PBXGroup;
 			children = (
-				3426DC7426F2005C00A755F7 /* ListCellStyle.swift */,
+				3426DC7426F2005C00A755F7 /* ListRowStyle.swift */,
+				34B3248926F34835006F0D27 /* NoteRowStyle.swift */,
 			);
 			path = "View Modifiers";
 			sourceTree = "<group>";
@@ -448,11 +451,12 @@
 				342693C725FCDDE5000A5E4E /* AdMobView.swift in Sources */,
 				3413DDF726B327E30002120C /* AddNoteButton.swift in Sources */,
 				3445EBED25C9851B00D16915 /* CustomTextFieldWithToolbar.swift in Sources */,
-				3426DC7526F2005C00A755F7 /* ListCellStyle.swift in Sources */,
+				3426DC7526F2005C00A755F7 /* ListRowStyle.swift in Sources */,
 				3473344B25DD522A00A11151 /* ContactUsView.swift in Sources */,
 				34858A49266645B50078F503 /* Note+CoreDataProperties.swift in Sources */,
 				34EAC47E26B7FEBC00B6C300 /* ItemLocation.swift in Sources */,
 				344FF41D25FF7106009B7E03 /* StringExtension.swift in Sources */,
+				34B3248A26F34835006F0D27 /* NoteRowStyle.swift in Sources */,
 				340A21AE26D0EC6000A4CD38 /* EditModeExtension.swift in Sources */,
 				342A05C226CFE62B00A9CDD8 /* NSManagedObjectContextExtension.swift in Sources */,
 				34FEA28326B32C5800E6FDDC /* NoteButton.swift in Sources */,

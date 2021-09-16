@@ -133,7 +133,7 @@ private extension NoteDetailView {
                 }
                 .buttonStyle(PlainButtonStyle())
             }
-            .listCellStyle(.noteDetailRow)
+            .listRowStyle(.noteDetailRow)
         }
     }
     
