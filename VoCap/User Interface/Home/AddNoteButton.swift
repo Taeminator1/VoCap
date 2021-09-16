@@ -37,7 +37,7 @@ struct AddNoteRow: View {
             }
         }
         .padding()
-        .modifier(AddNoteRowModifier(colorIndex: RowType.AddNoteRow.rawValue, height: 83))
+        .addNoteRowStyle()
     }
 }
 

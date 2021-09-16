@@ -38,6 +38,7 @@
 		34A32AF82603452B004E8C17 /* HowToAddItem_dark.gif in Resources */ = {isa = PBXBuildFile; fileRef = 34A32AF72603452B004E8C17 /* HowToAddItem_dark.gif */; };
 		34A5B649257E522A0023D1AC /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A5B648257E522A0023D1AC /* ColorExtension.swift */; };
 		34B3248A26F34835006F0D27 /* NoteRowStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B3248926F34835006F0D27 /* NoteRowStyle.swift */; };
+		34B3248E26F34B31006F0D27 /* AddNoteRowStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B3248D26F34B31006F0D27 /* AddNoteRowStyle.swift */; };
 		34BDA91725BDB8590049A0A3 /* ButtonStyleInheritance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34BDA91625BDB8590049A0A3 /* ButtonStyleInheritance.swift */; };
 		34BDA92A25BDB91C0049A0A3 /* CustomGestureModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34BDA92925BDB91C0049A0A3 /* CustomGestureModifier.swift */; };
 		34D3E77F25FCB38A00A7C7C6 /* HowToAddItem_light.gif in Resources */ = {isa = PBXBuildFile; fileRef = 34D3E77E25FCB38A00A7C7C6 /* HowToAddItem_light.gif */; };
@@ -92,6 +93,7 @@
 		34A32AF72603452B004E8C17 /* HowToAddItem_dark.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = HowToAddItem_dark.gif; sourceTree = "<group>"; };
 		34A5B648257E522A0023D1AC /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 		34B3248926F34835006F0D27 /* NoteRowStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteRowStyle.swift; sourceTree = "<group>"; };
+		34B3248D26F34B31006F0D27 /* AddNoteRowStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNoteRowStyle.swift; sourceTree = "<group>"; };
 		34BDA91625BDB8590049A0A3 /* ButtonStyleInheritance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyleInheritance.swift; sourceTree = "<group>"; };
 		34BDA92925BDB91C0049A0A3 /* CustomGestureModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomGestureModifier.swift; sourceTree = "<group>"; };
 		34D3E77E25FCB38A00A7C7C6 /* HowToAddItem_light.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = HowToAddItem_light.gif; sourceTree = "<group>"; };
@@ -190,6 +192,7 @@
 			children = (
 				3426DC7426F2005C00A755F7 /* ListRowStyle.swift */,
 				34B3248926F34835006F0D27 /* NoteRowStyle.swift */,
+				34B3248D26F34B31006F0D27 /* AddNoteRowStyle.swift */,
 			);
 			path = "View Modifiers";
 			sourceTree = "<group>";
@@ -455,6 +458,7 @@
 				3473344B25DD522A00A11151 /* ContactUsView.swift in Sources */,
 				34858A49266645B50078F503 /* Note+CoreDataProperties.swift in Sources */,
 				34EAC47E26B7FEBC00B6C300 /* ItemLocation.swift in Sources */,
+				34B3248E26F34B31006F0D27 /* AddNoteRowStyle.swift in Sources */,
 				344FF41D25FF7106009B7E03 /* StringExtension.swift in Sources */,
 				34B3248A26F34835006F0D27 /* NoteRowStyle.swift in Sources */,
 				340A21AE26D0EC6000A4CD38 /* EditModeExtension.swift in Sources */,

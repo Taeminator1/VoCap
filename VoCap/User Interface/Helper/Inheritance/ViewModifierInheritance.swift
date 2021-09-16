@@ -7,29 +7,6 @@
 
 import SwiftUI
 
-
-struct AddNoteRowModifier: ViewModifier {
-    @Environment(\.colorScheme) var colorScheme
-    
-    let colorIndex: Int
-    let height: CGFloat
-    
-    func body(content: Content) -> some View {
-        content
-            .frame(height: height)
-            .overlay(
-                RoundedRectangle(cornerRadius: 10)
-                    .stroke(Color.systemGray, style: StrokeStyle(lineWidth: 2, dash: [10]))
-                    .padding(.all, 1)
-            )
-            .padding(.all)
-    }
-    
-    func noteRowColor() -> Color {
-        return colorScheme == .dark ? Color.white : Color.black
-    }
-}
-
 struct VisibilityStyle: ViewModifier {
    
    @Binding var hidden: Bool
