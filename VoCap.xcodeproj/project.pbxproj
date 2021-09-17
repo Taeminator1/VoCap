@@ -33,8 +33,9 @@
 		34858A49266645B50078F503 /* Note+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34858A47266645B50078F503 /* Note+CoreDataProperties.swift */; };
 		34858A4A266645B50078F503 /* Note+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34858A48266645B50078F503 /* Note+CoreDataClass.swift */; };
 		34871BCE26A3F1DD004640BD /* TipInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34871BCD26A3F1DD004640BD /* TipInfo.swift */; };
-		3490ED8125A48EE400DB1B2F /* ViewModifierInheritance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3490ED8025A48EE400DB1B2F /* ViewModifierInheritance.swift */; };
 		3499B8EA26F4CA5000B19F09 /* GiFViewStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3499B8E926F4CA5000B19F09 /* GiFViewStyle.swift */; };
+		3499B8F726F4D12D00B19F09 /* NoteDetailTextStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3499B8F626F4D12D00B19F09 /* NoteDetailTextStyle.swift */; };
+		3499B8FA26F4D13E00B19F09 /* NoteDetailTextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3499B8F926F4D13E00B19F09 /* NoteDetailTextFieldStyle.swift */; };
 		34A32AF02603443C004E8C17 /* HowToGlanceItem_dark.gif in Resources */ = {isa = PBXBuildFile; fileRef = 34A32AEF2603443C004E8C17 /* HowToGlanceItem_dark.gif */; };
 		34A32AF82603452B004E8C17 /* HowToAddItem_dark.gif in Resources */ = {isa = PBXBuildFile; fileRef = 34A32AF72603452B004E8C17 /* HowToAddItem_dark.gif */; };
 		34A5B649257E522A0023D1AC /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A5B648257E522A0023D1AC /* ColorExtension.swift */; };
@@ -90,8 +91,9 @@
 		34858A47266645B50078F503 /* Note+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Note+CoreDataProperties.swift"; path = "VoCap/Note+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		34858A48266645B50078F503 /* Note+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Note+CoreDataClass.swift"; path = "VoCap/Note+CoreDataClass.swift"; sourceTree = "<group>"; };
 		34871BCD26A3F1DD004640BD /* TipInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipInfo.swift; sourceTree = "<group>"; };
-		3490ED8025A48EE400DB1B2F /* ViewModifierInheritance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModifierInheritance.swift; sourceTree = "<group>"; };
 		3499B8E926F4CA5000B19F09 /* GiFViewStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiFViewStyle.swift; sourceTree = "<group>"; };
+		3499B8F626F4D12D00B19F09 /* NoteDetailTextStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetailTextStyle.swift; sourceTree = "<group>"; };
+		3499B8F926F4D13E00B19F09 /* NoteDetailTextFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetailTextFieldStyle.swift; sourceTree = "<group>"; };
 		34A32AEF2603443C004E8C17 /* HowToGlanceItem_dark.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = HowToGlanceItem_dark.gif; sourceTree = "<group>"; };
 		34A32AF72603452B004E8C17 /* HowToAddItem_dark.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = HowToAddItem_dark.gif; sourceTree = "<group>"; };
 		34A5B648257E522A0023D1AC /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
@@ -199,6 +201,8 @@
 				34B3248D26F34B31006F0D27 /* AddNoteRowStyle.swift */,
 				34B3249026F34E73006F0D27 /* Visibility.swift */,
 				3499B8E926F4CA5000B19F09 /* GiFViewStyle.swift */,
+				3499B8F626F4D12D00B19F09 /* NoteDetailTextStyle.swift */,
+				3499B8F926F4D13E00B19F09 /* NoteDetailTextFieldStyle.swift */,
 			);
 			path = "View Modifiers";
 			sourceTree = "<group>";
@@ -254,7 +258,6 @@
 		34BDA91525BDB83D0049A0A3 /* Inheritance */ = {
 			isa = PBXGroup;
 			children = (
-				3490ED8025A48EE400DB1B2F /* ViewModifierInheritance.swift */,
 				34BDA91625BDB8590049A0A3 /* ButtonStyleInheritance.swift */,
 			);
 			path = Inheritance;
@@ -464,6 +467,7 @@
 				3473344B25DD522A00A11151 /* ContactUsView.swift in Sources */,
 				34858A49266645B50078F503 /* Note+CoreDataProperties.swift in Sources */,
 				3499B8EA26F4CA5000B19F09 /* GiFViewStyle.swift in Sources */,
+				3499B8FA26F4D13E00B19F09 /* NoteDetailTextFieldStyle.swift in Sources */,
 				34EAC47E26B7FEBC00B6C300 /* ItemLocation.swift in Sources */,
 				34B3248E26F34B31006F0D27 /* AddNoteRowStyle.swift in Sources */,
 				344FF41D25FF7106009B7E03 /* StringExtension.swift in Sources */,
@@ -482,7 +486,6 @@
 				340491E525779D2C00CD1BD7 /* HomeView.swift in Sources */,
 				34152FB7259A08A5007E4953 /* TmpNote.swift in Sources */,
 				3459D8F925DE8764002A9817 /* CustomSheetDismiss.swift in Sources */,
-				3490ED8125A48EE400DB1B2F /* ViewModifierInheritance.swift in Sources */,
 				34F89BF525F308070067AAD7 /* ResetView.swift in Sources */,
 				34A5B649257E522A0023D1AC /* ColorExtension.swift in Sources */,
 				341D2D7C26D527E50088713A /* TipControl.swift in Sources */,
@@ -496,6 +499,7 @@
 				34871BCE26A3F1DD004640BD /* TipInfo.swift in Sources */,
 				340CEBD226B405100020D035 /* TextFieldType.swift in Sources */,
 				3416A70026B52E4100BB1A26 /* ItemControl.swift in Sources */,
+				3499B8F726F4D12D00B19F09 /* NoteDetailTextStyle.swift in Sources */,
 				34BDA91725BDB8590049A0A3 /* ButtonStyleInheritance.swift in Sources */,
 				34D5B91825A1EC3B0071326A /* NoteDetail.swift in Sources */,
 			);

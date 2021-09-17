@@ -11,12 +11,13 @@ import SwiftUI
 
 struct AddNoteRowStyle: ViewModifier {
     let height: CGFloat
+    let radius: CGFloat = 10.0
     
     func body(content: Content) -> some View {
         content
             .frame(height: height)
             .overlay(
-                RoundedRectangle(cornerRadius: 10)
+                RoundedRectangle(cornerRadius: radius)
                     .stroke(Color.systemGray, style: StrokeStyle(lineWidth: 2, dash: [10]))
                     .padding(.all, 1)
             )

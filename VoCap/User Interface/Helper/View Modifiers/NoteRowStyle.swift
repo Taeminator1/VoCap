@@ -12,13 +12,14 @@ import SwiftUI
 struct NoteRowStyle: ViewModifier {
     let colorIndex: Int
     let height: CGFloat
+    let radius: CGFloat = 10.0
 
     func body(content: Content) -> some View {
         content
             .padding()
             .frame(height: height)
             .background(myColor.colors[colorIndex])
-            .cornerRadius(10)
+            .cornerRadius(radius)
             .padding()
     }
 }

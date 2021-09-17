@@ -174,13 +174,14 @@ private extension NoteDetailView {
 private extension NoteDetailView {
     func noteDetailText(_ text: String, bodyColor: Color, strokeColor: Color) -> some View {
         Text(text)
-            .modifier(NoteDetailCellModifier2(bodyColor: bodyColor, strokeColor: strokeColor))
+            .noteDetailTextStyle()
+            .noteDetailTextFieldStyle(bodyColor: bodyColor, strokeColor: strokeColor)
     }
     
     func NoteDetailTextField(_ title: String, _ text: Binding<String>, _ cellLocation: CellLocation, bodyColor: Color, strokeColor: Color) -> some View {
         // Keyboard Toolbar에서 열간 이동하기 위해 isFirstResponder 필요
         return CustomTextFieldWithToolbar(title: title, text: text, location: $cellLocation, closeKeyboard: $closeKeyboard, col: cellLocation.col, isFirstResponder: self.cellLocation == cellLocation)
-            .modifier(NoteDetailCellModifier(bodyColor: bodyColor, strokeColor: strokeColor, lineWidth: 1.0))
+            .noteDetailTextFieldStyle(bodyColor: bodyColor, strokeColor: strokeColor, lineWidth: 1.0)
     }
     
     func noteDetailScreen(_ order: Int, initialWidth: CGFloat = 4.0, _ stretchedWidth: CGFloat, _ screenColor: Color, _ isScreen: Bool, anchor: UnitPoint) -> some View {
