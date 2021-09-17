@@ -39,6 +39,6 @@ extension TipView {
             if colorScheme == .light { GifView(fileName: "\(TipInfo.tips[tiptype.rawValue].fileName)_\(colorScheme)") }
             else                     { GifView(fileName: "\(TipInfo.tips[tiptype.rawValue].fileName)_\(colorScheme)") }
         }
-        .modifier(TipModifier(order: tiptype.rawValue))
+        .gifViewStyle(tiptype.rawValue)
     }
 }

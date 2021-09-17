@@ -42,15 +42,3 @@ struct NoteDetailCellModifier2: ViewModifier {
             .modifier(NoteDetailCellModifier(bodyColor: bodyColor, strokeColor: strokeColor))
     }
 }
-
-
-// MARK: - Tip
-struct TipModifier: ViewModifier {
-    let order: Int
-    
-    func body(content: Content) -> some View {
-        content
-            .frame(width: TipInfo.tips[order].viewSize.width, height: TipInfo.tips[order].viewSize.height)
-            .cornerRadius(12)
-    }
-}

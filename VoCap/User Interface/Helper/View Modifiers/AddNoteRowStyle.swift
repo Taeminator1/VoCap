@@ -5,7 +5,7 @@
 //  Created by 윤태민 on 9/16/21.
 //
 
-//  Modifier for row style for "Add Note" Button in HomeView
+//  Modifier for row style for "Add Note" Button in HomeView.
 
 import SwiftUI
 

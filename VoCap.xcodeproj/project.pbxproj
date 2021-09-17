@@ -34,6 +34,7 @@
 		34858A4A266645B50078F503 /* Note+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34858A48266645B50078F503 /* Note+CoreDataClass.swift */; };
 		34871BCE26A3F1DD004640BD /* TipInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34871BCD26A3F1DD004640BD /* TipInfo.swift */; };
 		3490ED8125A48EE400DB1B2F /* ViewModifierInheritance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3490ED8025A48EE400DB1B2F /* ViewModifierInheritance.swift */; };
+		3499B8EA26F4CA5000B19F09 /* GiFViewStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3499B8E926F4CA5000B19F09 /* GiFViewStyle.swift */; };
 		34A32AF02603443C004E8C17 /* HowToGlanceItem_dark.gif in Resources */ = {isa = PBXBuildFile; fileRef = 34A32AEF2603443C004E8C17 /* HowToGlanceItem_dark.gif */; };
 		34A32AF82603452B004E8C17 /* HowToAddItem_dark.gif in Resources */ = {isa = PBXBuildFile; fileRef = 34A32AF72603452B004E8C17 /* HowToAddItem_dark.gif */; };
 		34A5B649257E522A0023D1AC /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A5B648257E522A0023D1AC /* ColorExtension.swift */; };
@@ -90,6 +91,7 @@
 		34858A48266645B50078F503 /* Note+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Note+CoreDataClass.swift"; path = "VoCap/Note+CoreDataClass.swift"; sourceTree = "<group>"; };
 		34871BCD26A3F1DD004640BD /* TipInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipInfo.swift; sourceTree = "<group>"; };
 		3490ED8025A48EE400DB1B2F /* ViewModifierInheritance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModifierInheritance.swift; sourceTree = "<group>"; };
+		3499B8E926F4CA5000B19F09 /* GiFViewStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiFViewStyle.swift; sourceTree = "<group>"; };
 		34A32AEF2603443C004E8C17 /* HowToGlanceItem_dark.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = HowToGlanceItem_dark.gif; sourceTree = "<group>"; };
 		34A32AF72603452B004E8C17 /* HowToAddItem_dark.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = HowToAddItem_dark.gif; sourceTree = "<group>"; };
 		34A5B648257E522A0023D1AC /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
@@ -196,6 +198,7 @@
 				34B3248926F34835006F0D27 /* NoteRowStyle.swift */,
 				34B3248D26F34B31006F0D27 /* AddNoteRowStyle.swift */,
 				34B3249026F34E73006F0D27 /* Visibility.swift */,
+				3499B8E926F4CA5000B19F09 /* GiFViewStyle.swift */,
 			);
 			path = "View Modifiers";
 			sourceTree = "<group>";
@@ -460,6 +463,7 @@
 				3426DC7526F2005C00A755F7 /* ListRowStyle.swift in Sources */,
 				3473344B25DD522A00A11151 /* ContactUsView.swift in Sources */,
 				34858A49266645B50078F503 /* Note+CoreDataProperties.swift in Sources */,
+				3499B8EA26F4CA5000B19F09 /* GiFViewStyle.swift in Sources */,
 				34EAC47E26B7FEBC00B6C300 /* ItemLocation.swift in Sources */,
 				34B3248E26F34B31006F0D27 /* AddNoteRowStyle.swift in Sources */,
 				344FF41D25FF7106009B7E03 /* StringExtension.swift in Sources */,
