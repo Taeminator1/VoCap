@@ -18,7 +18,7 @@ struct NoteRowStyle: ViewModifier {
         content
             .padding()
             .frame(height: height)
-            .background(myColor.colors[colorIndex])
+            .background(Pallet.colors[colorIndex].value)
             .cornerRadius(radius)
             .padding()
     }

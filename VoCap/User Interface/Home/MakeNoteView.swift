@@ -87,9 +87,9 @@ extension MakeNoteView {
             
             // Group List에서 이상
             Picker(selection: $note.colorIndex, label: Text("Color")) {      // Need to check the style
-                ForEach (0..<myColor.colornames.count) {
-                    Text(myColor.colornames[$0])
-                        .foregroundColor(myColor.colors[$0])
+                ForEach (0 ..< Pallet.colors.count) {
+                    Text(Pallet.colors[$0].name)
+                        .foregroundColor(Pallet.colors[$0].value)
                 }
             }
         }

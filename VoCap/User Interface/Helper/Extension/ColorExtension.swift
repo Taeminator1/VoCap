@@ -5,23 +5,11 @@
 //  Created by 윤태민 on 12/7/20.
 //
 
+//  Extension of Color for use on the VoCap App.
+
 import SwiftUI
 
-// MARK: - Note 관련 color
-extension Color {
-    static let buttonBackground = Color(UIColor.systemGray6)
-}
-
-// MARK: - Toolbar 등에 쓰이는 icon 및 text color
-extension Color {
-    static let mainColor = Color(UIColor.systemIndigo)
-}
-
-extension UIColor {
-    static let mainColor = UIColor.systemIndigo
-}
-
-// MARK: - Note 안의 item 관련 color
+// MARK: - NoteDetailView의 Cell에 들어가는 색들
 // t: term, d: definition
 extension Color {
     static let textBodyColor = Color(UIColor.systemGray6)
@@ -35,129 +23,46 @@ extension Color {
 }
 
 
-
-// MARK: - myColor
-struct myColor {
-    static var colors: [Color] = [.systemBlue, .systemGreen, .systemIndigo, .systemOrange, .systemPink, .systemPurple, .systemRed, .systemTeal, .systemYellow]
-    static var colornames = ["Blue".localized, "Green".localized, "Indigo".localized, "Orange".localized, "Pink".localized, "Purple".localized, "Red".localized, "Teal".localized, "Yellow".localized]
+// MARK: - 기본 색들
+extension UIColor {
+    static let mainColor = UIColor.systemIndigo
 }
 
 extension Color {
-
-    static var label: Color {
-        return Color(UIColor.label)
-    }
-
-    static var secondaryLabel: Color {
-        return Color(UIColor.secondaryLabel)
-    }
-
-    static var tertiaryLabel: Color {
-        return Color(UIColor.tertiaryLabel)
-    }
-
-    static var quaternaryLabel: Color {
-        return Color(UIColor.quaternaryLabel)
-    }
-
-    static var systemFill: Color {
-        return Color(UIColor.systemFill)
-    }
-
-    static var secondarySystemFill: Color {
-        return Color(UIColor.secondarySystemFill)
-    }
-
-    static var tertiarySystemFill: Color {
-        return Color(UIColor.tertiarySystemFill)
-    }
-
-    static var quaternarySystemFill: Color {
-        return Color(UIColor.quaternarySystemFill)
-    }
-
-    static var systemBackground: Color {
-           return Color(UIColor.systemBackground)
-    }
-
-    static var secondarySystemBackground: Color {
-        return Color(UIColor.secondarySystemBackground)
-    }
-
-    static var tertiarySystemBackground: Color {
-        return Color(UIColor.tertiarySystemBackground)
-    }
-
-    static var systemGroupedBackground: Color {
-        return Color(UIColor.systemGroupedBackground)
-    }
-
-    static var secondarySystemGroupedBackground: Color {
-        return Color(UIColor.secondarySystemGroupedBackground)
-    }
-
-    static var tertiarySystemGroupedBackground: Color {
-        return Color(UIColor.tertiarySystemGroupedBackground)
-    }
-
-    static var systemRed: Color {
-        return Color(UIColor.systemRed)
-    }
-
-    static var systemBlue: Color {
-        return Color(UIColor.systemBlue)
-    }
-
-    static var systemPink: Color {
-        return Color(UIColor.systemPink)
-    }
-
-    static var systemTeal: Color {
-        return Color(UIColor.systemTeal)
-    }
-
-    static var systemGreen: Color {
-        return Color(UIColor.systemGreen)
-    }
-
-    static var systemIndigo: Color {
-        return Color(UIColor.systemIndigo)
-    }
-
-    static var systemOrange: Color {
-        return Color(UIColor.systemOrange)
-    }
-
-    static var systemPurple: Color {
-        return Color(UIColor.systemPurple)
-    }
-
-    static var systemYellow: Color {
-        return Color(UIColor.systemYellow)
-    }
-
-    static var systemGray: Color {
-        return Color(UIColor.systemGray)
-    }
-
-    static var systemGray2: Color {
-        return Color(UIColor.systemGray2)
-    }
-
-    static var systemGray3: Color {
-        return Color(UIColor.systemGray3)
-    }
-
-    static var systemGray4: Color {
-        return Color(UIColor.systemGray4)
-    }
-
-    static var systemGray5: Color {
-        return Color(UIColor.systemGray5)
-    }
-
-    static var systemGray6: Color {
-        return Color(UIColor.systemGray6)
-    }
+    static var mainColor: Color { Color(UIColor.mainColor) }
+    
+    static var label: Color { Color(UIColor.label) }
+    static var secondaryLabel: Color { Color(UIColor.secondaryLabel) }
+    static var tertiaryLabel: Color { Color(UIColor.tertiaryLabel) }
+    static var quaternaryLabel: Color { Color(UIColor.quaternaryLabel) }
+    
+    static var systemFill: Color { Color(UIColor.systemFill) }
+    static var secondarySystemFill: Color { Color(UIColor.secondarySystemFill) }
+    static var tertiarySystemFill: Color { Color(UIColor.tertiarySystemFill) }
+    static var quaternarySystemFill: Color { Color(UIColor.quaternarySystemFill) }
+    
+    static var systemBackground: Color { Color(UIColor.systemBackground) }
+    static var secondarySystemBackground: Color { Color(UIColor.secondarySystemBackground) }
+    static var tertiarySystemBackground: Color { Color(UIColor.tertiarySystemBackground) }
+    static var systemGroupedBackground: Color { Color(UIColor.systemGroupedBackground) }
+    static var secondarySystemGroupedBackground: Color { Color(UIColor.secondarySystemGroupedBackground) }
+    static var tertiarySystemGroupedBackground: Color { Color(UIColor.tertiarySystemGroupedBackground) }
+    
+    static var systemRed: Color { Color(UIColor.systemRed) }
+    static var systemBlue: Color { Color(UIColor.systemBlue) }
+    static var systemPink: Color { Color(UIColor.systemPink) }
+    static var systemTeal: Color { Color(UIColor.systemTeal) }
+    static var systemGreen: Color { Color(UIColor.systemGreen) }
+    static var systemIndigo: Color { Color(UIColor.systemIndigo) }
+    static var systemOrange: Color { Color(UIColor.systemOrange) }
+    static var systemPurple: Color { Color(UIColor.systemPurple) }
+    static var systemYellow: Color { Color(UIColor.systemYellow) }
+    
+    static var systemGray: Color { Color(UIColor.systemGray) }
+    static var systemGray2: Color { Color(UIColor.systemGray2) }
+    static var systemGray3: Color { Color(UIColor.systemGray3) }
+    static var systemGray4: Color { Color(UIColor.systemGray4) }
+    static var systemGray5: Color { Color(UIColor.systemGray5) }
+    static var systemGray6: Color { Color(UIColor.systemGray6) }
 }
 
