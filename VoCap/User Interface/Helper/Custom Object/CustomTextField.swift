@@ -6,8 +6,12 @@
 //
 
 //  아래 URL에 나온 코드를 수정하여 작성
-//  https://stackoverflow.com/questions/56507839/swiftui-how-to-make-textfield-become-first-responder
-//  추후 참고: https://stackoverflow.com/questions/58311022/autofocus-textfield-programmatically-in-swiftui
+//
+//  추후 참고:
+
+//  Reference
+//  - https://stackoverflow.com/questions/56507839/swiftui-how-to-make-textfield-become-first-responder
+//  - https://stackoverflow.com/questions/58311022/autofocus-textfield-programmatically-in-swiftui
 
 import Foundation
 import SwiftUI

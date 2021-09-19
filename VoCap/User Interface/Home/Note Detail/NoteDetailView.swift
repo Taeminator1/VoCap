@@ -17,6 +17,8 @@
 //      - Definitions.
 //  - Shuffle
 
+//  Tip shows when isDisabled is true and userDefault is false in TipControl instance.
+
 import SwiftUI
 import GoogleMobileAds
 
@@ -74,9 +76,7 @@ struct NoteDetailView: View {
                         copyNoteDetails()
                         listFrame = geometry.size.height > geometry.size.width ? geometry.size.height : geometry.size.width     // .bottomBar가 사라지는 것 방지
                         
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                            tipControls[TipType.tip0.rawValue].makeViewDisabled()
-                        }
+                        tipControls[TipType.tip0.rawValue].makeViewDisabled()
                     }
                     .onDisappear() {
                         Array(0 ..< tipControls.count).forEach { tipControls[$0].makeViewEnabled() }
@@ -99,9 +99,7 @@ struct NoteDetailView: View {
         }
         .onReceive(orientationChanged) { _ in
             self.orientation = UIDevice.current.orientation
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {         // .bottomBar가 사라지는 것 방지
-                tipControls[TipType.tip0.rawValue].makeViewToggle()
-            }
+            tipControls[TipType.tip0.rawValue].makeViewToggle()     // .bottomBar가 사라지는 것 방지
         }
     }
 }
@@ -216,10 +214,8 @@ private extension NoteDetailView {
     func showingButton(_ column: TextFieldType) -> some ToolbarContent {
         ToolbarItem(placement: .bottomBar) {
             Button(action: {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                    withAnimation {
-                        tipControls[TipType.tip1.rawValue].makeViewDisabled()
-                    }
+                withAnimation {
+                    tipControls[TipType.tip1.rawValue].makeViewDisabled()
                 }
                 column == .term ? itemControl.toggleLeft() : itemControl.toggleRight()
             }) {
@@ -265,10 +261,10 @@ private extension NoteDetailView {
             if let term = term, let definition = definition {
                 if (note.itemCount < limitedNumberOfItems && term != "" || definition != "") {
                     addItem(term, definition)
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {     // 신규 아이템을 UI에 그리는 시간 필요
                         scrollTarget = note.itemCount - 1
                     }
-                    showingAddItemAlert = true                               // To continue add item.
+                    showingAddItemAlert = true                                  // To continue add item.
                 }
             }
         }
@@ -286,10 +282,7 @@ private extension NoteDetailView {
             itemControl = ItemControl()
             
             if itemControl.isShuffled { shuffle() }             // If items are shuffled, return back.
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {        // For animation.
-                editMode = .active
-            }
+            editMode = .active
         }) {
             Label("Edit Item", systemImage: "pencil")
         }
@@ -299,7 +292,8 @@ private extension NoteDetailView {
         Button(action: {
             editMode = .inactive
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {        // 키보드 잔상 방지
+            // 편집하고 Done 누른 다음, 홈 화면으로 가면 아래 키보드 잔상 생기는 것 방지
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
                 closeKeyboard = true
             }
             viewContext.saveContext()
