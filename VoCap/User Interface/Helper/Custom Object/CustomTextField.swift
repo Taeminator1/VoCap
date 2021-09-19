@@ -5,11 +5,10 @@
 //  Created by 윤태민 on 12/14/20.
 //
 
-//  아래 URL에 나온 코드를 수정하여 작성
-//
-//  추후 참고:
+//  TextFiled for responding first.
+//  - It is used in MakeNoteView.
 
-//  Reference
+//  Reference:
 //  - https://stackoverflow.com/questions/56507839/swiftui-how-to-make-textfield-become-first-responder
 //  - https://stackoverflow.com/questions/58311022/autofocus-textfield-programmatically-in-swiftui
 
@@ -17,9 +16,7 @@ import Foundation
 import SwiftUI
 
 struct CustomTextField: UIViewRepresentable {
-    
     class Coordinator: NSObject, UITextFieldDelegate {
-
         @Binding var text: String
         var didBecomeFirstResponder = false
 
@@ -41,9 +38,9 @@ struct CustomTextField: UIViewRepresentable {
         }
     }
 
-    var title: String = ""              // Placeholder
-    @Binding var text: String
-    var isFirstResponder: Bool = false
+    var title: String = ""                  // Placeholder.
+    @Binding var text: String               // Text in TextFiled.
+    var isFirstResponder: Bool = false      // To make respond first or not.
 
     func makeUIView(context: UIViewRepresentableContext<CustomTextField>) -> UITextField {
         let textField = UITextField(frame: .zero)

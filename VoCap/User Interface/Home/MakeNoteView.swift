@@ -8,6 +8,8 @@
 //  To add or edit note:
 //  - Add Note: Don't need to fill out the form.
 //  - Edit Note: Need to change at least one thing.
+//  - Tell add or edit by order variable.
+
 //  Things to do:
 //  - Add toggleConfig
 
