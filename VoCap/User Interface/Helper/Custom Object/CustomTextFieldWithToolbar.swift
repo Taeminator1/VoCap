@@ -5,22 +5,22 @@
 //  Created by 윤태민 on 1/31/21.
 //
 
-//  숫자를 입력하면 자동으로 다음 TextField로 넘어감
-//  https://www.hackingwithswift.com/forums/100-days-of-swiftui/jump-focus-between-a-series-of-textfields-pin-code-style-entry-widget/765
-//  TextField간 전환 가능하도록 버튼 추가(기존에는 한 번 전환되면 다시 돌아가지 못함_주석 부분)
+//  TextFiled for NoteDetailView:
+//  - Go to another cell:
+//      - Using keyboard toolbar button.
+//      - With keyboard using isFirsResponder variable.
+//  - Close the keyboard from the keyboard.
 
-//  close 버튼을 누르면 keyboard가 사라짐
-//  https://gist.github.com/wilsoncusack/6e80af92cf86bfae768bda7c64009789
-
-//  Keyboard 위에 버튼 추가
-//  https://stackoverflow.com/questions/59003612/extend-swiftui-keyboard-with-custom-button
+//  Reference:
+//  - https://www.hackingwithswift.com/forums/100-days-of-swiftui/jump-focus-between-a-series-of-textfields-pin-code-style-entry-widget/765
+//  - https://gist.github.com/wilsoncusack/6e80af92cf86bfae768bda7c64009789
+//  - https://stackoverflow.com/questions/59003612/extend-swiftui-keyboard-with-custom-button
 
 import SwiftUI
 
 struct CustomTextFieldWithToolbar: UIViewRepresentable {
-    
-    class Coordinator: NSObject, UITextFieldDelegate {
 
+    class Coordinator: NSObject, UITextFieldDelegate {
         @Binding var text: String
         @Binding var location: CellLocation
         @Binding var closeKeyboard: Bool
@@ -38,11 +38,10 @@ struct CustomTextFieldWithToolbar: UIViewRepresentable {
         }
     }
 
-    var title: String = ""              // Placeholder
+    var title: String = ""                  // Placeholder
     @Binding var text: String
-    @Binding var location: CellLocation
+    @Binding var location: CellLocation     // Location of table.
     @Binding var closeKeyboard: Bool
-    let col: Int
     
     var isFirstResponder: Bool = false
 
@@ -57,17 +56,12 @@ struct CustomTextFieldWithToolbar: UIViewRepresentable {
         let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 44))
         
         let moveLeftButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(textField.moveLeft))
-        
-        let moveRightButton = UIBarButtonItem(image: UIImage(systemName: "chevron.right"), style: .plain, target: self, action: #selector(textField.moveRight(button:)))
-        
+        let moveRightButton = UIBarButtonItem(image: UIImage(systemName: "chevron.right"), style: .plain, target: self, action: #selector(textField.moveRight))
         let space = UIBarButtonItem(title: " ")
-        
         let flexible = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let doneButton = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(textField.done))
         
-        let doneButton = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(textField.done(button:)))
-//        let doneButton = UIBarButtonItem(title: "Done".localized, style: .done, target: self, action: #selector(textField.done(button:)))
-        
-        switch col {
+        switch location.col {
         case 0:
             toolbar.setItems([moveRightButton, flexible, doneButton], animated: true)
         case 1:
@@ -105,7 +99,6 @@ class CustomUITextField: UITextField {
     @Binding var location: CellLocation
     @Binding var closeKeyboard: Bool
     
-    
     init(location: Binding<CellLocation>, closeKeyboard: Binding<Bool>) {
         _location = location
         _closeKeyboard = closeKeyboard
@@ -141,7 +134,6 @@ class CustomUITextField: UITextField {
     }
     
     @objc func done(button: UIBarButtonItem) -> Void {
-//        self.resignFirstResponder()
         location = CellLocation()
         closeKeyboard = true
     }

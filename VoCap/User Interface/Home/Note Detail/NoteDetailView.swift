@@ -66,6 +66,8 @@ struct NoteDetailView: View {
                     .alert(isPresented: $showingAddItemAlert, textAlert)
                     .onChange(of: scrollTarget) {
                         if let target = $0 {
+                            print(target)
+                            print(tmpNoteDetails.count)
                             scrollTarget = nil
                             withAnimation { proxy.scrollTo(tmpNoteDetails[target].id) }
                         }
@@ -177,8 +179,8 @@ private extension NoteDetailView {
     }
     
     func NoteDetailTextField(_ title: String, _ text: Binding<String>, _ cellLocation: CellLocation, bodyColor: Color, strokeColor: Color) -> some View {
-        // Keyboard Toolbar에서 열간 이동하기 위해 isFirstResponder 필요
-        return CustomTextFieldWithToolbar(title: title, text: text, location: $cellLocation, closeKeyboard: $closeKeyboard, col: cellLocation.col, isFirstResponder: self.cellLocation == cellLocation)
+        // Keyboard Toolbar에서 Keyboard가 열린채로 열간 이동하기 위해 isFirstResponder 필요
+        return CustomTextFieldWithToolbar(title: title, text: text, location: $cellLocation, closeKeyboard: $closeKeyboard, isFirstResponder: self.cellLocation == cellLocation)
             .noteDetailTextFieldStyle(bodyColor: bodyColor, strokeColor: strokeColor, lineWidth: 1.0)
     }
     
@@ -271,9 +273,13 @@ private extension NoteDetailView {
     }
     
     func addItem(_ term: String, _ definition: String) {
-        note.appendItem(term, definition)
-        tmpNoteDetails.append(NoteDetail(order: note.itemCount - 1, term, definition))
-        viewContext.saveContext()
+//        DispatchQueue.global().sync {
+            note.appendItem(term, definition)
+            tmpNoteDetails.append(NoteDetail(order: note.itemCount - 1, term, definition))
+            viewContext.saveContext()
+//            scrollTarget = note.itemCount - 1
+//        }
+        
     }
     
     var editItemButton: some View {
