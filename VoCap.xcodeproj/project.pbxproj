@@ -40,11 +40,11 @@
 		34A32AF82603452B004E8C17 /* HowToAddItem_dark.gif in Resources */ = {isa = PBXBuildFile; fileRef = 34A32AF72603452B004E8C17 /* HowToAddItem_dark.gif */; };
 		34A5B649257E522A0023D1AC /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A5B648257E522A0023D1AC /* ColorExtension.swift */; };
 		34A783E926F5E7A100A778E7 /* Pallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A783E826F5E7A100A778E7 /* Pallet.swift */; };
+		34B1903126FA1C60005C4B14 /* LongPressAndDragGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B1903026FA1C60005C4B14 /* LongPressAndDragGesture.swift */; };
 		34B3248A26F34835006F0D27 /* NoteRowStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B3248926F34835006F0D27 /* NoteRowStyle.swift */; };
 		34B3248E26F34B31006F0D27 /* AddNoteRowStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B3248D26F34B31006F0D27 /* AddNoteRowStyle.swift */; };
 		34B3249126F34E73006F0D27 /* Visibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B3249026F34E73006F0D27 /* Visibility.swift */; };
 		34BDA91725BDB8590049A0A3 /* ButtonStyleInheritance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34BDA91625BDB8590049A0A3 /* ButtonStyleInheritance.swift */; };
-		34BDA92A25BDB91C0049A0A3 /* CustomGestureModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34BDA92925BDB91C0049A0A3 /* CustomGestureModifier.swift */; };
 		34D3E77F25FCB38A00A7C7C6 /* HowToAddItem_light.gif in Resources */ = {isa = PBXBuildFile; fileRef = 34D3E77E25FCB38A00A7C7C6 /* HowToAddItem_light.gif */; };
 		34D5B91825A1EC3B0071326A /* NoteDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D5B91725A1EC3B0071326A /* NoteDetail.swift */; };
 		34D88F3E256D2A65009B10AF /* VoCapApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D88F3D256D2A65009B10AF /* VoCapApp.swift */; };
@@ -99,11 +99,11 @@
 		34A32AF72603452B004E8C17 /* HowToAddItem_dark.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = HowToAddItem_dark.gif; sourceTree = "<group>"; };
 		34A5B648257E522A0023D1AC /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 		34A783E826F5E7A100A778E7 /* Pallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pallet.swift; sourceTree = "<group>"; };
+		34B1903026FA1C60005C4B14 /* LongPressAndDragGesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LongPressAndDragGesture.swift; sourceTree = "<group>"; };
 		34B3248926F34835006F0D27 /* NoteRowStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteRowStyle.swift; sourceTree = "<group>"; };
 		34B3248D26F34B31006F0D27 /* AddNoteRowStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNoteRowStyle.swift; sourceTree = "<group>"; };
 		34B3249026F34E73006F0D27 /* Visibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Visibility.swift; sourceTree = "<group>"; };
 		34BDA91625BDB8590049A0A3 /* ButtonStyleInheritance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyleInheritance.swift; sourceTree = "<group>"; };
-		34BDA92925BDB91C0049A0A3 /* CustomGestureModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomGestureModifier.swift; sourceTree = "<group>"; };
 		34D3E77E25FCB38A00A7C7C6 /* HowToAddItem_light.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = HowToAddItem_light.gif; sourceTree = "<group>"; };
 		34D5B91725A1EC3B0071326A /* NoteDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetail.swift; sourceTree = "<group>"; };
 		34D88F3A256D2A65009B10AF /* VoCap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VoCap.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -180,7 +180,6 @@
 			children = (
 				3404B4C5258784890021CDAE /* CustomTextField.swift */,
 				3445EBEC25C9851B00D16915 /* CustomTextFieldWithToolbar.swift */,
-				34BDA92925BDB91C0049A0A3 /* CustomGestureModifier.swift */,
 				3459D8F825DE8764002A9817 /* CustomSheetDismiss.swift */,
 				34F990A825ED417D00E3710A /* CustomTextAlert.swift */,
 			);
@@ -205,6 +204,7 @@
 				3499B8E926F4CA5000B19F09 /* GiFViewStyle.swift */,
 				3499B8F626F4D12D00B19F09 /* NoteDetailTextStyle.swift */,
 				3499B8F926F4D13E00B19F09 /* NoteDetailTextFieldStyle.swift */,
+				34B1903026FA1C60005C4B14 /* LongPressAndDragGesture.swift */,
 			);
 			path = "View Modifiers";
 			sourceTree = "<group>";
@@ -484,9 +484,9 @@
 				34858A4A266645B50078F503 /* Note+CoreDataClass.swift in Sources */,
 				3408A24526BE20D9000CA01F /* ToolbarContentButton.swift in Sources */,
 				340491F225779D4300CD1BD7 /* SettingsView.swift in Sources */,
+				34B1903126FA1C60005C4B14 /* LongPressAndDragGesture.swift in Sources */,
 				34E5B30025DBE08A00CB6D17 /* MakeNoteView.swift in Sources */,
 				34D88F3E256D2A65009B10AF /* VoCapApp.swift in Sources */,
-				34BDA92A25BDB91C0049A0A3 /* CustomGestureModifier.swift in Sources */,
 				340491E525779D2C00CD1BD7 /* HomeView.swift in Sources */,
 				34152FB7259A08A5007E4953 /* TmpNote.swift in Sources */,
 				3459D8F925DE8764002A9817 /* CustomSheetDismiss.swift in Sources */,

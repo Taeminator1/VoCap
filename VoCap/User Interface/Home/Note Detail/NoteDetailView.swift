@@ -190,7 +190,7 @@ private extension NoteDetailView {
             .frame(width: initialWidth)
             .scaleEffect(x: isScreen && !tmpNoteDetails[order].isScaled ? stretchedWidth / initialWidth : 1.0, y: 1.0, anchor: anchor)
             .onTapGesture{}                 // Scroll 위해 필요
-            .modifier(CustomGestureModifier(isPressed: $tmpNoteDetails[order].isScaled, f: { }))
+            .onLongPressAndDragGesture($tmpNoteDetails[order].isScaled)
     }
 }
 
