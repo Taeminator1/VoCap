@@ -5,7 +5,7 @@
 //  Created by 윤태민 on 9/17/21.
 //
 
-// Modifier for Text in NoteDetailView.
+//  Modifier for Text in NoteDetailView.
 
 import SwiftUI
 

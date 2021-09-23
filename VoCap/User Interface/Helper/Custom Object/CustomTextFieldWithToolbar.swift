@@ -11,7 +11,7 @@
 //      - With keyboard using isFirsResponder variable.
 //  - Close the keyboard from the keyboard.
 
-//  Reference:
+//  References:
 //  - https://www.hackingwithswift.com/forums/100-days-of-swiftui/jump-focus-between-a-series-of-textfields-pin-code-style-entry-widget/765
 //  - https://gist.github.com/wilsoncusack/6e80af92cf86bfae768bda7c64009789
 //  - https://stackoverflow.com/questions/59003612/extend-swiftui-keyboard-with-custom-button

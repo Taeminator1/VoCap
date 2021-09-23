@@ -8,7 +8,7 @@
 //  TextFiled for responding first.
 //  - It is used in MakeNoteView.
 
-//  Reference:
+//  References:
 //  - https://stackoverflow.com/questions/56507839/swiftui-how-to-make-textfield-become-first-responder
 //  - https://stackoverflow.com/questions/58311022/autofocus-textfield-programmatically-in-swiftui
 

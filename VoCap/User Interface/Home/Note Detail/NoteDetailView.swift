@@ -63,7 +63,7 @@ struct NoteDetailView: View {
                         .deleteDisabled(itemControl.isShuffled || editMode == .active)
                     }
                     .animation(.default)
-                    .alert(isPresented: $showingAddItemAlert, textAlert)
+                    .alert(isPresented: $showingAddItemAlert, alert: textAlert)
                     .onChange(of: scrollTarget) {
                         if let target = $0 {
                             print(target)
@@ -273,13 +273,9 @@ private extension NoteDetailView {
     }
     
     func addItem(_ term: String, _ definition: String) {
-//        DispatchQueue.global().sync {
-            note.appendItem(term, definition)
-            tmpNoteDetails.append(NoteDetail(order: note.itemCount - 1, term, definition))
-            viewContext.saveContext()
-//            scrollTarget = note.itemCount - 1
-//        }
-        
+        note.appendItem(term, definition)
+        tmpNoteDetails.append(NoteDetail(order: note.itemCount - 1, term, definition))
+        viewContext.saveContext()
     }
     
     var editItemButton: some View {
