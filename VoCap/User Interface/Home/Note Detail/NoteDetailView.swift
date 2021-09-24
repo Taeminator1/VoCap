@@ -20,7 +20,6 @@
 //  Tip shows when isDisabled is true and userDefault is false in TipControl instance.
 
 import SwiftUI
-import GoogleMobileAds
 
 struct NoteDetailView: View {
     @Environment(\.managedObjectContext) private var viewContext
@@ -50,9 +49,6 @@ struct NoteDetailView: View {
     
     var body: some View {
         VStack {
-            GADBannerViewController()
-                .frame(width: kGADAdSizeBanner.size.width, height: kGADAdSizeBanner.size.height)
-            
             GeometryReader { geometry in
                 ScrollViewReader { proxy in
                     List {

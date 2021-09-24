@@ -20,7 +20,6 @@
 		3416A70026B52E4100BB1A26 /* ItemControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3416A6FF26B52E4100BB1A26 /* ItemControl.swift */; };
 		341D2D7C26D527E50088713A /* TipControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 341D2D7B26D527E50088713A /* TipControl.swift */; };
 		3423403525EFC47000A04176 /* GifView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3423403425EFC47000A04176 /* GifView.swift */; };
-		342693C725FCDDE5000A5E4E /* AdMobView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342693C625FCDDE5000A5E4E /* AdMobView.swift */; };
 		3426DC7526F2005C00A755F7 /* ListRowStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3426DC7426F2005C00A755F7 /* ListRowStyle.swift */; };
 		342A05C226CFE62B00A9CDD8 /* NSManagedObjectContextExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342A05C126CFE62B00A9CDD8 /* NSManagedObjectContextExtension.swift */; };
 		3433814926D7BB2900D30329 /* PersonalInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3433814826D7BB2900D30329 /* PersonalInfo.swift */; };
@@ -77,7 +76,6 @@
 		3416A6FF26B52E4100BB1A26 /* ItemControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemControl.swift; sourceTree = "<group>"; };
 		341D2D7B26D527E50088713A /* TipControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipControl.swift; sourceTree = "<group>"; };
 		3423403425EFC47000A04176 /* GifView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GifView.swift; sourceTree = "<group>"; };
-		342693C625FCDDE5000A5E4E /* AdMobView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdMobView.swift; sourceTree = "<group>"; };
 		3426DC7426F2005C00A755F7 /* ListRowStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListRowStyle.swift; sourceTree = "<group>"; };
 		342A05C126CFE62B00A9CDD8 /* NSManagedObjectContextExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSManagedObjectContextExtension.swift; sourceTree = "<group>"; };
 		3433814826D7BB2900D30329 /* PersonalInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonalInfo.swift; sourceTree = "<group>"; };
@@ -247,7 +245,6 @@
 			isa = PBXGroup;
 			children = (
 				34E02AAF25FE1B30005AA07D /* Localizable.strings */,
-				342693C625FCDDE5000A5E4E /* AdMobView.swift */,
 				3433814826D7BB2900D30329 /* PersonalInfo.swift */,
 				34A783E826F5E7A100A778E7 /* Pallet.swift */,
 				3426DC7226F1FF4300A755F7 /* View Modifiers */,
@@ -463,7 +460,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				3412F5A326F0ABA100B75DF0 /* UserInfo.swift in Sources */,
-				342693C725FCDDE5000A5E4E /* AdMobView.swift in Sources */,
 				3413DDF726B327E30002120C /* AddNoteButton.swift in Sources */,
 				3445EBED25C9851B00D16915 /* CustomTextFieldWithToolbar.swift in Sources */,
 				3426DC7526F2005C00A755F7 /* ListRowStyle.swift in Sources */,
