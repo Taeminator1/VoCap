@@ -58,11 +58,11 @@
 		34F990A925ED417D00E3710A /* CustomTextAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34F990A825ED417D00E3710A /* CustomTextAlert.swift */; };
 		34FEA28326B32C5800E6FDDC /* NoteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34FEA28226B32C5800E6FDDC /* NoteButton.swift */; };
 		34FEA28B26B3309700E6FDDC /* TipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34FEA28A26B3309700E6FDDC /* TipView.swift */; };
-		458A8041D80087F90DAAFE36 /* Pods_VoCap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60157EC78B03A2B0A462FF30 /* Pods_VoCap.framework */; };
+		77557DAA7B21F1D0A193DC06 /* Pods_VoCap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 153A95D0FED9DA52E4B336C1 /* Pods_VoCap.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		3180422314C1158AD4B3EB7F /* Pods-VoCap.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VoCap.release.xcconfig"; path = "Target Support Files/Pods-VoCap/Pods-VoCap.release.xcconfig"; sourceTree = "<group>"; };
+		153A95D0FED9DA52E4B336C1 /* Pods_VoCap.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VoCap.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		340491E425779D2C00CD1BD7 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		340491F125779D4300CD1BD7 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		3404B4C5258784890021CDAE /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
@@ -121,8 +121,8 @@
 		34F990A825ED417D00E3710A /* CustomTextAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextAlert.swift; sourceTree = "<group>"; };
 		34FEA28226B32C5800E6FDDC /* NoteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteButton.swift; sourceTree = "<group>"; };
 		34FEA28A26B3309700E6FDDC /* TipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipView.swift; sourceTree = "<group>"; };
-		442AB24286ACC07A3380E1B2 /* Pods-VoCap.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VoCap.debug.xcconfig"; path = "Target Support Files/Pods-VoCap/Pods-VoCap.debug.xcconfig"; sourceTree = "<group>"; };
-		60157EC78B03A2B0A462FF30 /* Pods_VoCap.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VoCap.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		42B34625CD30AAAF2CDD9328 /* Pods-VoCap.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VoCap.release.xcconfig"; path = "Target Support Files/Pods-VoCap/Pods-VoCap.release.xcconfig"; sourceTree = "<group>"; };
+		69205A0F7E84DE98D9F6DDC7 /* Pods-VoCap.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VoCap.debug.xcconfig"; path = "Target Support Files/Pods-VoCap/Pods-VoCap.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,7 +130,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				458A8041D80087F90DAAFE36 /* Pods_VoCap.framework in Frameworks */,
+				77557DAA7B21F1D0A193DC06 /* Pods_VoCap.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -283,7 +283,7 @@
 				34D88F3C256D2A65009B10AF /* VoCap */,
 				34D88F3B256D2A65009B10AF /* Products */,
 				3B287458E94E0AB404710A02 /* Pods */,
-				FCAC27BCA974313C9190A9A8 /* Frameworks */,
+				BDE476FDB5265D8F5457565A /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -322,16 +322,16 @@
 		3B287458E94E0AB404710A02 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				442AB24286ACC07A3380E1B2 /* Pods-VoCap.debug.xcconfig */,
-				3180422314C1158AD4B3EB7F /* Pods-VoCap.release.xcconfig */,
+				69205A0F7E84DE98D9F6DDC7 /* Pods-VoCap.debug.xcconfig */,
+				42B34625CD30AAAF2CDD9328 /* Pods-VoCap.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
 		};
-		FCAC27BCA974313C9190A9A8 /* Frameworks */ = {
+		BDE476FDB5265D8F5457565A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				60157EC78B03A2B0A462FF30 /* Pods_VoCap.framework */,
+				153A95D0FED9DA52E4B336C1 /* Pods_VoCap.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -343,11 +343,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 34D88F64256D2A68009B10AF /* Build configuration list for PBXNativeTarget "VoCap" */;
 			buildPhases = (
-				49F3089E889036A3390FEAE4 /* [CP] Check Pods Manifest.lock */,
+				03D6CA2157F19F8239B7DF70 /* [CP] Check Pods Manifest.lock */,
 				34D88F36256D2A65009B10AF /* Sources */,
 				34D88F37256D2A65009B10AF /* Frameworks */,
 				34D88F38256D2A65009B10AF /* Resources */,
-				19A8A43F8227C1B6E59CC5DB /* [CP] Embed Pods Frameworks */,
+				2ED6B7FDB2FE24CC15F1D4F3 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -413,24 +413,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		19A8A43F8227C1B6E59CC5DB /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-VoCap/Pods-VoCap-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-VoCap/Pods-VoCap-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-VoCap/Pods-VoCap-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		49F3089E889036A3390FEAE4 /* [CP] Check Pods Manifest.lock */ = {
+		03D6CA2157F19F8239B7DF70 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -450,6 +433,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		2ED6B7FDB2FE24CC15F1D4F3 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-VoCap/Pods-VoCap-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-VoCap/Pods-VoCap-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-VoCap/Pods-VoCap-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -643,7 +643,7 @@
 		};
 		34D88F65256D2A68009B10AF /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 442AB24286ACC07A3380E1B2 /* Pods-VoCap.debug.xcconfig */;
+			baseConfigurationReference = 69205A0F7E84DE98D9F6DDC7 /* Pods-VoCap.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -675,7 +675,7 @@
 		};
 		34D88F66256D2A68009B10AF /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3180422314C1158AD4B3EB7F /* Pods-VoCap.release.xcconfig */;
+			baseConfigurationReference = 42B34625CD30AAAF2CDD9328 /* Pods-VoCap.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
