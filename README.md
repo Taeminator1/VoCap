@@ -7,6 +7,8 @@
 - [관련 링크](#관련-링크)
 
 # 개발 정보
+<img width="800" alt="2020 11" src="https://github.com/user-attachments/assets/56381740-3b65-4708-8bc2-d96e51fa0138">
+
 - 개발 환경: Xcode 12.4
 - 사용 언어: Swift 5
 - 요구 사항: iOS 14.0 or later
@@ -42,3 +44,5 @@
 
 # 관련 링크
 - [앱스토어](https://apps.apple.com/kr/app/vocap/id1559011042?l=ko)
+<img width="800" alt="No more complex notet" src="https://github.com/user-attachments/assets/c14dff11-ab07-4c2e-985a-65ac9dc9c547">
+
